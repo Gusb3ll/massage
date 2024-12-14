@@ -1,0 +1,53 @@
+{
+  "name": "@app/monorepo",
+  "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "dev": "dotenvx run -- turbo dev",
+    "dev:client": "dotenvx run -- turbo dev --filter=\"./apps/client\"",
+    "dev:server": "dotenvx run -- turbo dev --filter=\"./apps/server\"",
+    "build": "dotenvx run -- turbo build",
+    "build:package": "dotenvx run -- turbo build --filter=\"./packages/*\"",
+    "start": "dotenvx run -- turbo start",
+    "test": "dotenvx run -- turbo test",
+    "coverage": "dotenvx run -- turbo coverage",
+    "lint": "eslint .",
+    "fmt": "prettier --write \"**/*.{ts,tsx,md,json}\"",
+    "db:push": "dotenvx run -- pnpm --filter=@app/db push",
+    "db:studio": "dotenvx run -- pnpm --filter=@app/db studio",
+    "db:generate": "dotenvx run -- pnpm --filter=@app/db generate",
+    "db:migrate:dev": "dotenvx run -- pnpm --filter=@app/db migrate:dev",
+    "db:migrate:draft": "dotenvx run -- pnpm --filter=@app/db migrate:draft",
+    "db:migrate:deploy": "dotenvx run -- pnpm --filter=@app/db migrate:deploy",
+    "db:migrate:reset": "dotenvx run -- pnpm --filter=@app/db migrate:reset"
+  },
+  "dependencies": {
+    "@dotenvx/dotenvx": "1.29.0"
+  },
+  "devDependencies": {
+    "@types/node": "22.10.2",
+    "@vitest/coverage-v8": "2.1.8",
+    "eslint": "8.57.1",
+    "eslint-config-next": "15.1.0",
+    "eslint-config-prettier": "9.1.0",
+    "eslint-plugin-import": "2.31.0",
+    "eslint-plugin-unused-imports": "4.1.4",
+    "prettier": "3.4.2",
+    "prettier-plugin-tailwindcss": "0.6.9",
+    "rimraf": "6.0.1",
+    "turbo": "2.3.3",
+    "typescript": "5.7.2",
+    "unplugin-swc": "1.5.1",
+    "vitest": "2.1.8"
+  },
+  "packageManager": "pnpm@9.15.0",
+  "prettier": {
+    "singleQuote": true,
+    "printWidth": 80,
+    "tabWidth": 2,
+    "semi": false,
+    "arrowParens": "avoid",
+    "plugins": [
+      "prettier-plugin-tailwindcss"
+    ]
+  }
+}

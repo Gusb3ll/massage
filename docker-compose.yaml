@@ -1,0 +1,16 @@
+volumes:
+  massage_data:
+
+services:
+  db:
+    container_name: massage-database
+    image: postgres:17-alpine
+    restart: on-failure
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=massage
+      - POSTGRES_USER=local
+      - POSTGRES_PASSWORD=local
+    volumes:
+      - massage_data:/var/lib/postgresql/data

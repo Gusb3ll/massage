@@ -1,0 +1,146 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native"]
+  output        = "../dist/client"
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id          String         @id @default(uuid())
+  email       String         @unique
+  password    String
+  phoneNuber  String
+  firstName   String
+  lastName    String
+  gender      String
+  dateOfBirth DateTime
+  role        Role           @default(USER)
+  massager    Massager?
+  owner       PropertyOwner?
+  bookings    Booking[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum MassagerStatus {
+  AVAILABLE
+  OCCUPIED
+  UNAVAILABLE
+  UNKNOWN
+}
+
+model Massager {
+  id            String         @id @default(cuid())
+  coverImage    String
+  profileImage  String
+  massageImages String[]
+  certificates  String[]
+  isVaccinated  Boolean        @default(false)
+  status        MassagerStatus @default(UNKNOWN)
+  bookings      Booking[]
+  properties    Property[]
+
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PropertyOwner {
+  id           String     @id @default(cuid())
+  coverImage   String
+  profileImage String
+  properties   Property[]
+
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Property {
+  id          String     @id @default(cuid())
+  name        String
+  address     Json
+  description String
+  images      String[]
+  price       Float
+  rooms       Int
+  roomWidth   Int
+  roomHeight  Int
+  bookings    Booking[]
+  massagers   Massager[]
+
+  ownerId   String
+  owner     PropertyOwner @relation(fields: [ownerId], references: [id])
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+model Booking {
+  id                 String                     @id @default(cuid())
+  status             BookingStatus              @default(PENDING)
+  bookingDate        DateTime
+  massagerId         String
+  massager           Massager                   @relation(fields: [massagerId], references: [id])
+  propertyId         String
+  property           Property                   @relation(fields: [propertyId], references: [id])
+  userId             String
+  user               User                       @relation(fields: [userId], references: [id])
+  paymentTransaction BookingPaymentTransaction?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum PaymentTransactionStatus {
+  PENDING
+  CANCELLED
+  COMPLETED
+  FAILED
+}
+
+enum PaymentMethod {
+  CASH
+  STRIPE
+}
+
+model BookingPaymentTransaction {
+  id          String                   @id @default(cuid())
+  extId       String
+  referenceNo String
+  status      PaymentTransactionStatus @default(PENDING)
+  method      PaymentMethod
+  amount      Float
+
+  bookingId String   @unique
+  booking   Booking  @relation(fields: [bookingId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+//
+
+model ResetPassword {
+  userId    String
+  token     String
+  createdAt DateTime @default(now())
+
+  @@id([userId, token])
+}
