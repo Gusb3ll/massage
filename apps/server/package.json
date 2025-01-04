@@ -6,6 +6,8 @@
     "start": "node dist/main.js"
   },
   "dependencies": {
+    "@app/auth": "workspace:*",
+    "@app/common": "workspace:*",
     "@app/config": "workspace:*",
     "@app/db": "workspace:*",
     "@fastify/static": "7.0.4",

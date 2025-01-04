@@ -85,6 +85,12 @@ importers:
 
   apps/server:
     dependencies:
+      '@app/auth':
+        specifier: workspace:*
+        version: link:../../packages/auth
+      '@app/common':
+        specifier: workspace:*
+        version: link:../../packages/common
       '@app/config':
         specifier: workspace:*
         version: link:../../packages/config
