@@ -11,22 +11,27 @@ generator client {
 
 enum Role {
   USER
+  MASSAGER
+  PROPERTY_OWNER
   ADMIN
 }
 
 model User {
-  id          String         @id @default(uuid())
-  email       String         @unique
-  password    String
-  phoneNuber  String
-  firstName   String
-  lastName    String
-  gender      String
-  dateOfBirth DateTime
-  role        Role           @default(USER)
-  massager    Massager?
-  owner       PropertyOwner?
-  bookings    Booking[]
+  id              String           @id @default(uuid())
+  email           String           @unique
+  password        String
+  phoneNumber     String
+  firstName       String
+  lastName        String
+  gender          String
+  dateOfBirth     String
+  role            Role             @default(USER)
+  isEmailVerified Boolean          @default(false)
+  massager        Massager?
+  owner           PropertyOwner?
+  bookings        Booking[]
+  massagerReviews MassagerReview[]
+  propertyReviews PropertyReview[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -40,20 +45,33 @@ enum MassagerStatus {
 }
 
 model Massager {
-  id            String         @id @default(cuid())
+  id            String           @id @default(cuid())
   coverImage    String
   profileImage  String
   massageImages String[]
   certificates  String[]
-  isVaccinated  Boolean        @default(false)
-  status        MassagerStatus @default(UNKNOWN)
+  isVaccinated  Boolean          @default(false)
+  status        MassagerStatus   @default(UNKNOWN)
   bookings      Booking[]
   properties    Property[]
+  reviews       MassagerReview[]
 
   userId    String   @unique
   user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model MassagerReview {
+  id          String @id @default(cuid())
+  rating      Int
+  description String
+
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  massagerId String
+  massager   Massager @relation(fields: [massagerId], references: [id])
+  createdAt  DateTime @default(now())
 }
 
 model PropertyOwner {
@@ -69,7 +87,7 @@ model PropertyOwner {
 }
 
 model Property {
-  id          String     @id @default(cuid())
+  id          String           @id @default(cuid())
   name        String
   address     Json
   description String
@@ -80,6 +98,7 @@ model Property {
   roomHeight  Int
   bookings    Booking[]
   massagers   Massager[]
+  reviews     PropertyReview[]
 
   ownerId   String
   owner     PropertyOwner @relation(fields: [ownerId], references: [id])
@@ -87,8 +106,21 @@ model Property {
   updatedAt DateTime      @updatedAt
 }
 
+model PropertyReview {
+  id          String @id @default(cuid())
+  rating      Int
+  description String
+
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id])
+  createdAt  DateTime @default(now())
+}
+
 enum BookingStatus {
-  PENDING
+  PENDING_MASSAGER
+  PENDING_PAYMENT
   CONFIRMED
   CANCELLED
   COMPLETED
@@ -96,7 +128,7 @@ enum BookingStatus {
 
 model Booking {
   id                 String                     @id @default(cuid())
-  status             BookingStatus              @default(PENDING)
+  status             BookingStatus
   bookingDate        DateTime
   massagerId         String
   massager           Massager                   @relation(fields: [massagerId], references: [id])
@@ -105,9 +137,25 @@ model Booking {
   userId             String
   user               User                       @relation(fields: [userId], references: [id])
   paymentTransaction BookingPaymentTransaction?
+  chats              BookingChat[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+enum BookingChatActor {
+  USER
+  MASSAGER
+}
+
+model BookingChat {
+  id      String           @id @default(cuid())
+  message String
+  actor   BookingChatActor
+
+  bookingId String
+  booking   Booking  @relation(fields: [bookingId], references: [id])
+  createdAt DateTime @default(now())
 }
 
 enum PaymentTransactionStatus {
@@ -138,6 +186,14 @@ model BookingPaymentTransaction {
 //
 
 model ResetPassword {
+  userId    String
+  token     String
+  createdAt DateTime @default(now())
+
+  @@id([userId, token])
+}
+
+model EmailVerify {
   userId    String
   token     String
   createdAt DateTime @default(now())
