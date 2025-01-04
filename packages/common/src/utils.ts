@@ -20,7 +20,7 @@ export type Context = FastifyRequest & {
 export const getUserFromContext = (ctx: Context) => {
   const user = ctx.raw.user
   if (!user) {
-    throw new UnauthorizedException('กรุณาเข้าสู่ระบบ')
+    throw new UnauthorizedException('Unauthorized')
   }
 
   return user

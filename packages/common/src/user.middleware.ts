@@ -33,6 +33,7 @@ export class UserMiddleware implements NestMiddleware {
           gender: true,
           dateOfBirth: true,
           role: true,
+          isEmailVerified: true,
         },
       })
       if (!user) {

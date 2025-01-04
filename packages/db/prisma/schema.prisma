@@ -41,7 +41,6 @@ enum MassagerStatus {
   AVAILABLE
   OCCUPIED
   UNAVAILABLE
-  UNKNOWN
 }
 
 model Massager {
@@ -51,7 +50,7 @@ model Massager {
   massageImages String[]
   certificates  String[]
   isVaccinated  Boolean          @default(false)
-  status        MassagerStatus   @default(UNKNOWN)
+  status        MassagerStatus   @default(UNAVAILABLE)
   bookings      Booking[]
   properties    Property[]
   reviews       MassagerReview[]
@@ -186,17 +185,13 @@ model BookingPaymentTransaction {
 //
 
 model ResetPassword {
+  token     String   @id
   userId    String
-  token     String
   createdAt DateTime @default(now())
-
-  @@id([userId, token])
 }
 
 model EmailVerify {
+  token     String   @id
   userId    String
-  token     String
   createdAt DateTime @default(now())
-
-  @@id([userId, token])
 }
