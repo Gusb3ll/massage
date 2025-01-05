@@ -1,4 +1,4 @@
-import { Context, getUserFromContext } from '@app/common'
+import { Context } from '@app/common'
 import { Body, Controller, HttpStatus, Patch, Post, Req } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 
@@ -10,27 +10,17 @@ import { PropertyInternalService } from './internal.service'
 export class PropertyInternalController {
   constructor(private readonly service: PropertyInternalService) {}
 
-  @Post('/create')
+  @Post('/')
   async createProperty(@Body() args: CreatePropertyArgs, @Req() ctx: Context) {
-    const user = getUserFromContext(ctx)
-    if (!user) {
-      throw new Error('User not found')
-    }
+    const res = await this.service.createProperty(args, ctx)
 
-    const property = await this.service.createProperty(args, ctx)
-
-    return { statusCode: HttpStatus.OK, data: property }
+    return { statusCode: HttpStatus.OK, data: res }
   }
 
-  @Patch('/update')
-  async updateProperty(@Body() args: UpdatePropertyArgs, @Req() ctx: Context) {
-    const user = getUserFromContext(ctx)
-    if (!user) {
-      throw new Error('User not found')
-    }
-
-    const property = await this.service.updateProperty(args, ctx)
-
-    return { statusCode: HttpStatus.OK, data: property }
+  @Patch('/')
+  async updateProperty(@Body() args: UpdatePropertyArgs) {
+    const res = await this.service.updateProperty(args)
+    
+    return { statusCode: HttpStatus.OK, data: res }
   }
 }
