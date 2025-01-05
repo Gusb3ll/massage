@@ -1,7 +1,7 @@
 import { createZodDto, patchNestJsSwagger } from 'nestjs-zod'
 import { z } from 'zod'
 
-export class propertyOwnerArgs extends createZodDto(
+export class UpdateOwnerArgs extends createZodDto(
   z.object({
     coverImage: z.string(),
     profileImage: z.string(),
@@ -9,3 +9,5 @@ export class propertyOwnerArgs extends createZodDto(
 ) {}
 
 patchNestJsSwagger()
+
+//TODO: Not finished yet

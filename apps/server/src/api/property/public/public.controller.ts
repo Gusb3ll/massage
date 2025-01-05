@@ -1,12 +1,17 @@
-// import { PropertyPublicService } from './public.service'
-// import { Controller, Get, Param } from '@nestjs/common'
+import { Controller, Get, Param } from '@nestjs/common'
 
-// @Controller('/property/public')
-// export class PropertyPublicController {
-//   constructor(private readonly service: PropertyPublicService) {}
+import { PropertyPublicService } from './public.service'
 
-//   @Get('/:id')
-//   async getProperty(@Param('id') id: string) {
-//     const res = await this.service.getProperty(id)
-//   }
-// }
+@Controller('/property/public')
+export class PropertyPublicController {
+  constructor(private readonly service: PropertyPublicService) {}
+
+  @Get('/:id')
+  async getProperty(@Param('id') id: string) {
+    const res = await this.service.getProperty(id)
+
+    return res
+  }
+}
+
+//TODO: Not finished yet

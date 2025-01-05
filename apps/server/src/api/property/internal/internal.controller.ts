@@ -20,7 +20,7 @@ export class PropertyInternalController {
   @Patch('/')
   async updateProperty(@Body() args: UpdatePropertyArgs) {
     const res = await this.service.updateProperty(args)
-    
+
     return { statusCode: HttpStatus.OK, data: res }
   }
 }
