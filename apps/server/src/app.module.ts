@@ -8,10 +8,12 @@ import { MailerModule } from '@nestjs-modules/mailer'
 import { ZodValidationPipe } from 'nestjs-zod'
 
 import { UserModule } from './api/user/user.module'
+import { PropertyModule } from './api/property/property.module'
 
 @Module({
   imports: [
     UserModule,
+    PropertyModule,
     //
     AuthModule,
     PrismaModule,
