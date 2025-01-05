@@ -1,4 +1,4 @@
-import { createZodDto , patchNestJsSwagger } from 'nestjs-zod'
+import { createZodDto, patchNestJsSwagger } from 'nestjs-zod'
 import { z } from 'zod'
 
 export class propertyOwnerArgs extends createZodDto(
@@ -8,4 +8,4 @@ export class propertyOwnerArgs extends createZodDto(
   }),
 ) {}
 
-patchNestJsSwagger();
+patchNestJsSwagger()
