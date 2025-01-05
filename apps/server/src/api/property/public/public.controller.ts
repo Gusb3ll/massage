@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common'
+import { Controller, Get, HttpStatus, Param } from '@nestjs/common'
 
 import { PropertyPublicService } from './public.service'
 
@@ -10,7 +10,7 @@ export class PropertyPublicController {
   async getProperty(@Param('id') id: string) {
     const res = await this.service.getProperty(id)
 
-    return res
+    return { statusCode : HttpStatus.OK, data: res }
   }
 }
 
