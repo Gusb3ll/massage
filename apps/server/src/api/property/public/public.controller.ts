@@ -10,7 +10,7 @@ export class PropertyPublicController {
   async getProperty(@Param('id') id: string) {
     const res = await this.service.getProperty(id)
 
-    return { statusCode : HttpStatus.OK, data: res }
+    return { statusCode: HttpStatus.OK, data: res }
   }
 }
 
