@@ -12,15 +12,15 @@ export class PropertyInternalController {
 
   @Post('/')
   async createProperty(@Body() args: CreatePropertyArgs, @Req() ctx: Context) {
-    const res = await this.service.createProperty(args, ctx)
+    await this.service.createProperty(args, ctx)
 
-    return { statusCode: HttpStatus.OK, data: res }
+    return { statusCode: HttpStatus.OK }
   }
 
   @Patch('/')
   async updateProperty(@Body() args: UpdatePropertyArgs) {
-    const res = await this.service.updateProperty(args)
+    await this.service.updateProperty(args)
 
-    return { statusCode: HttpStatus.OK, data: res }
+    return { statusCode: HttpStatus.OK }
   }
 }
