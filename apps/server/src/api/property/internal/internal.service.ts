@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common'
-import { PrismaService } from '@app/db'
-import { CreatePropertyArgs, UpdatePropertyArgs } from './internal.dto'
 import { Context, getUserFromContext } from '@app/common'
+import { PrismaService } from '@app/db'
+import { Injectable } from '@nestjs/common'
+
+import { CreatePropertyArgs, UpdatePropertyArgs } from './internal.dto'
 
 @Injectable()
 export class PropertyInternalService {

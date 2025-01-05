@@ -1,8 +1,10 @@
-import { Controller, Post, HttpStatus, Body, Patch, Req } from '@nestjs/common'
+import { Context, getUserFromContext } from '@app/common'
+import { Body, Controller, HttpStatus, Patch, Post, Req } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
+
 import { CreatePropertyArgs, UpdatePropertyArgs } from './internal.dto'
 import { PropertyInternalService } from './internal.service'
-import { Context, getUserFromContext } from '@app/common'
+
 @ApiTags('Property - Internal')
 @Controller('/property/internal')
 export class PropertyInternalController {
