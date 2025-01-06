@@ -13,5 +13,3 @@ export class PropertyPublicController {
     return { statusCode: HttpStatus.OK, data: res }
   }
 }
-
-//TODO: Not finished yet

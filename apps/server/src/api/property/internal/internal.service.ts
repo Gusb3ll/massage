@@ -42,4 +42,12 @@ export class PropertyInternalService {
       },
     })
   }
+
+  async deleteProperty(id: string) {
+    await this.db.property.delete({
+      where: {
+        id,
+      },
+    })
+  }
 }

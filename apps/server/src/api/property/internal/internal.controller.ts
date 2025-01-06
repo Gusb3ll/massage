@@ -1,5 +1,14 @@
 import { Context } from '@app/common'
-import { Body, Controller, HttpStatus, Patch, Post, Req } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Delete,
+  HttpStatus,
+  Param,
+  Patch,
+  Post,
+  Req,
+} from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 
 import { CreatePropertyArgs, UpdatePropertyArgs } from './internal.dto'
@@ -20,6 +29,13 @@ export class PropertyInternalController {
   @Patch('/')
   async updateProperty(@Body() args: UpdatePropertyArgs) {
     await this.service.updateProperty(args)
+
+    return { statusCode: HttpStatus.OK }
+  }
+
+  @Delete('/:id')
+  async deleteProperty(@Param('id') id: string) {
+    await this.service.deleteProperty(id)
 
     return { statusCode: HttpStatus.OK }
   }

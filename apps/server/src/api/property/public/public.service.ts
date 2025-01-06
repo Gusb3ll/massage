@@ -16,7 +16,7 @@ export class PropertyPublicService {
       },
     })
 
-    return property
+    return { data: property }
   }
 }
 
