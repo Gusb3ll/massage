@@ -6,7 +6,7 @@ import { CreatePropertyArgs, UpdatePropertyArgs } from './internal.dto'
 
 @Injectable()
 export class PropertyInternalService {
-  constructor(private readonly db: PrismaService) {}
+  constructor(private readonly db: PrismaService) { }
 
   async createProperty(args: CreatePropertyArgs, ctx: Context) {
     const user = getUserFromContext(ctx)
@@ -39,6 +39,14 @@ export class PropertyInternalService {
         rooms: args.rooms,
         roomWidth: args.roomWidth,
         roomHeight: args.roomHeight,
+      },
+    })
+  }
+
+  async deleteProperty(id: string) {
+    await this.db.property.delete({
+      where: {
+        id: String(id),
       },
     })
   }

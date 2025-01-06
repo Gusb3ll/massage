@@ -1,23 +1,19 @@
-import { AuthService } from '@app/auth'
 import { PrismaService } from '@app/db'
 import { Injectable } from '@nestjs/common'
 
 @Injectable()
 export class PropertyPublicService {
-  constructor(
-    private readonly db: PrismaService,
-    private readonly authService: AuthService,
-  ) {}
+    constructor(
+        private readonly db: PrismaService,
+    ) { }
 
-  async getProperty(id: string) {
-    const property = await this.db.property.findUnique({
-      where: {
-        id,
-      },
-    })
+    async getProperty(id: string) {
+        const property = await this.db.property.findUnique({
+            where: {
+                id,
+            },
+        })
 
-    return property
-  }
+        return { data: property }
+    }
 }
-
-//TODO: Not finished yet

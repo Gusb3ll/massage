@@ -13,7 +13,7 @@ export class CreatePropertyArgs extends createZodDto(
     roomHeight: z.number(),
     ownerId: z.string(),
   }),
-) {}
+) { }
 
 export class UpdatePropertyArgs extends createZodDto(
   z.object({
@@ -27,6 +27,6 @@ export class UpdatePropertyArgs extends createZodDto(
     roomWidth: z.number().optional(),
     roomHeight: z.number().optional(),
   }),
-) {}
+) { }
 
 patchNestJsSwagger()

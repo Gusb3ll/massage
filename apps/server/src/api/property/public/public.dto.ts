@@ -6,7 +6,7 @@ export class UpdateOwnerArgs extends createZodDto(
     coverImage: z.string(),
     profileImage: z.string(),
   }),
-) {}
+) { }
 
 patchNestJsSwagger()
 
