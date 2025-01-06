@@ -1,5 +1,14 @@
 import { Context } from '@app/common'
-import { Body, Controller, Delete, HttpStatus, Param, Patch, Post, Req } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Delete,
+  HttpStatus,
+  Param,
+  Patch,
+  Post,
+  Req,
+} from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 
 import { CreatePropertyArgs, UpdatePropertyArgs } from './internal.dto'
@@ -8,7 +17,7 @@ import { PropertyInternalService } from './internal.service'
 @ApiTags('Property - Internal')
 @Controller('/property/internal')
 export class PropertyInternalController {
-  constructor(private readonly service: PropertyInternalService) { }
+  constructor(private readonly service: PropertyInternalService) {}
 
   @Post('/')
   async createProperty(@Body() args: CreatePropertyArgs, @Req() ctx: Context) {
@@ -30,5 +39,4 @@ export class PropertyInternalController {
 
     return { statusCode: HttpStatus.OK }
   }
-
 }

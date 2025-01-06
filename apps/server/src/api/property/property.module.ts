@@ -9,4 +9,4 @@ import { PropertyPublicService } from './public/public.service'
   controllers: [PropertyPublicController, PropertyInternalController],
   providers: [PropertyPublicService, PropertyInternalService],
 })
-export class PropertyModule { }
+export class PropertyModule {}
