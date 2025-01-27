@@ -17,7 +17,7 @@ import { PropertyInternalService } from './internal.service'
 @ApiTags('Property - Internal')
 @Controller('/property/internal')
 export class PropertyInternalController {
-  constructor(private readonly service: PropertyInternalService) { }
+  constructor(private readonly service: PropertyInternalService) {}
 
   @Post('/')
   async createProperty(@Body() args: CreatePropertyArgs, @Req() ctx: Context) {
