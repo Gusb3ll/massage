@@ -1,12 +1,18 @@
 import { Context, getUserFromContext } from '@app/common'
 import { PrismaService } from '@app/db'
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 
 import { CreatePropertyArgs, UpdatePropertyArgs } from './internal.dto'
 
 @Injectable()
 export class PropertyInternalService {
   constructor(private readonly db: PrismaService) {}
+
+  getMe(ctx: Context) {
+    const user = getUserFromContext(ctx)
+
+    return user
+  }
 
   async createProperty(args: CreatePropertyArgs, ctx: Context) {
     const user = getUserFromContext(ctx)
@@ -25,7 +31,14 @@ export class PropertyInternalService {
     })
   }
 
-  async updateProperty(args: UpdatePropertyArgs) {
+  async updateProperty(args: UpdatePropertyArgs, ctx: Context) {
+    const _user = getUserFromContext(ctx)
+    const user = await this.db.propertyOwner.findUnique({
+      where: { id: _user.id },
+    })
+    if (!user) {
+      throw new NotFoundException('User not found')
+    }
     await this.db.property.update({
       where: {
         id: args.id,
@@ -43,9 +56,13 @@ export class PropertyInternalService {
     })
   }
 
-  async deleteProperty(id: string) {
-    if (!id) {
-      throw new Error('Property ID is required')
+  async deleteProperty(id: string, ctx: Context) {
+    const _user = getUserFromContext(ctx)
+    const user = await this.db.propertyOwner.findUnique({
+      where: { id: _user.id },
+    })
+    if (!user) {
+      throw new NotFoundException('User not found')
     }
     await this.db.property.delete({
       where: {

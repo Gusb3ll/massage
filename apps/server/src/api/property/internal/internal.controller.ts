@@ -27,15 +27,15 @@ export class PropertyInternalController {
   }
 
   @Patch('/')
-  async updateProperty(@Body() args: UpdatePropertyArgs) {
-    await this.service.updateProperty(args)
+  async updateProperty(@Body() args: UpdatePropertyArgs, @Req() ctx: Context) {
+    await this.service.updateProperty(args, ctx)
 
     return { statusCode: HttpStatus.OK }
   }
 
   @Delete('/:id')
-  async deleteProperty(@Param('id') id: string) {
-    await this.service.deleteProperty(id)
+  async deleteProperty(@Param('id') id: string, @Req() ctx: Context) {
+    await this.service.deleteProperty(id, ctx)
 
     return { statusCode: HttpStatus.OK }
   }
