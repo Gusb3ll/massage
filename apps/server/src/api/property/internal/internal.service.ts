@@ -32,13 +32,19 @@ export class PropertyInternalService {
   }
 
   async updateProperty(args: UpdatePropertyArgs, ctx: Context) {
-    const _user = getUserFromContext(ctx)
-    const user = await this.db.propertyOwner.findUnique({
-      where: { id: _user.id },
+    const user = getUserFromContext(ctx)
+
+    const property = await this.db.property.findFirst({
+      where: {
+        owner: {
+          userId: user.id,
+        },
+      },
     })
-    if (!user) {
+    if (!property) {
       throw new NotFoundException('User not found')
     }
+
     await this.db.property.update({
       where: {
         id: args.id,
@@ -57,11 +63,15 @@ export class PropertyInternalService {
   }
 
   async deleteProperty(id: string, ctx: Context) {
-    const _user = getUserFromContext(ctx)
-    const user = await this.db.propertyOwner.findUnique({
-      where: { id: _user.id },
+    const user = getUserFromContext(ctx)
+    const property = await this.db.property.findFirst({
+      where: {
+        owner: {
+          userId: user.id,
+        },
+      },
     })
-    if (!user) {
+    if (!property) {
       throw new NotFoundException('User not found')
     }
     await this.db.property.delete({
