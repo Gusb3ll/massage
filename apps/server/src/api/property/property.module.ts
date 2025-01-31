@@ -6,7 +6,7 @@ import { PropertyPublicController } from './public/public.controller'
 import { PropertyPublicService } from './public/public.service'
 
 @Module({
-  controllers: [PropertyPublicController, PropertyInternalController],
-  providers: [PropertyPublicService, PropertyInternalService],
+  controllers: [PropertyInternalController, PropertyPublicController],
+  providers: [PropertyInternalService, PropertyPublicService],
 })
 export class PropertyModule {}

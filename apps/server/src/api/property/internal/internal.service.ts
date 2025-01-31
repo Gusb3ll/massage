@@ -6,7 +6,7 @@ import { CreatePropertyArgs, UpdatePropertyArgs } from './internal.dto'
 
 @Injectable()
 export class PropertyInternalService {
-  constructor(private readonly db: PrismaService) {}
+  constructor(private readonly db: PrismaService) { }
 
   getMe(ctx: Context) {
     const user = getUserFromContext(ctx)
@@ -16,6 +16,7 @@ export class PropertyInternalService {
 
   async createProperty(args: CreatePropertyArgs, ctx: Context) {
     const user = getUserFromContext(ctx)
+
     await this.db.property.create({
       data: {
         name: args.name,
@@ -42,7 +43,7 @@ export class PropertyInternalService {
       },
     })
     if (!property) {
-      throw new NotFoundException('User not found')
+      throw new NotFoundException('Property not found')
     }
 
     await this.db.property.update({
@@ -64,6 +65,7 @@ export class PropertyInternalService {
 
   async deleteProperty(id: string, ctx: Context) {
     const user = getUserFromContext(ctx)
+
     const property = await this.db.property.findFirst({
       where: {
         owner: {
@@ -72,12 +74,10 @@ export class PropertyInternalService {
       },
     })
     if (!property) {
-      throw new NotFoundException('User not found')
+      throw new NotFoundException('Property not found')
     }
     await this.db.property.delete({
-      where: {
-        id,
-      },
+      where: { id },
     })
   }
 }
