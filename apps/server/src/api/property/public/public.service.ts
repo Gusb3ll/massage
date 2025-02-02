@@ -16,8 +16,6 @@ export class PropertyPublicService {
       },
     })
 
-    return property
+    return { property }
   }
 }
-
-//TODO: Not finished yet
