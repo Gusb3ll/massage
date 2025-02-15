@@ -26,9 +26,13 @@ export class PropertyInternalController {
     return { statusCode: HttpStatus.OK }
   }
 
-  @Patch('/')
-  async updateProperty(@Body() args: UpdatePropertyArgs, @Req() ctx: Context) {
-    await this.service.updateProperty(args, ctx)
+  @Patch('/:id')
+  async updateProperty(
+    @Param('id') id: string,
+    @Body() args: UpdatePropertyArgs,
+    @Req() ctx: Context,
+  ) {
+    await this.service.updateProperty(id, args, ctx)
 
     return { statusCode: HttpStatus.OK }
   }

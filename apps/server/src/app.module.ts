@@ -7,13 +7,15 @@ import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
 import { MailerModule } from '@nestjs-modules/mailer'
 import { ZodValidationPipe } from 'nestjs-zod'
 
-import { UserModule } from './api/user/user.module'
+import { MassagerModule } from './api/massager/massager.module'
 import { PropertyModule } from './api/property/property.module'
+import { UserModule } from './api/user/user.module'
 
 @Module({
   imports: [
-    UserModule,
+    MassagerModule,
     PropertyModule,
+    UserModule,
     //
     AuthModule,
     PrismaModule,

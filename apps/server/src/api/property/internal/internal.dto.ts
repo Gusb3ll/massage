@@ -17,7 +17,6 @@ export class CreatePropertyArgs extends createZodDto(
 
 export class UpdatePropertyArgs extends createZodDto(
   z.object({
-    id: z.string(),
     name: z.string().optional(),
     description: z.string().optional(),
     address: z.string().optional(),

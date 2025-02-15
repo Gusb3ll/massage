@@ -8,7 +8,7 @@ export class RegisterArgs extends createZodDto(
     firstName: z.string(),
     lastName: z.string(),
     phoneNumber: z.string(),
-    gender: z.string(),
+    gender: z.enum(['MALE', 'FEMALE']),
     dateOfBirth: z.string(),
     role: z.enum(['USER', 'MASSAGER', 'PROPERTY_OWNER']),
   }),

@@ -4,9 +4,8 @@ datasource db {
 }
 
 generator client {
-  provider      = "prisma-client-js"
-  binaryTargets = ["native"]
-  output        = "../dist/client"
+  provider = "prisma-client-js"
+  output   = "../dist/client"
 }
 
 enum Role {
@@ -16,6 +15,11 @@ enum Role {
   ADMIN
 }
 
+enum Gender {
+  MALE
+  FEMALE
+}
+
 model User {
   id              String           @id @default(uuid())
   email           String           @unique
@@ -23,7 +27,7 @@ model User {
   phoneNumber     String
   firstName       String
   lastName        String
-  gender          String
+  gender          Gender
   dateOfBirth     String
   role            Role             @default(USER)
   isEmailVerified Boolean          @default(false)
@@ -44,16 +48,18 @@ enum MassagerStatus {
 }
 
 model Massager {
-  id            String           @id @default(cuid())
-  coverImage    String
-  profileImage  String
-  massageImages String[]
-  certificates  String[]
-  isVaccinated  Boolean          @default(false)
-  status        MassagerStatus   @default(UNAVAILABLE)
-  bookings      Booking[]
-  properties    Property[]
-  reviews       MassagerReview[]
+  id                  String           @id @default(cuid())
+  coverImage          String
+  profileImage        String
+  massageImages       String[]
+  certificates        String[]
+  vaccineCertificates String[]
+  status              MassagerStatus   @default(UNAVAILABLE)
+  languages           String[]
+  skills              String[]
+  bookings            Booking[]
+  properties          Property[]
+  reviews             MassagerReview[]
 
   userId    String   @unique
   user      User     @relation(fields: [userId], references: [id])
@@ -137,6 +143,7 @@ model Booking {
   user               User                       @relation(fields: [userId], references: [id])
   paymentTransaction BookingPaymentTransaction?
   chats              BookingChat[]
+  rating             Int?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

@@ -1,6 +1,6 @@
 import { AuthService } from '@app/auth'
 import { PrismaService } from '@app/db'
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 
 @Injectable()
 export class PropertyPublicService {
@@ -11,11 +11,12 @@ export class PropertyPublicService {
 
   async getProperty(id: string) {
     const property = await this.db.property.findUnique({
-      where: {
-        id,
-      },
+      where: { id },
     })
+    if (!property) {
+      throw new NotFoundException('Property not found')
+    }
 
-    return { property }
+    return property
   }
 }

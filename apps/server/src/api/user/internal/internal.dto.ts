@@ -7,7 +7,7 @@ export class UpdateUserArgs extends createZodDto(
     lastName: z.string().optional(),
     phoneNumber: z.string().optional(),
     dateOfBirth: z.string().optional(),
-    gender: z.string().optional(),
+    gender: z.enum(['MALE', 'FEMALE']).optional(),
   }),
 ) {}
 
