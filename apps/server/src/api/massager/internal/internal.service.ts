@@ -73,7 +73,7 @@ export class MassagerInternalService {
   // Charts
   // async getChartStats(ctx: Context) { }
 
-  async getDashobardBookings(ctx: Context) {
+  async getDashboardBookings(ctx: Context) {
     const massager = await this.getProfile(ctx)
 
     const bookings = await this.db.booking.findMany({
