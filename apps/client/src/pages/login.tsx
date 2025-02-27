@@ -4,14 +4,12 @@ import { signIn } from 'next-auth/react'
 // import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { FaLock, FaUser } from 'react-icons/fa6'
-import { useTurnstile } from 'react-turnstile'
 import { toast } from 'sonner'
 
 import { LoginArgs } from '@/services/user'
 
 function Login() {
   const router = useRouter()
-  const turnstile = useTurnstile()
   //   const [isLoading, setIsLoading] = useState(true)
   const {
     register,
@@ -27,7 +25,6 @@ function Login() {
         redirect: false,
       })
       if (!res?.ok) {
-        turnstile.reset()
         throw new Error(
           res?.error ?? 'เกิดข้อผิดพลาดไม่ทราบสาเหตุ โปรดลองอีกครั้ง',
         )
