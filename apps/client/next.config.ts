@@ -1,15 +1,20 @@
 import { NextConfig } from 'next'
 
-const config = {
+const config: NextConfig = {
   reactStrictMode: true,
   output: 'standalone',
   poweredByHeader: false,
-  images: {
-    remotePatterns: [],
-  },
+  cleanDistDir: true,
+  // images: {
+  //   remotePatterns: [],
+  // },
   eslint: {
     ignoreDuringBuilds: true,
   },
-} satisfies NextConfig
+  experimental: {
+    parallelServerCompiles: true,
+    webpackBuildWorker: true,
+  },
+}
 
 export default config
