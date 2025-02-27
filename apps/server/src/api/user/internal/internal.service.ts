@@ -29,7 +29,7 @@ export class UserInternalService {
 
   async updatePassword(args: UpdatePasswordArgs, ctx: Context) {
     const _user = getUserFromContext(ctx)
-    const { password, newPassword } = args
+    const { oldPassword, newPassword } = args
 
     const user = await this.db.user.findUnique({
       where: { id: _user.id },
@@ -39,7 +39,7 @@ export class UserInternalService {
     }
 
     const isPasswordValid = await this.authService.verifyPassword(
-      password,
+      oldPassword,
       user.password,
     )
     if (!isPasswordValid) {

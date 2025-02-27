@@ -38,7 +38,7 @@ export class MassagerInternalController {
 
   @Get('/dashboard/bookings')
   async getDashboardBookings(@Req() ctx: Context) {
-    const res = await this.service.getDashobardBookings(ctx)
+    const res = await this.service.getDashboardBookings(ctx)
 
     return { statusCode: HttpStatus.OK, data: res }
   }

@@ -13,7 +13,7 @@ export class UpdateUserArgs extends createZodDto(
 
 export class UpdatePasswordArgs extends createZodDto(
   z.object({
-    password: z.string(),
+    oldPassword: z.string(),
     newPassword: z.string(),
   }),
 ) {}
