@@ -50,7 +50,7 @@ const options: NextAuthOptions = {
       },
     }),
     Credentials({
-      id: 'credentials-register',
+      id: 'credentials-token',
       credentials: {
         accessToken: { type: 'text' },
       },
@@ -102,8 +102,6 @@ const options: NextAuthOptions = {
 }
 
 const auth = async (req: NextApiRequest, res: NextApiResponse) => {
-  res.setHeader('cache-control', 'no-store, max-age=0')
-
   return NextAuth(req, res, options)
 }
 

@@ -43,9 +43,9 @@ function Login() {
           <label className="input input-bordered flex items-center gap-2">
             <FaUser />
             <input
-              type="text"
+              type="email"
               className="grow"
-              placeholder="ชื่อผู้ใช้ / อีเมล"
+              placeholder="อีเมล"
               {...register('email', { required: true })}
             />
           </label>
