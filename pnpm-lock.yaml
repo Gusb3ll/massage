@@ -87,6 +87,9 @@ importers:
       react-infinite-scroll-component:
         specifier: ^6.1.0
         version: 6.1.0(react@19.0.0)
+      react-turnstile:
+        specifier: 1.1.4
+        version: 1.1.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       sonner:
         specifier: ^1.7.4
         version: 1.7.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -112,6 +115,9 @@ importers:
       postcss-obfuscator:
         specifier: 1.6.1
         version: 1.6.1
+      react-icons:
+        specifier: 5.4.0
+        version: 5.4.0(react@19.0.0)
       tailwindcss:
         specifier: 3.4.17
         version: 3.4.17
@@ -4063,6 +4069,11 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18 || ^19
 
+  react-icons@5.4.0:
+    resolution: {integrity: sha512-7eltJxgVt7X64oHh6wSWNwwbKTCtMfK35hcjvJS0yxEAhPM8oUKdS3+kqaW1vicIltw+kR2unHaa12S9pPALoQ==}
+    peerDependencies:
+      react: '*'
+
   react-infinite-scroll-component@6.1.0:
     resolution: {integrity: sha512-SQu5nCqy8DxQWpnUVLx7V7b7LcA37aM7tvoWjTLZp1dk6EJibM5/4EJKzOnl07/BsM1Y40sKLuqjCwwH/xV0TQ==}
     peerDependencies:
@@ -4070,6 +4081,12 @@ packages:
 
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
+
+  react-turnstile@1.1.4:
+    resolution: {integrity: sha512-oluyRWADdsufCt5eMqacW4gfw8/csr6Tk+fmuaMx0PWMKP1SX1iCviLvD2D5w92eAzIYDHi/krUWGHhlfzxTpQ==}
+    peerDependencies:
+      react: '>= 16.13.1'
+      react-dom: '>= 16.13.1'
 
   react@19.0.0:
     resolution: {integrity: sha512-V8AVnmPIICiWpGfm6GLzCR/W5FXLchHop40W4nXBmdlEceh16rCN8O8LNWm5bh5XUX91fh7KpA+W0TgMKmgTpQ==}
@@ -9306,12 +9323,21 @@ snapshots:
     dependencies:
       react: 19.0.0
 
+  react-icons@5.4.0(react@19.0.0):
+    dependencies:
+      react: 19.0.0
+
   react-infinite-scroll-component@6.1.0(react@19.0.0):
     dependencies:
       react: 19.0.0
       throttle-debounce: 2.3.0
 
   react-is@16.13.1: {}
+
+  react-turnstile@1.1.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
+    dependencies:
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
 
   react@19.0.0: {}
 

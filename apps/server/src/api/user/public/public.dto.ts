@@ -12,19 +12,19 @@ export class RegisterArgs extends createZodDto(
     dateOfBirth: z.string(),
     role: z.enum(['USER', 'MASSAGER', 'PROPERTY_OWNER']),
   }),
-) {}
+) { }
 
 export class LoginArgs extends createZodDto(
   z.object({
     email: z.string().email(),
     password: z.string(),
   }),
-) {}
+) { }
 
 export class VerifyEmailArgs extends createZodDto(
   z.object({
     token: z.string(),
   }),
-) {}
+) { }
 
 patchNestJsSwagger()
