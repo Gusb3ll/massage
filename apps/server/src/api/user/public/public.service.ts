@@ -12,7 +12,7 @@ export class UserPublicService {
     private readonly db: PrismaService,
     private readonly authService: AuthService,
     private readonly mailerService: MailerService,
-  ) { }
+  ) {}
 
   async register(args: RegisterArgs) {
     const { email, password, ...rest } = args
