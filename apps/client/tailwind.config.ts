@@ -18,7 +18,7 @@ const config = {
       {
         massage: {
           ...defaultTheme.light,
-          primary: '#3944A6',
+          primary: '#702D0A',
           '.btn': {
             animation: 0,
           },
