@@ -1,13 +1,18 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { signOut } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 
 import SidebarItem from './Item'
-import { EMAIL_ROUTES } from './constants'
+import {
+  MASSAGER_ROUTES,
+  PROPERTY_OWNER_ROUTES,
+  USER_ROUTES,
+} from './constants'
 
 const SidebarMobile = () => {
   const router = useRouter()
+  const { data: session } = useSession()
 
   return (
     <div className="drawer-side z-10">
@@ -29,17 +34,40 @@ const SidebarMobile = () => {
               />
               <p className="text-xl font-bold">Nami Massage</p>
             </Link>
-            <div className="mt-6 flex flex-col gap-2">
-              <div className="flex w-full flex-col gap-1">
-                {EMAIL_ROUTES.map((r, i) => (
-                  <SidebarItem
-                    key={`email-${i}-mobile`}
-                    title={r.title}
-                    route={r.route}
-                    currentRoute={router.pathname}
-                    icon={r.icon}
-                  />
-                ))}
+            <div className="flex flex-col gap-2">
+              <div className="mt-6 flex w-full flex-col gap-1">
+                {session?.user.role === 'USER' &&
+                  USER_ROUTES.map((r, i) => (
+                    <SidebarItem
+                      key={`user-${i}`}
+                      title={r.title}
+                      route={r.route}
+                      currentRoute={router.pathname}
+                      icon={r.icon}
+                    />
+                  ))}
+
+                {session?.user.role === 'MASSAGER' &&
+                  MASSAGER_ROUTES.map((r, i) => (
+                    <SidebarItem
+                      key={`massager-${i}`}
+                      title={r.title}
+                      route={r.route}
+                      currentRoute={router.pathname}
+                      icon={r.icon}
+                    />
+                  ))}
+
+                {session?.user.role === 'PROPERTY_OWNER' &&
+                  PROPERTY_OWNER_ROUTES.map((r, i) => (
+                    <SidebarItem
+                      key={`owner-${i}`}
+                      title={r.title}
+                      route={r.route}
+                      currentRoute={router.pathname}
+                      icon={r.icon}
+                    />
+                  ))}
               </div>
             </div>
           </div>

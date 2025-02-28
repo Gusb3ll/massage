@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { signIn } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 // import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { FaLock, FaUser } from 'react-icons/fa6'
@@ -11,6 +11,7 @@ import { LoginArgs } from '@/services/user'
 
 function Login() {
   const router = useRouter()
+  const { data: session } = useSession()
   //   const [isLoading, setIsLoading] = useState(true)
   const {
     register,
@@ -30,7 +31,16 @@ function Login() {
           res?.error ?? 'เกิดข้อผิดพลาดไม่ทราบสาเหตุ โปรดลองอีกครั้ง',
         )
       }
-      router.push('/dashboard')
+
+      if (session?.user?.role === 'MASSAGER') {
+        router.push('/massager')
+      } else if (session?.user?.role === 'PROPERTY_OWNER') {
+        router.push('/property')
+      } else {
+        router.push('/dashboard')
+      }
+
+      // router.push('/dashboard')
     } catch (e) {
       toast.error((e as Error).message)
     }
