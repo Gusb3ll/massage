@@ -7,7 +7,7 @@ function Dashboard() {
   return (
     <AppLayout>
       <DashboardLayout>
-        <div></div>
+        <div>cvbnm</div>
       </DashboardLayout>
     </AppLayout>
   )

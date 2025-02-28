@@ -11,7 +11,7 @@ import { LoginArgs } from '@/services/user'
 
 function Login() {
   const router = useRouter()
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
   //   const [isLoading, setIsLoading] = useState(true)
   const {
     register,
@@ -32,15 +32,18 @@ function Login() {
         )
       }
 
-      if (session?.user?.role === 'MASSAGER') {
-        router.push('/massager')
-      } else if (session?.user?.role === 'PROPERTY_OWNER') {
-        router.push('/property')
-      } else {
-        router.push('/dashboard')
-      }
+      if (status === 'authenticated') {
+        console.log('Session:', session)
+        console.log('User Role:', session?.user?.role)
 
-      // router.push('/dashboard')
+        if (session?.user?.role === 'USER') {
+          router.push('/dashboard')
+        } else if (session?.user?.role === 'MASSAGER') {
+          router.push('/massager')
+        } else if (session?.user?.role === 'PROPERTY_OWNER') {
+          router.push('/property')
+        }
+      }
     } catch (e) {
       toast.error((e as Error).message)
     }
