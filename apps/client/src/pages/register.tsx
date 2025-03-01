@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { signIn } from 'next-auth/react'
+// import { signIn } from 'next-auth/react'
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -55,23 +55,18 @@ const Register = () => {
           throw new Error('รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร')
         }
 
-        // const res = await registerMutation.mutateAsync(args)
-
-        // if (!res || !res.accessToken) {
-        //   throw new Error('ไม่สามารถรับ accessToken จากการสมัครสมาชิกได้')
-        // }
-        // toast.success('สมัครสมาชิกสำเร็จ!')
-
         const res = await registerMutation.mutateAsync(args)
         if (!res || !res.accessToken) {
-          throw new Error('ไม่สามารถรับ accessToken จากการสมัครสมาชิกได้')
+          router.push('/verify')
+
+          //   throw new Error('ไม่สามารถรับ accessToken จากการสมัครสมาชิกได้')
         }
 
-        await signIn('credentials-register', {
-          accessToken: res.accessToken,
-          redirect: false,
-        })
-        router.push('/login')
+        // await signIn('credentials-register', {
+        //   accessToken: res.accessToken,
+        //   redirect: false,
+        // })
+        router.push('/verify')
       } catch (e) {
         toast.error((e as Error).message)
       }
