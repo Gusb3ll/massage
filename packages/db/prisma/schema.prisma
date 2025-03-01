@@ -30,7 +30,7 @@ model User {
   gender          Gender
   dateOfBirth     String
   role            Role             @default(USER)
-  isEmailVerified Boolean          @default(false)
+  isEmailVerified Boolean          @default(true)
   massager        Massager?
   owner           PropertyOwner?
   bookings        Booking[]
