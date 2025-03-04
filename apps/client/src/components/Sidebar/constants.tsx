@@ -1,44 +1,43 @@
 import { FaHistory, FaUserCog } from 'react-icons/fa'
-// import { LuMailbox } from 'react-icons/lu'
 import { IoChatbubbleEllipsesOutline } from 'react-icons/io5'
-import { MdBook, MdDashboard, MdOutlineAddLocationAlt } from 'react-icons/md'
+import { MdBook, MdDashboard } from 'react-icons/md'
 import { PiPersonArmsSpreadFill } from 'react-icons/pi'
 import { TfiLocationPin } from 'react-icons/tfi'
 
 export const USER_ROUTES = [
   {
     title: 'Dashbord',
-    route: '/dashboard',
+    route: '/dashboard/user',
     icon: <MdDashboard />,
   },
   {
     title: 'Your Account',
-    route: '/dashboard/account',
+    route: '/dashboard/user/account',
     icon: <FaUserCog />,
   },
   {
-    title: 'massager',
-    route: '/dashboard/mailbox',
+    title: 'Massager',
+    route: '/dashboard/user/massager',
     icon: <PiPersonArmsSpreadFill />,
   },
   {
     title: 'Location',
-    route: '/dashboard/mailbox',
+    route: '/dashboard/user/location',
     icon: <TfiLocationPin />,
   },
   {
     title: 'History',
-    route: '/dashboard/mailbox',
+    route: '/dashboard/user/history',
     icon: <FaHistory />,
   },
   {
     title: 'Chat',
-    route: '/dashboard/mailbox',
+    route: '/dashboard/user/chat',
     icon: <IoChatbubbleEllipsesOutline />,
   },
   {
     title: 'Booking',
-    route: '/dashboard/mailbox',
+    route: '/dashboard/user/booking',
     icon: <MdBook />,
   },
 ]
@@ -46,22 +45,22 @@ export const USER_ROUTES = [
 export const MASSAGER_ROUTES = [
   {
     title: 'Dashbord',
-    route: '/massager',
+    route: '/dashboard/massager',
     icon: <MdDashboard />,
   },
   {
     title: 'Your Account',
-    route: '/dashboard/account',
+    route: '/dashboard/massager/account',
     icon: <FaUserCog />,
   },
   {
     title: 'History',
-    route: '/dashboard/mailbox',
+    route: '/dashboard/massager/history',
     icon: <FaHistory />,
   },
   {
     title: 'Jobs',
-    route: '/dashboard/mailbox',
+    route: '/dashboard/massager/job',
     icon: <FaHistory />,
   },
 ]
@@ -69,27 +68,22 @@ export const MASSAGER_ROUTES = [
 export const PROPERTY_OWNER_ROUTES = [
   {
     title: 'Dashbord',
-    route: '/property',
+    route: '/dashboard/property-owner',
     icon: <MdDashboard />,
   },
   {
     title: 'Your Account',
-    route: '/dashboard/account',
+    route: '/dashboard/property-owner/account',
     icon: <FaUserCog />,
   },
   {
     title: 'Location',
-    route: '/dashboard/mailbox',
+    route: '/dashboard/property-owner/location',
     icon: <TfiLocationPin />,
   },
   {
-    title: 'Add Location',
-    route: '/dashboard/mailbox',
-    icon: <MdOutlineAddLocationAlt />,
-  },
-  {
     title: 'History',
-    route: '/dashboard/mailbox',
+    route: '/dashboard/property-owner/history',
     icon: <FaHistory />,
   },
 ]
