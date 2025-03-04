@@ -28,12 +28,6 @@ const Register = () => {
     mutationFn: (args: RegisterArgs) => registerFn(args),
   })
 
-  // const registerMutation = useMutation({
-  //   mutationFn: async (args: RegisterArgs) => {
-  //     return await registerFn(args)
-  //   },
-  // })
-
   const onSubmit: SubmitHandler<RegisterArgs> = async args => {
     if (step === 1) {
       return setStep(2)
@@ -54,18 +48,8 @@ const Register = () => {
         if (args.password.length < 8) {
           throw new Error('รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร')
         }
+        await registerMutation.mutateAsync(args)
 
-        const res = await registerMutation.mutateAsync(args)
-        if (!res || !res.accessToken) {
-          router.push('/verify')
-
-          //   throw new Error('ไม่สามารถรับ accessToken จากการสมัครสมาชิกได้')
-        }
-
-        // await signIn('credentials-register', {
-        //   accessToken: res.accessToken,
-        //   redirect: false,
-        // })
         router.push('/verify')
       } catch (e) {
         toast.error((e as Error).message)
@@ -268,7 +252,6 @@ const Register = () => {
                               />
                             </label>
                           </div>
-
                           <div className="relative">
                             <Image
                               src="/images/room.png"
@@ -292,7 +275,6 @@ const Register = () => {
                         </div>
                       </div>
                     </div>
-
                     <button
                       type="submit"
                       disabled={isSubmitting}

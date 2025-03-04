@@ -3,14 +3,14 @@ import React from 'react'
 import AppLayout from '@/components/Layouts/App'
 import DashboardLayout from '@/components/Layouts/Dashboard'
 
-function Dashboard() {
+const User = () => {
   return (
     <AppLayout>
       <DashboardLayout>
-        <div>cvbnm</div>
+        <div>fghjk</div>
       </DashboardLayout>
     </AppLayout>
   )
 }
 
-export default Dashboard
+export default User

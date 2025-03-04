@@ -1,8 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { signIn, useSession } from 'next-auth/react'
-// import { useState } from 'react'
+import { signIn } from 'next-auth/react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { FaLock, FaUser } from 'react-icons/fa6'
 import { toast } from 'sonner'
@@ -11,8 +10,6 @@ import { LoginArgs } from '@/services/user'
 
 function Login() {
   const router = useRouter()
-  const { data: session, status } = useSession()
-  //   const [isLoading, setIsLoading] = useState(true)
   const {
     register,
     handleSubmit,
@@ -32,18 +29,7 @@ function Login() {
         )
       }
 
-      if (status === 'authenticated') {
-        console.log('Session:', session)
-        console.log('User Role:', session?.user?.role)
-
-        if (session?.user?.role === 'USER') {
-          router.push('/dashboard')
-        } else if (session?.user?.role === 'MASSAGER') {
-          router.push('/massager')
-        } else if (session?.user?.role === 'PROPERTY_OWNER') {
-          router.push('/property')
-        }
-      }
+      router.push('/dashboard')
     } catch (e) {
       toast.error((e as Error).message)
     }
@@ -62,7 +48,6 @@ function Login() {
               className="h-full w-full rounded-3xl object-cover"
             />
           </div>
-
           <div className="flex w-full items-center justify-center md:w-1/2">
             <div className="flex w-full max-w-[400px] flex-col gap-4 p-8">
               <div className="flex justify-center">

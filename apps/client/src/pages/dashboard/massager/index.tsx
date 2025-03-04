@@ -3,7 +3,7 @@ import React from 'react'
 import AppLayout from '@/components/Layouts/App'
 import DashboardLayout from '@/components/Layouts/Dashboard'
 
-function Dashboard() {
+const Massager = () => {
   return (
     <AppLayout>
       <DashboardLayout>
@@ -13,4 +13,4 @@ function Dashboard() {
   )
 }
 
-export default Dashboard
+export default Massager
