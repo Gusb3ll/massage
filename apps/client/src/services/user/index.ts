@@ -10,23 +10,11 @@ import {
   User,
 } from './types'
 
-// export const register = async (args: RegisterArgs) => {
-//   const res = await fetchers.Post(
-//     `${ENDPOINT}/user/public/register`,
-//     { data: args },
-//   )
-//   if (res.statusCode >= HttpStatus.BAD_REQUEST) {
-//     throw new Error(res.message)
-//   }
-
-//   return res.data
-// }
 export const register = async (args: RegisterArgs) => {
   const res = await fetchers.Post<{ accessToken: string }>(
     `${ENDPOINT}/user/public/register`,
     { data: args },
   )
-
   if (res.statusCode >= HttpStatus.BAD_REQUEST) {
     throw new Error(res.message)
   }
