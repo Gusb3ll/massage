@@ -60,7 +60,7 @@ export const MASSAGER_ROUTES = [
   },
   {
     title: 'Jobs',
-    route: '/dashboard/massager/job',
+    route: '/dashboard/massager/jobs',
     icon: <FaHistory />,
   },
 ]
