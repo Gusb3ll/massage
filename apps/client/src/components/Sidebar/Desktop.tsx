@@ -18,7 +18,7 @@ const SidebarDesktop = () => {
   console.log('User Role:', session?.user.role)
 
   return (
-    <div className="drawer-content hidden h-full w-[15rem] flex-col justify-between border border-gray-300 bg-white px-4 py-8 shadow-lg md:flex">
+    <div className="drawer-content hidden h-full w-60 flex-col justify-between border border-gray-300 bg-white px-4 py-8 shadow-lg md:flex">
       <div className="flex flex-col gap-2">
         <Link href="/" className="flex flex-row items-center">
           <Image
@@ -28,7 +28,7 @@ const SidebarDesktop = () => {
             height={40}
             className="h-[52px] w-[52px] md:h-[75px] md:w-[75px]"
           />
-          <p className="text-[1.15rem] font-bold">Nami Massage</p>
+          <p className="text-lg font-bold">Nami Massage</p>
         </Link>
         <div className="flex flex-col gap-2">
           <div className="mt-3 flex w-full flex-col gap-1">
