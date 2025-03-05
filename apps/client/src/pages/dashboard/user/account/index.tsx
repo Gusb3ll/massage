@@ -3,14 +3,14 @@ import React from 'react'
 import AppLayout from '@/components/Layouts/App'
 import DashboardLayout from '@/components/Layouts/Dashboard'
 
-const user = () => {
+const useraccount = () => {
   return (
     <AppLayout>
       <DashboardLayout>
-        <div>thishomepage</div>
+        <div>this accountpage</div>
       </DashboardLayout>
     </AppLayout>
   )
 }
 
-export default user
+export default useraccount

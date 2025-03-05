@@ -3,14 +3,14 @@ import React from 'react'
 import AppLayout from '@/components/Layouts/App'
 import DashboardLayout from '@/components/Layouts/Dashboard'
 
-const user = () => {
+const Propertylocation = () => {
   return (
     <AppLayout>
       <DashboardLayout>
-        <div>thishomepage</div>
+        <div>locationplace</div>
       </DashboardLayout>
     </AppLayout>
   )
 }
 
-export default user
+export default Propertylocation
