@@ -1,3 +1,4 @@
+import { CgWorkAlt } from 'react-icons/cg'
 import { FaHistory, FaUserCog } from 'react-icons/fa'
 import { IoChatbubbleEllipsesOutline } from 'react-icons/io5'
 import { MdBook, MdDashboard } from 'react-icons/md'
@@ -59,9 +60,9 @@ export const MASSAGER_ROUTES = [
     icon: <FaHistory />,
   },
   {
-    title: 'Jobs',
+    title: 'Job',
     route: '/dashboard/massager/job',
-    icon: <FaHistory />,
+    icon: <CgWorkAlt />,
   },
 ]
 
