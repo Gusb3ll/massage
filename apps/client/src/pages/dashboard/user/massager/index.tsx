@@ -3,14 +3,14 @@ import React from 'react'
 import AppLayout from '@/components/Layouts/App'
 import DashboardLayout from '@/components/Layouts/Dashboard'
 
-const User = () => {
+const usermassager = () => {
   return (
     <AppLayout>
       <DashboardLayout>
-        <div>thishomepage</div>
+        <div>this massagerpage</div>
       </DashboardLayout>
     </AppLayout>
   )
 }
 
-export default User
+export default usermassager
