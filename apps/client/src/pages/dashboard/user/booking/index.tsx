@@ -3,7 +3,7 @@ import React from 'react'
 import AppLayout from '@/components/Layouts/App'
 import DashboardLayout from '@/components/Layouts/Dashboard'
 
-const userbooking = () => {
+const Userbooking = () => {
   return (
     <AppLayout>
       <DashboardLayout>
@@ -13,4 +13,4 @@ const userbooking = () => {
   )
 }
 
-export default userbooking
+export default Userbooking

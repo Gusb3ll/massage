@@ -3,7 +3,7 @@ import React from 'react'
 import AppLayout from '@/components/Layouts/App'
 import DashboardLayout from '@/components/Layouts/Dashboard'
 
-const userchat = () => {
+const Userchat = () => {
   return (
     <AppLayout>
       <DashboardLayout>
@@ -13,4 +13,4 @@ const userchat = () => {
   )
 }
 
-export default userchat
+export default Userchat
