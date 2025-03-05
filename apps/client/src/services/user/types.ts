@@ -35,6 +35,8 @@ export type UpdateUserArgs = {
   lastName?: string
   phoneNumber?: string
   dateOfBirth?: string
+  gender?: string
+  email?: string
 }
 
 export type UpdatePasswordArgs = {
