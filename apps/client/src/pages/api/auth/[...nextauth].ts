@@ -15,6 +15,7 @@ declare module 'next-auth' {
     dateOfBirth: string
     role: 'USER' | 'MASSAGER' | 'PROPERTY_OWNER' | 'ADMIN'
     isEmailVerified: boolean
+    profileImage: string
     accessToken: string
   }
 

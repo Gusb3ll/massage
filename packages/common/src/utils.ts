@@ -13,6 +13,7 @@ export type Context = FastifyRequest & {
       dateOfBirth: string
       role: 'USER' | 'MASSAGER' | 'PROPERTY_OWNER' | 'ADMIN'
       isEmailVerified: boolean
+      profileImage: string
     } | null
   }
 }

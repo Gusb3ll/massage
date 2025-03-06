@@ -27,6 +27,7 @@ export type User = {
   gender: string
   dateOfBirth: string
   role: 'USER' | 'MASSAGER' | 'PROPERTY_OWNER' | 'ADMIN'
+  profileImage: string
   isEmailVerified: boolean
 }
 
