@@ -9,12 +9,14 @@ import { ZodValidationPipe } from 'nestjs-zod'
 
 import { MassagerModule } from './api/massager/massager.module'
 import { PropertyModule } from './api/property/property.module'
+import { ReviewModule } from './api/review/review.module'
 import { UserModule } from './api/user/user.module'
 
 @Module({
   imports: [
     MassagerModule,
     PropertyModule,
+    ReviewModule,
     UserModule,
     //
     AuthModule,
