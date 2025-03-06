@@ -11,7 +11,6 @@ export class CreatePropertyArgs extends createZodDto(
     rooms: z.number(),
     roomWidth: z.number(),
     roomHeight: z.number(),
-    ownerId: z.string(),
   }),
 ) {}
 

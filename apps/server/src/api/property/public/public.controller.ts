@@ -12,4 +12,11 @@ export class PropertyPublicController {
 
     return { statusCode: HttpStatus.OK, data: res }
   }
+
+  @Get('/list')
+  async getProperties() {
+    const res = await this.service.getProperties()
+
+    return { statusCode: HttpStatus.OK, data: res }
+  }
 }

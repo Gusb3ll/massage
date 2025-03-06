@@ -19,4 +19,10 @@ export class PropertyPublicService {
 
     return property
   }
+
+  async getProperties() {
+    const properties = await this.db.property.findMany()
+
+    return properties
+  }
 }
