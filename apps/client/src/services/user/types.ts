@@ -29,6 +29,19 @@ export type User = {
   role: 'USER' | 'MASSAGER' | 'PROPERTY_OWNER' | 'ADMIN'
   profileImage: string
   isEmailVerified: boolean
+  massager: {
+    coverImage: string
+    massageImages: string[]
+    certificates: string[]
+    vaccineCertificates: string[]
+    status: 'AVAILABLE' | 'OCCUPIED' | 'UNAVAILABLE'
+    languages: string[]
+    skills: string[]
+  } | null
+  owner: {
+    id: string
+    coverImage: string
+  } | null
 }
 
 export type UpdateUserArgs = {

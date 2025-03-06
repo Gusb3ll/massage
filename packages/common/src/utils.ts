@@ -14,6 +14,19 @@ export type Context = FastifyRequest & {
       role: 'USER' | 'MASSAGER' | 'PROPERTY_OWNER' | 'ADMIN'
       isEmailVerified: boolean
       profileImage: string
+      massager: {
+        coverImage: string
+        massageImages: string[]
+        certificates: string[]
+        vaccineCertificates: string[]
+        status: 'AVAILABLE' | 'OCCUPIED' | 'UNAVAILABLE'
+        languages: string[]
+        skills: string[]
+      } | null
+      owner: {
+        id: string
+        coverImage: string
+      } | null
     } | null
   }
 }

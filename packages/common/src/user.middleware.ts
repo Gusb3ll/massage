@@ -35,6 +35,8 @@ export class UserMiddleware implements NestMiddleware {
           role: true,
           isEmailVerified: true,
           profileImage: true,
+          massager: true,
+          owner: true,
         },
       })
       if (!user) {

@@ -8,13 +8,6 @@ import { MassagerInternalService } from './internal.service'
 export class MassagerInternalController {
   constructor(private readonly service: MassagerInternalService) {}
 
-  @Get('/')
-  async getProfile(@Req() ctx: Context) {
-    const res = await this.service.getProfile(ctx)
-
-    return { statusCode: HttpStatus.OK, data: res }
-  }
-
   @Patch('/')
   async updateProfile(@Body() args: UpdateProfileArgs, @Req() ctx: Context) {
     await this.service.updateProfile(args, ctx)
