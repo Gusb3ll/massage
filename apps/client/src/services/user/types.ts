@@ -47,10 +47,8 @@ export type User = {
 export type UpdateUserArgs = {
   firstName?: string
   lastName?: string
-  phoneNumber?: string
   dateOfBirth?: string
-  gender?: string
-  email?: string
+  profileImage?: string
 }
 
 export type UpdatePasswordArgs = {
