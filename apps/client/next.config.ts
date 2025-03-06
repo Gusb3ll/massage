@@ -12,6 +12,7 @@ const config: NextConfig = {
         hostname: 'placehold.co',
       },
     ],
+    unoptimized: true,
   },
   eslint: {
     ignoreDuringBuilds: true,
