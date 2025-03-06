@@ -4,7 +4,6 @@ import { z } from 'zod'
 export class UpdateProfileArgs extends createZodDto(
   z.object({
     coverImage: z.string().optional(),
-    profileImage: z.string().optional(),
     massageImages: z.array(z.string()).optional(),
     certificates: z.array(z.string()).optional(),
     vaccineCertificates: z.array(z.string()).optional(),
