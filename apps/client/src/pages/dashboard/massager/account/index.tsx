@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
+import Image from 'next/image'
 import { useSession } from 'next-auth/react'
 import { useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -19,20 +20,8 @@ const Profile = () => {
 
   const onUpdateUserSubmit: SubmitHandler<UpdateUserArgs> = async args => {
     try {
-      if (args.firstName === session?.user?.firstName) {
-        delete args.firstName
-      }
-      if (args.lastName === session?.user?.lastName) {
-        delete args.lastName
-      }
       if (args.phoneNumber === session?.user?.phoneNumber) {
         delete args.phoneNumber
-      }
-      if (args.dateOfBirth === session?.user?.dateOfBirth) {
-        delete args.dateOfBirth
-      }
-      if (args.gender === session?.user?.gender) {
-        delete args.gender
       }
       if (args.email === session?.user?.email) {
         delete args.email
@@ -93,9 +82,9 @@ const Profile = () => {
               </span>
               <input
                 type="text"
+                readOnly
                 defaultValue={session?.user.phoneNumber}
                 className="input input-[#C5C5C5] input-bordered bg-white"
-                {...register('phoneNumber')}
               />
             </label>
             <label className="form-control w-full max-w-md">
@@ -105,7 +94,6 @@ const Profile = () => {
                 defaultValue={session?.user.email}
                 readOnly
                 className="input input-[#C5C5C5] input-bordered bg-white"
-                {...register('email')}
               />
             </label>
             <label className="form-control w-full max-w-md">
@@ -115,7 +103,6 @@ const Profile = () => {
                 defaultValue={session?.user.gender}
                 readOnly
                 className="input input-[#C5C5C5] input-bordered bg-white"
-                {...register('gender')}
               />
             </label>
             <div className="flex w-full max-w-md flex-row items-center gap-4">
@@ -138,6 +125,17 @@ const Profile = () => {
               </button>
             </div>
           </form>
+          <div className="profile-image mt-6">
+            {session?.user?.profileImage && (
+              <Image
+                src={session.user.profileImage}
+                alt="Profile Image"
+                width={128}
+                height={128}
+                className="rounded-full object-cover"
+              />
+            )}
+          </div>
         </div>
       </DashboardLayout>
     </AppLayout>
