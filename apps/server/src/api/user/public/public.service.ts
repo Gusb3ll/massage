@@ -28,6 +28,7 @@ export class UserPublicService {
         data: {
           email,
           password: hashedPassword,
+          profileImage: 'https://placehold.co/256x256',
           ...rest,
         },
       })
@@ -36,7 +37,6 @@ export class UserPublicService {
         await tx.massager.create({
           data: {
             coverImage: 'https://placehold.co/1500x500',
-            profileImage: 'https://placehold.co/256x256',
             userId: user.id,
           },
         })
@@ -44,7 +44,6 @@ export class UserPublicService {
         await tx.propertyOwner.create({
           data: {
             coverImage: 'https://placehold.co/1500x500',
-            profileImage: 'https://placehold.co/256x256',
             userId: user.id,
           },
         })

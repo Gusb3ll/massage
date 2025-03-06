@@ -34,8 +34,7 @@ export class UserMiddleware implements NestMiddleware {
           dateOfBirth: true,
           role: true,
           isEmailVerified: true,
-          massager: { select: { profileImage: true } },
-          owner: { select: { profileImage: true } },
+          profileImage: true,
         },
       })
       if (!user) {
@@ -44,15 +43,7 @@ export class UserMiddleware implements NestMiddleware {
         return next()
       }
 
-      const profileImage =
-        user.role === 'MASSAGER'
-          ? user.massager?.profileImage
-          : user.owner?.profileImage
-
-      req.user = {
-        ...user,
-        profileImage: profileImage ?? '',
-      }
+      req.user = user
     } catch {
       req.user = null
     }

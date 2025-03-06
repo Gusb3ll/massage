@@ -5,9 +5,14 @@ const config: NextConfig = {
   output: 'standalone',
   poweredByHeader: false,
   cleanDistDir: true,
-  // images: {
-  //   remotePatterns: [],
-  // },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'placehold.co',
+      },
+    ],
+  },
   eslint: {
     ignoreDuringBuilds: true,
   },

@@ -29,6 +29,7 @@ model User {
   lastName        String
   gender          Gender
   dateOfBirth     String
+  profileImage    String
   role            Role             @default(USER)
   isEmailVerified Boolean          @default(true)
   massager        Massager?
@@ -50,7 +51,6 @@ enum MassagerStatus {
 model Massager {
   id                  String           @id @default(cuid())
   coverImage          String
-  profileImage        String
   massageImages       String[]
   certificates        String[]
   vaccineCertificates String[]
@@ -80,10 +80,9 @@ model MassagerReview {
 }
 
 model PropertyOwner {
-  id           String     @id @default(cuid())
-  coverImage   String
-  profileImage String
-  properties   Property[]
+  id         String     @id @default(cuid())
+  coverImage String
+  properties Property[]
 
   userId    String   @unique
   user      User     @relation(fields: [userId], references: [id])

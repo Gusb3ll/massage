@@ -8,6 +8,7 @@ import { MailerModule } from '@nestjs-modules/mailer'
 import { ZodValidationPipe } from 'nestjs-zod'
 
 import { MassagerModule } from './api/massager/massager.module'
+import { PaymentModule } from './api/payment/payment.module'
 import { PropertyModule } from './api/property/property.module'
 import { ReviewModule } from './api/review/review.module'
 import { UserModule } from './api/user/user.module'
@@ -15,6 +16,7 @@ import { UserModule } from './api/user/user.module'
 @Module({
   imports: [
     MassagerModule,
+    PaymentModule,
     PropertyModule,
     ReviewModule,
     UserModule,
