@@ -8,6 +8,7 @@ export class ReviewPublicService {
   async getMassagerReviews(id: string) {
     const reviews = await this.db.massagerReview.findMany({
       where: { massagerId: id },
+      orderBy: { createdAt: 'desc' },
     })
 
     return reviews
@@ -16,6 +17,7 @@ export class ReviewPublicService {
   async getPropertyReviews(id: string) {
     const reviews = await this.db.propertyReview.findMany({
       where: { propertyId: id },
+      orderBy: { createdAt: 'desc' },
     })
 
     return reviews
