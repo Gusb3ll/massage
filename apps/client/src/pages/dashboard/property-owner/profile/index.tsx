@@ -7,12 +7,7 @@ import { toast } from 'sonner'
 
 import AppLayout from '@/components/Layouts/App'
 import DashboardLayout from '@/components/Layouts/Dashboard'
-import {
-  UpdateUserArgs,
-  updateUser,
-  UpdatateMassagerArgs,
-  updateMassager,
-} from '@/services/user'
+import { UpdateUserArgs, updateUser } from '@/services/user'
 
 const Profile = () => {
   const { data: session, update } = useSession()
@@ -21,13 +16,7 @@ const Profile = () => {
     mutationFn: (args: UpdateUserArgs) => updateUser(args),
   })
 
-  const updateMassagerMutation = useMutation({
-    mutationFn: (args: UpdatateMassagerArgs) => updateMassager(args),
-  })
-
-  const { register, handleSubmit, setValue } = useForm<
-    UpdateUserArgs & UpdatateMassagerArgs
-  >()
+  const { register, handleSubmit, setValue } = useForm<UpdateUserArgs>()
 
   const onUpdateUserSubmit: SubmitHandler<UpdateUserArgs> = async args => {
     try {
@@ -40,33 +29,17 @@ const Profile = () => {
       if (args.phoneNumber === session?.user?.phoneNumber) {
         delete args.phoneNumber
       }
-      if (args.email === session?.user?.email) {
-        delete args.email
-      }
       if (args.dateOfBirth === session?.user?.dateOfBirth) {
         delete args.dateOfBirth
       }
+      if (args.gender === session?.user?.gender) {
+        delete args.gender
+      }
+      if (args.email === session?.user?.email) {
+        delete args.email
+      }
 
       await updateUserMutation.mutateAsync(args)
-      update()
-      toast.success('User updated successfully')
-    } catch (e) {
-      toast.error((e as Error).message)
-    }
-  }
-
-  const onUpdateMassagerSubmit: SubmitHandler<
-    UpdatateMassagerArgs
-  > = async args => {
-    try {
-      if (args.languages === session?.user?.massager?.languages) {
-        delete args.languages
-      }
-      if (args.skills === session?.user?.massager?.skills) {
-        delete args.skills
-      }
-
-      await updateMassagerMutation.mutateAsync(args)
       update()
       toast.success('User updated successfully')
     } catch (e) {
@@ -173,74 +146,6 @@ const Profile = () => {
                     />
                   </label>
                 </div>
-                <div className="mt-6 flex justify-end">
-                  <button
-                    type="submit"
-                    className="btn btn-primary w-[100px] text-white"
-                  >
-                    Confirm
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-10 flex w-full flex-col rounded-lg border p-10 shadow-lg">
-          <div className="flex w-full flex-col p-5 sm:flex-row-reverse">
-            <div className="flex w-full flex-col">
-              <form
-                onSubmit={handleSubmit(onUpdateMassagerSubmit)}
-                className="flex flex-col gap-4"
-              >
-                <h1 className="text-3xl font-semibold">Your skill Detail</h1>
-                <hr />
-
-                <h1 className="mt-5 text-xl font-semibold">
-                  Your skill Detail
-                </h1>
-
-                <label className="form-control w-full max-w-md">
-                  <span className="label label-text font-semibold">
-                    Languages
-                  </span>
-                  <div className="flex gap-4">
-                    {Array.isArray(session?.user?.massager?.languages) &&
-                      session?.user?.massager?.languages.map(
-                        (language, index) => (
-                          <label
-                            key={index}
-                            className="flex items-center gap-2"
-                          >
-                            <input
-                              type="checkbox"
-                              value={language}
-                              className="checkbox checkbox-bordered"
-                            />
-                            <span>{language}</span>
-                          </label>
-                        ),
-                      )}
-                  </div>
-                </label>
-
-                <label className="form-control w-full max-w-md">
-                  <span className="label label-text font-semibold">Skill</span>
-                  <div className="flex gap-4">
-                    {Array.isArray(session?.user?.massager?.skills) &&
-                      session?.user?.massager?.skills.map((skills, index) => (
-                        <label key={index} className="flex items-center gap-2">
-                          <input
-                            type="checkbox"
-                            value={skills}
-                            className="checkbox checkbox-bordered"
-                          />
-                          <span>{skills}</span>
-                        </label>
-                      ))}
-                  </div>
-                </label>
-
                 <div className="mt-6 flex justify-end">
                   <button
                     type="submit"
