@@ -11,6 +11,10 @@ const config: NextConfig = {
         protocol: 'https',
         hostname: 'placehold.co',
       },
+      {
+        protocol: 'https',
+        hostname: 'mpics.mgronline.com',
+      }
     ],
     unoptimized: true,
   },

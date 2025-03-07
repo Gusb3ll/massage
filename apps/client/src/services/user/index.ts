@@ -8,6 +8,7 @@ import {
   UpdatePasswordArgs,
   UpdateUserArgs,
   User,
+  UpdatateMassagerArgs,
 } from './types'
 
 export const register = async (args: RegisterArgs) => {
@@ -77,6 +78,18 @@ export const updatePassword = async (args: UpdatePasswordArgs) => {
   const session = await getSession()
 
   const res = await fetchers.Patch(`${ENDPOINT}/user/internal/password`, {
+    data: args,
+    token: session?.user.accessToken,
+  })
+  if (res.statusCode >= HttpStatus.BAD_REQUEST) {
+    throw new Error(res.message)
+  }
+}
+
+export const updateMassager = async (args: UpdatateMassagerArgs) => {
+  const session = await getSession()
+
+  const res = await fetchers.Patch(`${ENDPOINT}/massager/internal`, {
     data: args,
     token: session?.user.accessToken,
   })

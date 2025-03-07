@@ -7,7 +7,12 @@ import { toast } from 'sonner'
 
 import AppLayout from '@/components/Layouts/App'
 import DashboardLayout from '@/components/Layouts/Dashboard'
-import { UpdateUserArgs, updateUser } from '@/services/user'
+import {
+  UpdateUserArgs,
+  updateUser,
+  UpdatateMassagerArgs,
+  updateMassager,
+} from '@/services/user'
 
 const Profile = () => {
   const { data: session, update } = useSession()
@@ -16,18 +21,52 @@ const Profile = () => {
     mutationFn: (args: UpdateUserArgs) => updateUser(args),
   })
 
-  const { register, handleSubmit, setValue } = useForm<UpdateUserArgs>()
+  const updateMassagerMutation = useMutation({
+    mutationFn: (args: UpdatateMassagerArgs) => updateMassager(args),
+  })
+
+  const { register, handleSubmit, setValue } = useForm<
+    UpdateUserArgs & UpdatateMassagerArgs
+  >()
 
   const onUpdateUserSubmit: SubmitHandler<UpdateUserArgs> = async args => {
     try {
+      if (args.firstName === session?.user?.firstName) {
+        delete args.firstName
+      }
+      if (args.lastName === session?.user?.lastName) {
+        delete args.lastName
+      }
       if (args.phoneNumber === session?.user?.phoneNumber) {
         delete args.phoneNumber
       }
       if (args.email === session?.user?.email) {
         delete args.email
       }
+      if (args.dateOfBirth === session?.user?.dateOfBirth) {
+        delete args.dateOfBirth
+      }
 
       await updateUserMutation.mutateAsync(args)
+      update()
+      toast.success('User updated successfully')
+    } catch (e) {
+      toast.error((e as Error).message)
+    }
+  }
+
+  const onUpdateMassagerSubmit: SubmitHandler<
+    UpdatateMassagerArgs
+  > = async args => {
+    try {
+      if (args.languages === session?.user?.massager?.languages) {
+        delete args.languages
+      }
+      if (args.skills === session?.user?.massager?.skills) {
+        delete args.skills
+      }
+
+      await updateMassagerMutation.mutateAsync(args)
       update()
       toast.success('User updated successfully')
     } catch (e) {
@@ -47,94 +86,171 @@ const Profile = () => {
   return (
     <AppLayout>
       <DashboardLayout>
-        <div className="w-full rounded-lg border p-10 shadow-lg">
-          <form
-            onSubmit={handleSubmit(onUpdateUserSubmit)}
-            className="flex flex-col gap-4"
-          >
-            <h1 className="text-3xl font-semibold">Profile</h1>
-            <hr />
-            <div className="mt-6 flex max-w-md flex-col gap-4 sm:flex-row">
-              <label className="form-control w-full">
-                <span className="label label-text font-semibold">
-                  FirstName
-                </span>
-                <input
-                  type="text"
-                  defaultValue={session?.user.firstName}
-                  className="input input-[#C5C5C5] input-bordered cursor-default select-none bg-white opacity-80"
-                  {...register('firstName')}
+        <div className="flex w-full flex-col rounded-lg border p-10 shadow-lg">
+          <div className="flex w-full flex-col p-5 sm:flex-row-reverse sm:justify-between">
+            <div className="mb-6 flex w-full items-center justify-center sm:mb-0">
+              {session?.user?.profileImage && (
+                <Image
+                  src={session.user.profileImage}
+                  alt="Profile Image"
+                  width={100}
+                  height={100}
+                  className="h-20 w-20 rounded-full border-2 border-gray-300 object-cover"
                 />
-              </label>
-              <label className="form-control w-full">
-                <span className="label label-text font-semibold">LastName</span>
-                <input
-                  type="text"
-                  defaultValue={session?.user.lastName}
-                  className="input input-[#C5C5C5] input-bordered cursor-default select-none bg-white opacity-80"
-                  {...register('lastName')}
-                />
-              </label>
+              )}
             </div>
-            <label className="form-control w-full max-w-md">
-              <span className="label label-text font-semibold">
-                Phone number
-              </span>
-              <input
-                type="text"
-                readOnly
-                defaultValue={session?.user.phoneNumber}
-                className="input input-[#C5C5C5] input-bordered bg-white"
-              />
-            </label>
-            <label className="form-control w-full max-w-md">
-              <span className="label label-text font-semibold">Email</span>
-              <input
-                type="text"
-                defaultValue={session?.user.email}
-                readOnly
-                className="input input-[#C5C5C5] input-bordered bg-white"
-              />
-            </label>
-            <label className="form-control w-full max-w-md">
-              <span className="label label-text font-semibold">Gender</span>
-              <input
-                type="text"
-                defaultValue={session?.user.gender}
-                readOnly
-                className="input input-[#C5C5C5] input-bordered bg-white"
-              />
-            </label>
-            <div className="flex w-full max-w-md flex-row items-center gap-4">
-              <label className="form-control w-full">
-                <span className="label label-text font-semibold">Birthday</span>
-                <input
-                  type="date"
-                  defaultValue={session?.user.dateOfBirth}
-                  className="input input-[#C5C5C5] input-bordered bg-white"
-                  {...register('dateOfBirth')}
-                />
-              </label>
-            </div>
-            <div className="mt-2 flex justify-end">
-              <button
-                type="submit"
-                className="btn btn-primary w-[100px] text-white"
+
+            <div className="flex w-full flex-col sm:w-2/3">
+              <form
+                onSubmit={handleSubmit(onUpdateUserSubmit)}
+                className="flex flex-col gap-4"
               >
-                Confirm
-              </button>
+                <h1 className="text-3xl font-semibold">Profile</h1>
+                <hr />
+                <div className="mt-6 flex max-w-md flex-col gap-4 sm:flex-row">
+                  <label className="form-control w-full">
+                    <span className="label label-text font-semibold">
+                      FirstName
+                    </span>
+                    <input
+                      type="text"
+                      defaultValue={session?.user.firstName}
+                      className="input input-bordered cursor-default select-none bg-white opacity-80"
+                      {...register('firstName')}
+                    />
+                  </label>
+                  <label className="form-control w-full">
+                    <span className="label label-text font-semibold">
+                      LastName
+                    </span>
+                    <input
+                      type="text"
+                      defaultValue={session?.user.lastName}
+                      className="input input-bordered cursor-default select-none bg-white opacity-80"
+                      {...register('lastName')}
+                    />
+                  </label>
+                </div>
+                <label className="form-control w-full max-w-md">
+                  <span className="label label-text font-semibold">
+                    Phone number
+                  </span>
+                  <input
+                    type="text"
+                    readOnly
+                    defaultValue={session?.user.phoneNumber}
+                    className="input input-bordered bg-white"
+                  />
+                </label>
+                <label className="form-control w-full max-w-md">
+                  <span className="label label-text font-semibold">Email</span>
+                  <input
+                    type="text"
+                    defaultValue={session?.user.email}
+                    readOnly
+                    className="input input-bordered bg-white"
+                  />
+                </label>
+                <label className="form-control w-full max-w-md">
+                  <span className="label label-text font-semibold">Gender</span>
+                  <input
+                    type="text"
+                    defaultValue={session?.user.gender}
+                    readOnly
+                    className="input input-bordered bg-white"
+                  />
+                </label>
+                <div className="flex w-full max-w-md flex-row items-center gap-4">
+                  <label className="form-control w-full">
+                    <span className="label label-text font-semibold">
+                      Birthday
+                    </span>
+                    <input
+                      type="date"
+                      defaultValue={session?.user.dateOfBirth}
+                      className="input input-bordered bg-white"
+                      {...register('dateOfBirth')}
+                    />
+                  </label>
+                </div>
+                <div className="mt-6 flex justify-end">
+                  <button
+                    type="submit"
+                    className="btn btn-primary w-[100px] text-white"
+                  >
+                    Confirm
+                  </button>
+                </div>
+              </form>
             </div>
-          </form>
-          <div className="profile-image mt-6">
-            {session?.user?.profileImage && (
-              <Image
-                src={session.user.profileImage}
-                alt="Profile Image"
-                width={128}
-                height={128}
-                className="rounded-full object-cover"
-              />
-            )}
+          </div>
+        </div>
+
+        <div className="mt-10 flex w-full flex-col rounded-lg border p-10 shadow-lg">
+          <div className="flex w-full flex-col p-5 sm:flex-row-reverse">
+            <div className="flex w-full flex-col">
+              <form
+                onSubmit={handleSubmit(onUpdateMassagerSubmit)}
+                className="flex flex-col gap-4"
+              >
+                <h1 className="text-3xl font-semibold">Your skill Detail</h1>
+                <hr />
+
+                <h1 className="mt-5 text-xl font-semibold">
+                  Your skill Detail
+                </h1>
+
+                <label className="form-control w-full max-w-md">
+                  <span className="label label-text font-semibold">
+                    Languages
+                  </span>
+                  <div className="flex gap-4">
+                    {Array.isArray(session?.user?.massager?.languages) &&
+                      session?.user?.massager?.languages.map(
+                        (language, index) => (
+                          <label
+                            key={index}
+                            className="flex items-center gap-2"
+                          >
+                            <input
+                              type="checkbox"
+                              value={language}
+                              className="checkbox checkbox-bordered"
+                            />
+                            <span>{language}</span>
+                          </label>
+                        ),
+                      )}
+                  </div>
+                </label>
+
+                <label className="form-control w-full max-w-md">
+                  <span className="label label-text font-semibold">Skill</span>
+                  <div className="flex gap-4">
+                    {Array.isArray(session?.user?.massager?.skills) &&
+                      session?.user?.massager?.skills.map((skills, index) => (
+                        <label key={index} className="flex items-center gap-2">
+                          <input
+                            type="checkbox"
+                            value={skills}
+                            className="checkbox checkbox-bordered"
+                          />
+                          <span>{skills}</span>
+                        </label>
+                      ))}
+                  </div>
+                </label>
+
+                <div className="mt-6 flex justify-end">
+                  <button
+                    type="submit"
+                    className="btn btn-primary w-[100px] text-white"
+                  >
+                    Confirm
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       </DashboardLayout>

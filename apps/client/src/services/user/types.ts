@@ -53,6 +53,16 @@ export type UpdateUserArgs = {
   email?: string
 }
 
+export type UpdatateMassagerArgs = {
+  coverImage?: string
+  massageImages?: string[]
+  certificates?: string[]
+  vaccineCertificates?: string[]
+  status?: 'AVAILABLE' | 'OCCUPIED' | 'UNAVAILABLE'
+  languages?: string[]
+  skills?: string[]
+}
+
 export type UpdatePasswordArgs = {
   oldPassword: string
   newPassword: string
