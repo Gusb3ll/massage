@@ -8,10 +8,10 @@ import { toast } from 'sonner'
 import AppLayout from '@/components/Layouts/App'
 import DashboardLayout from '@/components/Layouts/Dashboard'
 import {
-  UpdateUserArgs,
-  updateUser,
   UpdatateMassagerArgs,
+  UpdateUserArgs,
   updateMassager,
+  updateUser,
 } from '@/services/user'
 
 const Profile = () => {
@@ -36,12 +36,6 @@ const Profile = () => {
       }
       if (args.lastName === session?.user?.lastName) {
         delete args.lastName
-      }
-      if (args.phoneNumber === session?.user?.phoneNumber) {
-        delete args.phoneNumber
-      }
-      if (args.email === session?.user?.email) {
-        delete args.email
       }
       if (args.dateOfBirth === session?.user?.dateOfBirth) {
         delete args.dateOfBirth
@@ -78,7 +72,6 @@ const Profile = () => {
     if (session?.user) {
       setValue('firstName', session.user.firstName)
       setValue('lastName', session.user.lastName)
-      setValue('phoneNumber', session.user.phoneNumber)
       setValue('dateOfBirth', session.user.dateOfBirth)
     }
   }, [session?.user, setValue])

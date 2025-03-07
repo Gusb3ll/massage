@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
+import Link from 'next/link'
+import React, { useState } from 'react'
+import { toast } from 'sonner'
+
 import AppLayout from '@/components/Layouts/App'
 import DashboardLayout from '@/components/Layouts/Dashboard'
-import { getProperties, deleteProperty } from '@/services/property'
-import { toast } from 'sonner'
-import Link from 'next/link'
+import { deleteProperty, getProperties } from '@/services/property'
 
 const ITEMS_PER_PAGE = 1
 
@@ -38,9 +39,13 @@ const LocationIndex = () => {
     }
   }
 
-  if (isLoading) return <div>Loading...</div>
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
+
   if (error) {
     toast.error('Failed to load properties data')
+
     return <div>Error loading properties data</div>
   }
 

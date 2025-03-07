@@ -5,10 +5,10 @@ import { ENDPOINT, HttpStatus, fetchers } from '@/utils'
 import {
   LoginArgs,
   RegisterArgs,
+  UpdatateMassagerArgs,
   UpdatePasswordArgs,
   UpdateUserArgs,
   User,
-  UpdatateMassagerArgs,
 } from './types'
 
 export const register = async (args: RegisterArgs) => {
