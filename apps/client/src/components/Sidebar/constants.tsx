@@ -74,12 +74,17 @@ export const PROPERTY_OWNER_ROUTES = [
   },
   {
     title: 'Your Account',
-    route: '/dashboard/property-owner/account',
+    route: '/dashboard/property-owner/profile',
     icon: <FaUserCog />,
   },
   {
     title: 'Location',
     route: '/dashboard/property-owner/location',
+    icon: <TfiLocationPin />,
+  },
+  {
+    title: 'Add location',
+    route: '/dashboard/property-owner/location/create',
     icon: <TfiLocationPin />,
   },
   {

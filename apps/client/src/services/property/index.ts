@@ -13,7 +13,7 @@ export const getProperty = async (id: string) => {
   return res.data as Property
 }
 
-export const gerProperties = async () => {
+export const getProperties = async () => {
   const res = await fetchers.Get<Property[]>(`${ENDPOINT}/property/public/list`)
   if (res.statusCode >= HttpStatus.BAD_REQUEST) {
     throw new Error(res.message)
