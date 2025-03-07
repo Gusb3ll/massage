@@ -6,7 +6,7 @@ import { MassagerInternalService } from './internal.service'
 
 @Controller('/massage/internal')
 export class MassagerInternalController {
-  constructor(private readonly service: MassagerInternalService) { }
+  constructor(private readonly service: MassagerInternalService) {}
 
   @Patch('/')
   async updateProfile(@Body() args: UpdateProfileArgs, @Req() ctx: Context) {

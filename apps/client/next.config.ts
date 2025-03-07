@@ -14,7 +14,7 @@ const config: NextConfig = {
       {
         protocol: 'https',
         hostname: 'mpics.mgronline.com',
-      }
+      },
     ],
     unoptimized: true,
   },

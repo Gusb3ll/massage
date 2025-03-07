@@ -6,7 +6,7 @@ import { UpdateProfileArgs } from './internal.dto'
 
 @Injectable()
 export class MassagerInternalService {
-  constructor(private readonly db: PrismaService) { }
+  constructor(private readonly db: PrismaService) {}
 
   async getProfile(ctx: Context) {
     const user = getUserFromContext(ctx)
