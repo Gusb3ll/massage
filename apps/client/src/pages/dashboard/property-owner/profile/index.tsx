@@ -26,18 +26,12 @@ const Profile = () => {
       if (args.lastName === session?.user?.lastName) {
         delete args.lastName
       }
-      if (args.phoneNumber === session?.user?.phoneNumber) {
-        delete args.phoneNumber
-      }
+      
       if (args.dateOfBirth === session?.user?.dateOfBirth) {
         delete args.dateOfBirth
       }
-      if (args.gender === session?.user?.gender) {
-        delete args.gender
-      }
-      if (args.email === session?.user?.email) {
-        delete args.email
-      }
+      
+      
 
       await updateUserMutation.mutateAsync(args)
       update()
@@ -51,7 +45,6 @@ const Profile = () => {
     if (session?.user) {
       setValue('firstName', session.user.firstName)
       setValue('lastName', session.user.lastName)
-      setValue('phoneNumber', session.user.phoneNumber)
       setValue('dateOfBirth', session.user.dateOfBirth)
     }
   }, [session?.user, setValue])
