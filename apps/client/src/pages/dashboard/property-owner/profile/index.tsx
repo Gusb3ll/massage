@@ -60,8 +60,8 @@ const Profile = () => {
         <div className="mt-4 flex w-full flex-col rounded-lg border p-10 shadow-lg md:mt-8">
           <h1 className="text-3xl font-semibold">Profile</h1>
           <hr />
-          <div className="flex flex-col lg:flex-row">
-            <div className="flex w-full flex-col p-5 sm:flex-row-reverse sm:justify-between">
+          <div className="flex flex-col xl:flex-row">
+            <div className="flex w-full flex-col p-5 sm:justify-between xl:flex-row-reverse">
               <div className="mb-6 flex w-full items-center justify-center sm:mb-0">
                 {session?.user?.profileImage && (
                   <Image
@@ -152,7 +152,7 @@ const Profile = () => {
                 </form>
               </div>
             </div>
-            <div className="flex items-end justify-end p-5 md:mb-3 md:justify-normal md:p-0">
+            <div className="flex items-end justify-end p-5 md:mb-3 md:p-0 xl:justify-normal">
               <button
                 type="submit"
                 className="btn btn-primary w-[120px] bg-[#854C2F] text-white"
