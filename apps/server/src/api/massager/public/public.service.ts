@@ -30,7 +30,10 @@ export class MassagerPublicService {
 
     return {
       ...massager,
-      ...massager.user,
+      profileImage: massager.user.profileImage,
+      firstName: massager.user.firstName,
+      lastName: massager.user.lastName,
+      gender: massager.user.gender,
     }
   }
 }
