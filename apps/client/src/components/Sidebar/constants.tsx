@@ -1,7 +1,7 @@
 import { CgWorkAlt } from 'react-icons/cg'
 import { FaHistory, FaUserCog } from 'react-icons/fa'
 import { IoChatbubbleEllipsesOutline } from 'react-icons/io5'
-import { MdBook, MdDashboard } from 'react-icons/md'
+import { MdBook, MdDashboard, MdOutlineAddLocationAlt } from 'react-icons/md'
 import { PiPersonArmsSpreadFill } from 'react-icons/pi'
 import { TfiLocationPin } from 'react-icons/tfi'
 
@@ -85,7 +85,7 @@ export const PROPERTY_OWNER_ROUTES = [
   {
     title: 'Add location',
     route: '/dashboard/property-owner/location/create',
-    icon: <TfiLocationPin />,
+    icon: <MdOutlineAddLocationAlt />,
   },
   {
     title: 'History',

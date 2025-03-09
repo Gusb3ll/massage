@@ -43,9 +43,11 @@ function Index() {
               />
               <IoSearchSharp className="absolute left-3 top-1/2 -translate-y-1/2 transform text-xl text-black" />
             </div>
-            <button className="btn btn-sm w-[70px] rounded-2xl border-[#000000] bg-[#ffffff] placeholder:bg-[#854C2F]">
-              Login
-            </button>
+            <Link href="/login">
+              <button className="btn btn-sm w-[70px] rounded-2xl border-[#000000] bg-[#ffffff] placeholder:bg-[#854C2F]">
+                Login
+              </button>
+            </Link>
           </div>
         </div>
       </div>
