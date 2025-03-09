@@ -7,6 +7,7 @@ import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
 import { MailerModule } from '@nestjs-modules/mailer'
 import { ZodValidationPipe } from 'nestjs-zod'
 
+import { BookingModule } from './api/booking/booking.module'
 import { MassagerModule } from './api/massager/massager.module'
 import { PaymentModule } from './api/payment/payment.module'
 import { PropertyModule } from './api/property/property.module'
@@ -15,6 +16,7 @@ import { UserModule } from './api/user/user.module'
 
 @Module({
   imports: [
+    BookingModule,
     MassagerModule,
     PaymentModule,
     PropertyModule,
