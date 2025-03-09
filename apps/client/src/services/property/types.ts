@@ -3,7 +3,7 @@ export type Property = {
   name: string
   address: string
   description: string
-  image: string[]
+  images: string[]
   price: number
   rooms: number
   roomWidth: number
