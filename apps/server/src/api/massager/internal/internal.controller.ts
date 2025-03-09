@@ -4,7 +4,7 @@ import { Body, Controller, Get, HttpStatus, Patch, Req } from '@nestjs/common'
 import { UpdateProfileArgs } from './internal.dto'
 import { MassagerInternalService } from './internal.service'
 
-@Controller('/massage/internal')
+@Controller('/massager/internal')
 export class MassagerInternalController {
   constructor(private readonly service: MassagerInternalService) {}
 
