@@ -49,69 +49,65 @@ const Useraccount = () => {
     <AppLayout>
       <DashboardLayout>
         <div className="w-full rounded-lg border p-10 shadow-lg">
-            <form
-              onSubmit={handleSubmit(onUpdateUserSubmit)}
-              className="flex flex-col gap-4"
-            >
-              <h1 className="text-3xl font-semibold">Profile</h1>
-              <hr />
-              <div className="mt-6 flex max-w-md flex-col gap-4 sm:flex-row">
-                <label className="form-control w-full">
-                  <span className="label label-text font-semibold">
-                    FirstName
-                  </span>
-                  <input
-                    type="text"
-                    defaultValue={session?.user.firstName}
-                    className="input input-[#C5C5C5] input-bordered cursor-default select-none bg-white opacity-80"
-                    {...register('firstName')}
-                  />
-                </label>
-                <label className="form-control w-full">
-                  <span className="label label-text font-semibold">
-                    LastName
-                  </span>
-                  <input
-                    type="text"
-                    defaultValue={session?.user.lastName}
-                    className="input input-[#C5C5C5] input-bordered cursor-default select-none bg-white opacity-80"
-                    {...register('lastName')}
-                  />
-                </label>
-              </div>
-              <label className="form-control w-full max-w-md">
+          <form
+            onSubmit={handleSubmit(onUpdateUserSubmit)}
+            className="flex flex-col gap-4"
+          >
+            <h1 className="text-3xl font-semibold">Profile</h1>
+            <hr />
+            <div className="mt-6 flex max-w-md flex-col gap-4 sm:flex-row">
+              <label className="form-control w-full">
                 <span className="label label-text font-semibold">
-                  Phone number
+                  FirstName
                 </span>
                 <input
                   type="text"
-                  defaultValue={session?.user.phoneNumber}
-                  readOnly
-                  className="input input-[#C5C5C5] input-bordered bg-white"
+                  defaultValue={session?.user.firstName}
+                  className="input input-[#C5C5C5] input-bordered cursor-default select-none bg-white opacity-80"
+                  {...register('firstName')}
                 />
               </label>
-              <div className="flex w-full max-w-md flex-row items-center gap-4">
-                <label className="form-control w-full">
-                  <span className="label label-text font-semibold">
-                    Birthday
-                  </span>
-                  <input
-                    type="date"
-                    defaultValue={session?.user.dateOfBirth}
-                    className="input input-[#C5C5C5] input-bordered bg-white"
-                    {...register('dateOfBirth')}
-                  />
-                </label>
-              </div>
-              <div className="mt-2 flex justify-end">
-                <button
-                  type="submit"
-                  className="btn btn-primary w-[100px] text-white"
-                >
-                  Confirm
-                </button>
-              </div>
-            </form>
+              <label className="form-control w-full">
+                <span className="label label-text font-semibold">LastName</span>
+                <input
+                  type="text"
+                  defaultValue={session?.user.lastName}
+                  className="input input-[#C5C5C5] input-bordered cursor-default select-none bg-white opacity-80"
+                  {...register('lastName')}
+                />
+              </label>
+            </div>
+            <label className="form-control w-full max-w-md">
+              <span className="label label-text font-semibold">
+                Phone number
+              </span>
+              <input
+                type="text"
+                defaultValue={session?.user.phoneNumber}
+                readOnly
+                className="input input-[#C5C5C5] input-bordered bg-white"
+              />
+            </label>
+            <div className="flex w-full max-w-md flex-row items-center gap-4">
+              <label className="form-control w-full">
+                <span className="label label-text font-semibold">Birthday</span>
+                <input
+                  type="date"
+                  defaultValue={session?.user.dateOfBirth}
+                  className="input input-[#C5C5C5] input-bordered bg-white"
+                  {...register('dateOfBirth')}
+                />
+              </label>
+            </div>
+            <div className="mt-2 flex justify-end">
+              <button
+                type="submit"
+                className="btn btn-primary w-[100px] text-white"
+              >
+                Confirm
+              </button>
+            </div>
+          </form>
         </div>
       </DashboardLayout>
     </AppLayout>

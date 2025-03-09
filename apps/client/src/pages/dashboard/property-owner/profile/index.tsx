@@ -26,12 +26,10 @@ const Profile = () => {
       if (args.lastName === session?.user?.lastName) {
         delete args.lastName
       }
-      
+
       if (args.dateOfBirth === session?.user?.dateOfBirth) {
         delete args.dateOfBirth
       }
-      
-      
 
       await updateUserMutation.mutateAsync(args)
       update()
