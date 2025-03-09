@@ -1,9 +1,10 @@
 import { useMutation } from '@tanstack/react-query'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
+import { useDropzone } from 'react-dropzone'
 
 import AppLayout from '@/components/Layouts/App'
 import DashboardLayout from '@/components/Layouts/Dashboard'
@@ -16,6 +17,17 @@ import {
 
 const Profile = () => {
   const { data: session, update } = useSession()
+  const [selectedLanguages, setSelectedLanguages] = useState<string[]>([])
+  const [selectedSkills, setSelectedSkills] = useState<string[]>([])
+  const [certificates, setCertificates] = useState<File[]>([])
+  const [vaccineCertificates, setVaccineCertificates] = useState<File[]>([])
+
+  useEffect(() => {
+    if (session?.user?.massager) {
+      setSelectedLanguages(session.user.massager.languages || [])
+      setSelectedSkills(session.user.massager.skills || [])
+    }
+  }, [session?.user])
 
   const updateUserMutation = useMutation({
     mutationFn: (args: UpdateUserArgs) => updateUser(args),
@@ -51,21 +63,46 @@ const Profile = () => {
 
   const onUpdateMassagerSubmit: SubmitHandler<
     UpdatateMassagerArgs
-  > = async args => {
+  > = async () => {
     try {
-      if (args.languages === session?.user?.massager?.languages) {
-        delete args.languages
-      }
-      if (args.skills === session?.user?.massager?.skills) {
-        delete args.skills
+      const certificatesUrls = certificates.map(file =>
+        URL.createObjectURL(file),
+      )
+      const vaccineCertificatesUrls = vaccineCertificates.map(file =>
+        URL.createObjectURL(file),
+      )
+
+      await updateMassagerMutation.mutateAsync({
+        languages: selectedLanguages,
+        skills: selectedSkills,
+        certificates: certificatesUrls,
+        vaccineCertificates: vaccineCertificatesUrls,
+      })
+
+      if (session?.user?.massager) {
+        session.user.massager.certificates = certificatesUrls
+        session.user.massager.vaccineCertificates = vaccineCertificatesUrls
       }
 
-      await updateMassagerMutation.mutateAsync(args)
       update()
       toast.success('User updated successfully')
     } catch (e) {
       toast.error((e as Error).message)
     }
+  }
+
+  const handleLanguageChange = (language: string) => {
+    setSelectedLanguages(prev =>
+      prev.includes(language)
+        ? prev.filter(lang => lang !== language)
+        : [...prev, language],
+    )
+  }
+
+  const handleSkillChange = (skill: string) => {
+    setSelectedSkills(prev =>
+      prev.includes(skill) ? prev.filter(s => s !== skill) : [...prev, skill],
+    )
   }
 
   useEffect(() => {
@@ -75,6 +112,26 @@ const Profile = () => {
       setValue('dateOfBirth', session.user.dateOfBirth)
     }
   }, [session?.user, setValue])
+
+  const {
+    getRootProps: getRootPropsForCertificates,
+    getInputProps: getInputPropsForCertificates,
+  } = useDropzone({
+    onDrop: (acceptedFiles: File[]) => {
+      setCertificates(prev => [...prev, ...acceptedFiles])
+    },
+    multiple: true,
+  })
+
+  const {
+    getRootProps: getRootPropsForVaccineCertificates,
+    getInputProps: getInputPropsForVaccineCertificates,
+  } = useDropzone({
+    onDrop: (acceptedFiles: File[]) => {
+      setVaccineCertificates(prev => [...prev, ...acceptedFiles])
+    },
+    multiple: true,
+  })
 
   return (
     <AppLayout>
@@ -189,50 +246,124 @@ const Profile = () => {
                 <h1 className="text-3xl font-semibold">Your skill Detail</h1>
                 <hr />
 
-                <h1 className="mt-5 text-xl font-semibold">
-                  Your skill Detail
-                </h1>
+                <h1 className="mt-5 text-xl font-semibold">Languages</h1>
+                <div className="flex gap-4">
+                  {['Thai', 'English', 'Chinese'].map(language => (
+                    <label
+                      key={language}
+                      className={`flex items-center gap-2 ${selectedLanguages.includes(language) ? 'text-brown-700' : ''}`}
+                    >
+                      <input
+                        type="checkbox"
+                        value={language}
+                        checked={selectedLanguages.includes(language)}
+                        onChange={() => handleLanguageChange(language)}
+                        className="checkbox checkbox-bordered"
+                      />
+                      <span>{language}</span>
+                    </label>
+                  ))}
+                </div>
 
-                <label className="form-control w-full max-w-md">
-                  <span className="label label-text font-semibold">
-                    Languages
-                  </span>
-                  <div className="flex gap-4">
-                    {Array.isArray(session?.user?.massager?.languages) &&
-                      session?.user?.massager?.languages.map(
-                        (language, index) => (
-                          <label
-                            key={index}
-                            className="flex items-center gap-2"
-                          >
-                            <input
-                              type="checkbox"
-                              value={language}
-                              className="checkbox checkbox-bordered"
-                            />
-                            <span>{language}</span>
-                          </label>
-                        ),
+                <h1 className="mt-5 text-xl font-semibold">Skills</h1>
+                <div className="flex gap-4">
+                  {[
+                    'Thai massage',
+                    'Deep Tissue Massage',
+                    'Neck and Shoulder Massage',
+                    'Oil Massage',
+                    'Office Syndrome Relief Massage',
+                    'Foot Massage',
+                  ].map(skill => (
+                    <label
+                      key={skill}
+                      className={`flex items-center gap-2 ${selectedSkills.includes(skill) ? 'text-brown-700' : ''}`}
+                    >
+                      <input
+                        type="checkbox"
+                        value={skill}
+                        checked={selectedSkills.includes(skill)}
+                        onChange={() => handleSkillChange(skill)}
+                        className="checkbox checkbox-bordered"
+                      />
+                      <span>{skill}</span>
+                    </label>
+                  ))}
+                </div>
+
+                <div className="mt-5">
+                  <h2 className="text-lg font-semibold">Upload Certificates</h2>
+                  <div
+                    {...getRootPropsForCertificates()}
+                    className="cursor-pointer rounded-md border-2 border-dashed p-5 text-center"
+                  >
+                    <input {...getInputPropsForCertificates()} />
+                    <p>
+                      Drag and drop some files here, or click to select files
+                      for certificates
+                    </p>
+
+                    {certificates.length > 0 &&
+                      certificates[0].type.startsWith('image/') && (
+                        <Image
+                          src={URL.createObjectURL(certificates[0])}
+                          alt={certificates[0].name}
+                          width={100}
+                          height={100}
+                          className="mt-2 rounded-md"
+                        />
                       )}
                   </div>
-                </label>
-
-                <label className="form-control w-full max-w-md">
-                  <span className="label label-text font-semibold">Skill</span>
-                  <div className="flex gap-4">
-                    {Array.isArray(session?.user?.massager?.skills) &&
-                      session?.user?.massager?.skills.map((skills, index) => (
-                        <label key={index} className="flex items-center gap-2">
-                          <input
-                            type="checkbox"
-                            value={skills}
-                            className="checkbox checkbox-bordered"
-                          />
-                          <span>{skills}</span>
-                        </label>
+                  <div className="mt-3">
+                    <h3 className="font-semibold">
+                      Uploaded Files (Certificates):
+                    </h3>
+                    <ul>
+                      {certificates.map((file, index) => (
+                        <li key={index}>{file.name}</li>
                       ))}
+                    </ul>
                   </div>
-                </label>
+                </div>
+
+                <div className="mt-5">
+                  <h2 className="text-lg font-semibold">
+                    Upload Vaccine Certificates
+                  </h2>
+                  <div
+                    {...getRootPropsForVaccineCertificates()}
+                    className="cursor-pointer rounded-md border-2 border-dashed p-5 text-center"
+                  >
+                    <input {...getInputPropsForVaccineCertificates()} />
+
+                    <p>
+                      Drag and drop some files here, or click to select files
+                      for vaccine certificates
+                    </p>
+
+                    {vaccineCertificates.length > 0 &&
+                      vaccineCertificates[0].type.startsWith('image/') && (
+                        <Image
+                          src={URL.createObjectURL(vaccineCertificates[0])}
+                          alt={vaccineCertificates[0].name}
+                          width={100}
+                          height={100}
+                          className="mt-2 rounded-md"
+                        />
+                      )}
+                  </div>
+
+                  <div className="mt-3">
+                    <h3 className="font-semibold">
+                      Uploaded Vaccine Certificates:
+                    </h3>
+                    <ul>
+                      {vaccineCertificates.map((file, index) => (
+                        <li key={index}>{file.name}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
 
                 <div className="mt-6 flex justify-end">
                   <button
