@@ -13,6 +13,9 @@ export class MassagerPublicService {
     return massagers.map(m => ({
       ...m,
       profileImage: m.user.profileImage,
+      firstName: m.user.firstName,
+      lastName: m.user.lastName,
+      gender: m.user.gender,
     }))
   }
 
@@ -27,7 +30,7 @@ export class MassagerPublicService {
 
     return {
       ...massager,
-      profileImage: massager.user.profileImage,
+      ...massager.user,
     }
   }
 }
