@@ -21,7 +21,8 @@
     "db:migrate:reset": "dotenvx run -- pnpm --filter=@app/db migrate:reset"
   },
   "dependencies": {
-    "@dotenvx/dotenvx": "1.32.0"
+    "@dotenvx/dotenvx": "1.32.0",
+    "react-dropzone": "^14.3.8"
   },
   "devDependencies": {
     "@swc/cli": "0.5.2",
