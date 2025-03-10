@@ -1,14 +1,19 @@
 import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
-import { useSession } from 'next-auth/react'
 import { toast } from 'sonner'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import AppLayout from '@/components/Layouts/App'
 import DashboardLayout from '@/components/Layouts/Dashboard'
 import { getMassagers } from '@/services/massager'
+import Link from 'next/link'
 
 const Massager = () => {
-  const { data: session } = useSession()
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+
   const {
     data: massagers = [],
     isLoading,
@@ -16,7 +21,13 @@ const Massager = () => {
   } = useQuery({
     queryKey: ['massager'],
     queryFn: getMassagers,
+    staleTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: false,
   })
+
+  if (!isClient) {
+    return <div className="text-center text-lg">Loading...</div>
+  }
 
   if (isLoading) {
     return <div className="text-center text-lg">Loading...</div>
@@ -30,31 +41,36 @@ const Massager = () => {
       </div>
     )
   }
-  console.log('Session Data:', session)
 
   return (
     <AppLayout>
       <DashboardLayout>
         <div className="w-full rounded-lg border bg-white p-10 shadow-lg">
           <h1 className="mb-5 text-2xl font-bold">Massagers</h1>
-
           <div className="flex flex-wrap justify-center gap-6">
             {massagers.map(massager => (
-              <div
+              <Link
                 key={massager.id}
+                href={`/dashboard/user/massager/${massager.id}`}
                 className="flex w-full max-w-xs flex-col items-center rounded-lg border bg-white p-5 shadow-md sm:w-[48%] md:w-[30%] lg:w-[22%]"
               >
                 <Image
-                  src={session?.user?.profileImage || '/default-avatar.png'}
+                  src={massager.profileImage ?? '/default-avatar.png'}
                   alt="Massager"
                   width={100}
                   height={100}
                   className="h-24 w-24 rounded-full object-cover"
+                  priority
                 />
-                <h3 className="mt-3 text-lg font-semibold">
-                  {session?.user?.name || 'Unknown'}
-                </h3>
-              </div>
+                <div className="flex flex-col items-center gap-1">
+                  <h3 className="mt-3 text-lg font-semibold">
+                    {massager.firstName || 'Unknown'} {massager.lastName || ''}
+                  </h3>
+                  <h3 className="text-md text-gray-600">
+                    {massager.gender || 'Unknown'}
+                  </h3>
+                </div>
+              </Link>
             ))}
           </div>
         </div>
