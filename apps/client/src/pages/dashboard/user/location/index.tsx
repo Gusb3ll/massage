@@ -1,11 +1,12 @@
 import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
-import { toast } from 'sonner'
+import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
+import { toast } from 'sonner'
+
 import AppLayout from '@/components/Layouts/App'
 import DashboardLayout from '@/components/Layouts/Dashboard'
 import { getProperties } from '@/services/property'
-import Link from 'next/link'
 
 const Location = () => {
   const [isClient, setIsClient] = useState(false)
@@ -35,6 +36,7 @@ const Location = () => {
 
   if (error) {
     toast.error('Failed to load property data')
+
     return (
       <div className="text-center text-red-500">
         Error loading property data

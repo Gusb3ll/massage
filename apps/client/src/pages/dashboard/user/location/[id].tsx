@@ -1,7 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
+import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { toast } from 'sonner'
+
 import AppLayout from '@/components/Layouts/App'
 import DashboardLayout from '@/components/Layouts/Dashboard'
 import { getProperty } from '@/services/property'
@@ -24,10 +26,13 @@ const PropertyLocation = () => {
     enabled: !!propertyId,
   })
 
-  if (isLoading) return <div className="text-center text-lg">Loading...</div>
+  if (isLoading) {
+    return <div className="text-center text-lg">Loading...</div>
+  }
 
   if (error) {
     toast.error('Failed to load massager data')
+
     return <div className="text-center text-red-500">Error loading data</div>
   }
 
@@ -50,11 +55,30 @@ const PropertyLocation = () => {
               <p>
                 <span>gender:</span> {property.description}
               </p>
+              <Image
+                src={property.owner.profileImage ?? '/default-avatar.png'}
+                alt="Massager"
+                width={100}
+                height={100}
+                className="h-24 w-24 rounded-full object-cover"
+                priority
+              />
+              <Image
+                src={property.images?.[0] ?? '/default-avatar.png'}
+                alt="Massager"
+                width={100}
+                height={100}
+                className="h-24 w-24 rounded-full object-cover"
+                priority
+              />
               <p>
-                <span>skills:</span> {property.roomHeight}
+                <span>skills:</span> {property.owner.firstName}
               </p>
               <p>
-                <span>skills:</span> {property.roomWidth}
+                <span>skills:</span> {property.owner.lastName}
+              </p>
+              <p>
+                <span>skills:</span> {property.address}
               </p>
             </div>
           ) : (

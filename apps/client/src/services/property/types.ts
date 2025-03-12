@@ -8,6 +8,13 @@ export type Property = {
   rooms: number
   roomWidth: number
   roomHeight: number
+  owner: {
+    id: string
+    email: string
+    firstName: string
+    lastName: string
+    profileImage: string
+  }
 }
 
 export type CreatePropertyArgs = {
