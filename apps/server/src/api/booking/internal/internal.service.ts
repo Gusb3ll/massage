@@ -6,7 +6,7 @@ import { CreateChatArgs } from './internal.dto'
 
 @Injectable()
 export class BookingInternalService {
-  constructor(private readonly db: PrismaService) {}
+  constructor(private readonly db: PrismaService) { }
 
   private async getMassager(ctx: Context) {
     const user = getUserFromContext(ctx)
@@ -26,12 +26,43 @@ export class BookingInternalService {
 
     const bookings = await this.db.booking.findMany({
       where: { userId: user.id },
-      include: { massager: true, property: true },
+      include: {
+        massager: { include: { user: true } },
+        property: { include: { owner: { include: { user: true } } } },
+      },
       orderBy: { createdAt: 'desc' },
     })
 
-    return bookings
+    return bookings.map((booking) => ({
+      ...booking,
+      massager: booking.massager
+        ? {
+          id: booking.massager.id,
+          firstName: booking.massager.user.firstName,
+          lastName: booking.massager.user.lastName,
+          profileImage: booking.massager.user.profileImage,
+          gender: booking.massager.user.gender,
+          dateOfBirth: booking.massager.user.dateOfBirth,
+        }
+        : null,
+      property: booking.property?.owner
+        ? {
+          id: booking.property.owner.id,
+          firstName: booking.property.owner.user.firstName,
+          lastName: booking.property.owner.user.lastName,
+          profileImage: booking.property.owner.user.profileImage,
+          name: booking.property.name,
+          price: booking.property.price,
+          address: booking.property.address,
+          images: booking.property.images,
+          rooms: booking.property.rooms,
+          roomWidth: booking.property.roomWidth,
+          roomHeight: booking.property.roomHeight,
+        }
+        : null,
+    }))
   }
+
 
   async getMassagerBookings(ctx: Context) {
     const massager = await this.getMassager(ctx)
