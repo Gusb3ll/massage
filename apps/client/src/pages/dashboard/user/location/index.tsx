@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
+import { TfiLocationPin } from 'react-icons/tfi'
 import { toast } from 'sonner'
 
 import AppLayout from '@/components/Layouts/App'
@@ -49,28 +50,46 @@ const Location = () => {
       <DashboardLayout>
         <div className="w-full rounded-lg border bg-white p-10 shadow-lg">
           <h1 className="mb-5 text-2xl font-bold">Property</h1>
-          <div className="flex flex-wrap justify-center gap-6">
-            {properties.map(properties => (
+          <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {properties.map(property => (
               <Link
-                key={properties.id}
-                href={`/dashboard/user/location/${properties.id}`}
-                className="flex w-full max-w-xs flex-col items-center rounded-lg border bg-white p-5 shadow-md sm:w-[48%] md:w-[30%] lg:w-[22%]"
+                key={property.id}
+                href={`/dashboard/user/location/${property.id}`}
+                className="flex h-auto w-full flex-col rounded-xl border bg-white shadow-md"
               >
                 <Image
-                  src={properties.images?.[0] ?? '/default-avatar.png'}
-                  alt="Massager"
+                  src={property.images?.[0] ?? '/default-avatar.png'}
+                  alt="Property"
                   width={100}
                   height={100}
-                  className="h-24 w-24 rounded-full object-cover"
+                  className="h-48 w-full rounded-t-lg object-cover"
                   priority
                 />
-                <div className="flex flex-col items-center gap-1">
-                  <h3 className="mt-3 text-lg font-semibold">
-                    {properties.price || 'Unknown'} {properties.name || ''}
-                  </h3>
-                  <h3 className="text-md text-gray-600">
-                    {properties.address || 'Unknown'}
-                  </h3>
+                <div>
+                  <div className="flex flex-row justify-between gap-1 overflow-hidden p-2 md:flex-col lg:flex-row">
+                    <div className="flex flex-col">
+                      <p className="text-md font-semibold text-[#97471d]">
+                        {property.name || ''}
+                      </p>
+                      <div className="mt-1 flex text-sm font-semibold text-black">
+                        <TfiLocationPin className="h-5" />
+                        <p className="md: w-full max-w-32 truncate lg:max-w-20 xl:max-w-28">
+                          {property.address || 'Unknown'}
+                        </p>
+                      </div>
+                    </div>
+                    <p className="h-[50%] rounded-md border border-[#a98a7a] p-1 text-sm font-semibold md:w-20 lg:w-auto">
+                      {property.price} Bath
+                    </p>
+                  </div>
+                  <div className="flex justify-end p-2">
+                    <p className="font-semibold">
+                      Rating{' '}
+                      <span className="text-sm text-stone-400">
+                        (Reviewtime)
+                      </span>
+                    </p>
+                  </div>
                 </div>
               </Link>
             ))}
