@@ -50,12 +50,12 @@ const Massager = () => {
       <DashboardLayout>
         <div className="w-full rounded-lg border bg-white p-12 shadow-lg">
           <h1 className="ml-6 text-3xl font-bold">Massagers</h1>
-          <div className="mt-10 flex flex-wrap justify-center gap-6">
+          <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {massagers.map(massager => (
               <Link
                 key={massager.id}
                 href={`/dashboard/user/massager/${massager.id}`}
-                className="w-10% xl-[100%] flex h-[310px] w-full max-w-60 flex-col rounded-xl border bg-white shadow-md md:w-[40%] lg:w-[60%]"
+                className="flex h-[310px] w-full flex-col rounded-xl border bg-white shadow-md"
               >
                 <Image
                   src={massager.profileImage ?? '/default-avatar.png'}
