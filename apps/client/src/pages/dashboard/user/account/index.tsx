@@ -55,57 +55,65 @@ const Useraccount = () => {
           >
             <h1 className="text-3xl font-semibold">Profile</h1>
             <hr />
-            <div className="mt-6 flex max-w-md flex-col gap-4 sm:flex-row">
-              <label className="form-control w-full">
-                <span className="label label-text font-semibold">
-                  FirstName
-                </span>
-                <input
-                  type="text"
-                  defaultValue={session?.user.firstName}
-                  className="input input-[#C5C5C5] input-bordered cursor-default select-none bg-white opacity-80"
-                  {...register('firstName')}
-                />
-              </label>
-              <label className="form-control w-full">
-                <span className="label label-text font-semibold">LastName</span>
-                <input
-                  type="text"
-                  defaultValue={session?.user.lastName}
-                  className="input input-[#C5C5C5] input-bordered cursor-default select-none bg-white opacity-80"
-                  {...register('lastName')}
-                />
-              </label>
-            </div>
-            <label className="form-control w-full max-w-md">
-              <span className="label label-text font-semibold">
-                Phone number
-              </span>
-              <input
-                type="text"
-                defaultValue={session?.user.phoneNumber}
-                readOnly
-                className="input input-[#C5C5C5] input-bordered bg-white"
-              />
-            </label>
-            <div className="flex w-full max-w-md flex-row items-center gap-4">
-              <label className="form-control w-full">
-                <span className="label label-text font-semibold">Birthday</span>
-                <input
-                  type="date"
-                  defaultValue={session?.user.dateOfBirth}
-                  className="input input-[#C5C5C5] input-bordered bg-white"
-                  {...register('dateOfBirth')}
-                />
-              </label>
-            </div>
-            <div className="mt-2 flex justify-end">
-              <button
-                type="submit"
-                className="btn btn-primary w-[100px] text-white"
-              >
-                Confirm
-              </button>
+            <div className="flex flex-col justify-between lg:flex-row">
+              <div>
+                <div className="mt-6 flex max-w-md flex-col gap-4 sm:flex-row">
+                  <label className="form-control w-full">
+                    <span className="label label-text font-semibold">
+                      FirstName
+                    </span>
+                    <input
+                      type="text"
+                      defaultValue={session?.user.firstName}
+                      className="input input-[#C5C5C5] input-bordered cursor-default select-none bg-white opacity-80"
+                      {...register('firstName')}
+                    />
+                  </label>
+                  <label className="form-control w-full">
+                    <span className="label label-text font-semibold">
+                      LastName
+                    </span>
+                    <input
+                      type="text"
+                      defaultValue={session?.user.lastName}
+                      className="input input-[#C5C5C5] input-bordered cursor-default select-none bg-white opacity-80"
+                      {...register('lastName')}
+                    />
+                  </label>
+                </div>
+                <label className="form-control w-full max-w-md">
+                  <span className="label label-text font-semibold">
+                    Phone number
+                  </span>
+                  <input
+                    type="text"
+                    defaultValue={session?.user.phoneNumber}
+                    readOnly
+                    className="input input-[#C5C5C5] input-bordered bg-white"
+                  />
+                </label>
+                <div className="flex flex-row items-center gap-4">
+                  <label className="form-control w-full max-w-md">
+                    <span className="label label-text font-semibold">
+                      Birthday
+                    </span>
+                    <input
+                      type="date"
+                      defaultValue={session?.user.dateOfBirth}
+                      className="input input-[#C5C5C5] input-bordered bg-white"
+                      {...register('dateOfBirth')}
+                    />
+                  </label>
+                </div>
+              </div>
+              <div className="mt-4 flex justify-end lg:mt-9 lg:items-end">
+                <button
+                  type="submit"
+                  className="btn btn-primary h-10 w-28 bg-[#8a4724] text-white"
+                >
+                  Confirm
+                </button>
+              </div>
             </div>
           </form>
         </div>

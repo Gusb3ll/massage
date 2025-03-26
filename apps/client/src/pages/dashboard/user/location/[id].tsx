@@ -182,7 +182,7 @@ const PropertyLocation = () => {
                             )}
                             <div className="modal-action">
                               <form method="dialog">
-                                <button className="btn w-40 bg-[#97471d] text-lg font-semibold text-white hover:bg-[#6c371b]">
+                                <button className="btn w-40 bg-[#8a4724] text-lg font-semibold text-white hover:bg-[#6c371b]">
                                   Close
                                 </button>
                               </form>
@@ -247,7 +247,7 @@ const PropertyLocation = () => {
                   </p>
                 </div>
                 <div className="mt-4 flex items-end justify-end xl:mt-0 xl:justify-normal">
-                  <button className="h-12 w-36 rounded-xl bg-[#97471d] text-lg font-semibold text-white hover:bg-[#6c371b]">
+                  <button className="h-12 w-36 rounded-xl bg-[#8a4724] text-lg font-semibold text-white hover:bg-[#6c371b]">
                     Select
                   </button>
                 </div>
