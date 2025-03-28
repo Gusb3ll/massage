@@ -136,104 +136,107 @@ const Profile = () => {
   return (
     <AppLayout>
       <DashboardLayout>
-        <div className="flex w-full flex-col rounded-lg border p-10 shadow-lg">
-          <div className="flex w-full flex-col p-5 sm:flex-row-reverse sm:justify-between">
-            <div className="mb-6 flex w-full items-center justify-center sm:mb-0">
-              {session?.user?.profileImage && (
-                <Image
-                  src={session.user.profileImage}
-                  alt="Profile Image"
-                  width={100}
-                  height={100}
-                  className="h-20 w-20 rounded-full border-2 border-gray-300 object-cover"
-                />
-              )}
-            </div>
-
-            <div className="flex w-full flex-col sm:w-2/3">
-              <form
-                onSubmit={handleSubmit(onUpdateUserSubmit)}
-                className="flex flex-col gap-4"
-              >
-                <h1 className="text-3xl font-semibold">Profile</h1>
-                <hr />
-                <div className="mt-6 flex max-w-md flex-col gap-4 sm:flex-row">
-                  <label className="form-control w-full">
+        <div className="w-full rounded-lg border p-10 shadow-lg">
+          <form
+            onSubmit={handleSubmit(onUpdateUserSubmit)}
+            className="flex flex-col gap-4"
+          >
+            <h1 className="text-3xl font-semibold">Profile</h1>
+            <hr />
+            <div className="flex flex-col justify-between xl:flex-row">
+              <div className="flex flex-col-reverse xl:flex-row xl:gap-56">
+                <div>
+                  <div className="mt-5 flex max-w-3xl flex-col gap-4 sm:flex-row xl:mt-6">
+                    <label className="form-control w-full">
+                      <span className="label label-text font-semibold">
+                        FirstName
+                      </span>
+                      <input
+                        type="text"
+                        defaultValue={session?.user.firstName}
+                        className="input input-[#C5C5C5] input-bordered cursor-default select-none bg-white opacity-80"
+                        {...register('firstName')}
+                      />
+                    </label>
+                    <label className="form-control w-full">
+                      <span className="label label-text font-semibold">
+                        LastName
+                      </span>
+                      <input
+                        type="text"
+                        defaultValue={session?.user.lastName}
+                        className="input input-[#C5C5C5] input-bordered cursor-default select-none bg-white opacity-80"
+                        {...register('lastName')}
+                      />
+                    </label>
+                  </div>
+                  <label className="form-control w-full max-w-3xl">
                     <span className="label label-text font-semibold">
-                      FirstName
+                      Phone number
                     </span>
                     <input
                       type="text"
-                      defaultValue={session?.user.firstName}
-                      className="input input-bordered cursor-default select-none bg-white opacity-80"
-                      {...register('firstName')}
+                      defaultValue={session?.user.phoneNumber}
+                      readOnly
+                      className="input input-[#C5C5C5] input-bordered bg-white"
                     />
                   </label>
-                  <label className="form-control w-full">
+                  <label className="form-control w-full max-w-3xl">
                     <span className="label label-text font-semibold">
-                      LastName
+                      Email
                     </span>
                     <input
                       type="text"
-                      defaultValue={session?.user.lastName}
-                      className="input input-bordered cursor-default select-none bg-white opacity-80"
-                      {...register('lastName')}
+                      defaultValue={session?.user.email}
+                      readOnly
+                      className="input input-bordered bg-white"
                     />
                   </label>
-                </div>
-                <label className="form-control w-full max-w-md">
-                  <span className="label label-text font-semibold">
-                    Phone number
-                  </span>
-                  <input
-                    type="text"
-                    readOnly
-                    defaultValue={session?.user.phoneNumber}
-                    className="input input-bordered bg-white"
-                  />
-                </label>
-                <label className="form-control w-full max-w-md">
-                  <span className="label label-text font-semibold">Email</span>
-                  <input
-                    type="text"
-                    defaultValue={session?.user.email}
-                    readOnly
-                    className="input input-bordered bg-white"
-                  />
-                </label>
-                <label className="form-control w-full max-w-md">
-                  <span className="label label-text font-semibold">Gender</span>
-                  <input
-                    type="text"
-                    defaultValue={session?.user.gender}
-                    readOnly
-                    className="input input-bordered bg-white"
-                  />
-                </label>
-                <div className="flex w-full max-w-md flex-row items-center gap-4">
-                  <label className="form-control w-full">
+                  <label className="form-control w-full max-w-3xl">
+                    <span className="label label-text font-semibold">
+                      Gender
+                    </span>
+                    <input
+                      type="text"
+                      defaultValue={session?.user.gender}
+                      readOnly
+                      className="input input-bordered bg-white"
+                    />
+                  </label>
+                  <label className="form-control w-full max-w-3xl">
                     <span className="label label-text font-semibold">
                       Birthday
                     </span>
                     <input
                       type="date"
                       defaultValue={session?.user.dateOfBirth}
-                      className="input input-bordered bg-white"
+                      className="input input-[#C5C5C5] input-bordered bg-white"
                       {...register('dateOfBirth')}
                     />
                   </label>
                 </div>
-                <div className="mt-6 flex justify-end">
-                  <button
-                    type="submit"
-                    className="btn btn-primary w-[100px] text-white"
-                  >
-                    Confirm
-                  </button>
+                <div className="flex w-full items-center justify-center sm:mb-0">
+                  {session?.user?.profileImage && (
+                    <Image
+                      src={session.user.profileImage}
+                      alt="Profile Image"
+                      width={100}
+                      height={100}
+                      className="h-32 w-32 rounded-full border-2 border-gray-300 object-cover"
+                    />
+                  )}
                 </div>
-              </form>
+              </div>
+              <div className="mt-4 flex justify-end lg:mt-7 xl:mt-9 xl:items-end">
+                <button
+                  type="submit"
+                  className="btn btn-primary h-10 w-28 bg-[#8a4724] text-white"
+                >
+                  Confirm
+                </button>
+              </div>
             </div>
-          </div>
+          </form>
         </div>
 
         <div className="mt-10 flex w-full flex-col rounded-lg border p-10 shadow-lg">
@@ -247,7 +250,7 @@ const Profile = () => {
                 <hr />
 
                 <h1 className="mt-5 text-xl font-semibold">Languages</h1>
-                <div className="flex gap-4">
+                <div className="flex flex-wrap gap-4">
                   {['Thai', 'English', 'Chinese'].map(language => (
                     <label
                       key={language}
@@ -266,29 +269,31 @@ const Profile = () => {
                 </div>
 
                 <h1 className="mt-5 text-xl font-semibold">Skills</h1>
-                <div className="flex gap-4">
-                  {[
-                    'Thai massage',
-                    'Deep Tissue Massage',
-                    'Neck and Shoulder Massage',
-                    'Oil Massage',
-                    'Office Syndrome Relief Massage',
-                    'Foot Massage',
-                  ].map(skill => (
-                    <label
-                      key={skill}
-                      className={`flex items-center gap-2 ${selectedSkills.includes(skill) ? 'text-brown-700' : ''}`}
-                    >
-                      <input
-                        type="checkbox"
-                        value={skill}
-                        checked={selectedSkills.includes(skill)}
-                        onChange={() => handleSkillChange(skill)}
-                        className="checkbox checkbox-bordered"
-                      />
-                      <span>{skill}</span>
-                    </label>
-                  ))}
+                <div className="w-full">
+                  <div className="flex flex-wrap gap-4">
+                    {[
+                      'Thai massage',
+                      'Deep Tissue Massage',
+                      'Neck and Shoulder Massage',
+                      'Oil Massage',
+                      'Office Syndrome Relief Massage',
+                      'Foot Massage',
+                    ].map(skill => (
+                      <label
+                        key={skill}
+                        className={`flex items-center gap-2 ${selectedSkills.includes(skill) ? 'text-brown-700' : ''} peer`}
+                      >
+                        <input
+                          type="checkbox"
+                          value={skill}
+                          checked={selectedSkills.includes(skill)}
+                          onChange={() => handleSkillChange(skill)}
+                          className="checkbox checkbox-bordered"
+                        />
+                        <span>{skill}</span>
+                      </label>
+                    ))}
+                  </div>
                 </div>
 
                 <div className="mt-5">
@@ -365,10 +370,10 @@ const Profile = () => {
                   </div>
                 </div>
 
-                <div className="mt-6 flex justify-end">
+                <div className="mt-4 flex justify-end lg:mt-7 xl:mt-9 xl:items-end">
                   <button
                     type="submit"
-                    className="btn btn-primary w-[100px] text-white"
+                    className="btn btn-primary h-10 w-28 bg-[#8a4724] text-white"
                   >
                     Confirm
                   </button>
