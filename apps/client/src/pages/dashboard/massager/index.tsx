@@ -6,9 +6,7 @@ import DashboardLayout from '@/components/Layouts/Dashboard'
 const Massager = () => {
   return (
     <AppLayout>
-      <DashboardLayout>
-        <div>fghjk</div>
-      </DashboardLayout>
+      <DashboardLayout></DashboardLayout>
     </AppLayout>
   )
 }

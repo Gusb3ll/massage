@@ -8,6 +8,7 @@ export class MassagerPublicService {
   async getMassagers() {
     const massagers = await this.db.massager.findMany({
       include: { user: true },
+      orderBy: { createdAt: 'desc' },
     })
 
     return massagers.map(m => ({
@@ -34,6 +35,7 @@ export class MassagerPublicService {
       firstName: massager.user.firstName,
       lastName: massager.user.lastName,
       gender: massager.user.gender,
+      dateOfBirth: massager.user.dateOfBirth,
     }
   }
 }

@@ -60,6 +60,7 @@ model Massager {
   bookings            Booking[]
   properties          Property[]
   reviews             MassagerReview[]
+  address             String?
 
   userId    String   @unique
   user      User     @relation(fields: [userId], references: [id])
@@ -93,7 +94,7 @@ model PropertyOwner {
 model Property {
   id          String           @id @default(cuid())
   name        String
-  address     Json
+  address     String
   description String
   images      String[]
   price       Float

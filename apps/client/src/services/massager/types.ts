@@ -10,4 +10,6 @@ export type Massager = {
   firstName: string
   lastName: string
   gender: string
+  address: string
+  dateOfBirth: string
 }

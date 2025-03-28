@@ -37,7 +37,7 @@ const UserAccount = () => {
             onSubmit={handleSubmit(args => updateUserMutation.mutate(args))}
             className="flex flex-col gap-4"
           >
-            <h1 className="text-3xl font-semibold">Profile</h1>
+            <h1 className="text-3xl font-semibold">Account</h1>
             <hr />
             <div className="flex max-w-3xl flex-col gap-4 sm:flex-row xl:mt-6">
               <label className="form-control w-full">

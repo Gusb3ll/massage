@@ -142,7 +142,6 @@ const Register = () => {
                         <input
                           type="text"
                           className="input input-bordered w-full"
-                          placeholder="First Name"
                           {...register('firstName', { required: true })}
                         />
                       </div>
@@ -151,38 +150,35 @@ const Register = () => {
                         <input
                           type="text"
                           className="input input-bordered w-full"
-                          placeholder="Last Name"
                           {...register('lastName', { required: true })}
                         />
                       </div>
                     </div>
                     <div>
-                      {'Tel'}
+                      Phone Number
                       <input
                         type="text"
                         className="input input-bordered w-full"
-                        placeholder="phone Number"
                         {...register('phoneNumber', { required: true })}
                       />
                     </div>
                     <div>
                       {'Date of Birth'}
                       <input
-                        type="text"
+                        type="date"
                         className="input input-bordered w-full"
-                        placeholder="dateOfBirth"
                         {...register('dateOfBirth', { required: true })}
                       />
                     </div>
                     <div className="flex flex-col gap-2">
-                      {'Gender'}
+                      Gender
                       <div className="flex gap-4">
                         <label className="flex items-center gap-2">
                           <input
                             type="radio"
                             value="MALE"
-                            {...register('gender', { required: true })}
                             className="radio radio-primary"
+                            {...register('gender', { required: true })}
                           />
                           Male
                         </label>
@@ -190,14 +186,13 @@ const Register = () => {
                           <input
                             type="radio"
                             value="FEMALE"
-                            {...register('gender', { required: true })}
                             className="radio radio-primary"
+                            {...register('gender', { required: true })}
                           />
                           Female
                         </label>
                       </div>
                     </div>
-
                     <button
                       type="button"
                       onClick={() => setStep(3)}

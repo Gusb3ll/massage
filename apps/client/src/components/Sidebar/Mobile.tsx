@@ -76,7 +76,7 @@ const SidebarMobile = () => {
               signOut({ redirect: false })
               router.push('/')
             }}
-            className="btn btn-primary -mb-4 w-full"
+            className="btn bg-primary/80 hover:bg-primary/90 -mb-4 w-full"
           >
             Logout
           </button>

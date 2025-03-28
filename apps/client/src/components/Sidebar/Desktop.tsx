@@ -14,8 +14,6 @@ import {
 const SidebarDesktop = () => {
   const router = useRouter()
   const { data: session } = useSession()
-  console.log('Session:', session)
-  console.log('User Role:', session?.user.role)
 
   return (
     <div className="drawer-content hidden h-full w-60 flex-col justify-between border border-gray-300 bg-white px-4 py-8 shadow-lg md:flex">
@@ -73,7 +71,7 @@ const SidebarDesktop = () => {
             signOut({ redirect: false })
             router.push('/')
           }}
-          className="btn btn-primary w-full text-white"
+          className="btn bg-primary/80 hover:bg-primary/90 w-full text-white"
         >
           <MdLogout className="h-5 w-5" />
           Logout
