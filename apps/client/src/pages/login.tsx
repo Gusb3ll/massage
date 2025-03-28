@@ -8,7 +8,7 @@ import { toast } from 'sonner'
 
 import { LoginArgs } from '@/services/user'
 
-function Login() {
+const Login = () => {
   const router = useRouter()
   const {
     register,

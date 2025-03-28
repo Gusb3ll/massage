@@ -12,7 +12,7 @@ export const USER_ROUTES = [
     icon: <MdDashboard />,
   },
   {
-    title: 'Your Account',
+    title: 'Account',
     route: '/dashboard/user/account',
     icon: <FaUserCog />,
   },

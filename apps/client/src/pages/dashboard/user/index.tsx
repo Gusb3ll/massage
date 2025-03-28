@@ -6,9 +6,7 @@ import DashboardLayout from '@/components/Layouts/Dashboard'
 const User = () => {
   return (
     <AppLayout>
-      <DashboardLayout>
-        <div>thishomepage</div>
-      </DashboardLayout>
+      <DashboardLayout></DashboardLayout>
     </AppLayout>
   )
 }

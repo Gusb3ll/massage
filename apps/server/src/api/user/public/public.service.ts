@@ -22,13 +22,14 @@ export class UserPublicService {
       throw new BadRequestException('User already exists.')
     }
 
-    await this.db.$transaction(async tx => {
+    const token = await this.db.$transaction(async tx => {
       const hashedPassword = await this.authService.hashPassword(password)
       const user = await tx.user.create({
         data: {
           email,
           password: hashedPassword,
-          profileImage: 'https://placehold.co/256x256',
+          profileImage:
+            rest.role === 'USER' ? '' : 'https://placehold.co/256x256',
           ...rest,
         },
       })
@@ -56,12 +57,15 @@ export class UserPublicService {
           userId: user.id,
         },
       })
-      await this.mailerService.sendMail({
-        from: 'no-reply@lico.moe',
-        to: args.email,
-        subject: '[Massage] Email verification',
-        html: `Please verify your email by clicking <a href="https://massage.lico.moe/verify/${token}">here</a>`,
-      })
+
+      return token
+    })
+
+    await this.mailerService.sendMail({
+      from: 'no-reply@lico.moe',
+      to: email,
+      subject: '[Massage] Email verification',
+      html: `Please verify your email by clicking <a href="https://massage.lico.moe/verify/${token}">here</a>`,
     })
   }
 

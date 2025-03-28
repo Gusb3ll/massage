@@ -39,11 +39,6 @@ export class UserMiddleware implements NestMiddleware {
           owner: true,
         },
       })
-      if (!user) {
-        req.user = null
-
-        return next()
-      }
 
       req.user = user
     } catch {

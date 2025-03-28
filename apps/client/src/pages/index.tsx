@@ -70,7 +70,7 @@ const Home = () => {
               />
             </div>
 
-            <div className="flex flex-col">
+            {/* <div className="flex flex-col">
               <div className="flex flex-col items-center justify-center">
                 <div className="flex h-auto w-[90%] flex-col rounded-xl bg-[#ffffff] p-[4vh] shadow-xl">
                   <p className="text-3xl font-medium">Recommend Massager</p>
@@ -85,7 +85,7 @@ const Home = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </LandingLayout>
       </AppLayout>
