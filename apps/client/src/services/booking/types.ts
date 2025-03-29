@@ -45,3 +45,9 @@ export type BookingChat = {
   message: string
   actor: string
 }
+
+export type CreateBookingArgs = {
+  massagerId: string
+  propertyId: string
+  bookingDate: string
+}

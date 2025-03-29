@@ -9,7 +9,7 @@ import {
   Req,
 } from '@nestjs/common'
 
-import { CreateChatArgs } from './internal.dto'
+import { CreateBookingArgs, CreateChatArgs } from './internal.dto'
 import { BookingInternalService } from './internal.service'
 
 @Controller('/booking/internal')
@@ -60,5 +60,12 @@ export class BookingInternalController {
   @Post('/cancel/:id')
   async cancelBooking(@Param('id') id: string) {
     await this.service.cancelBooking(id)
+  }
+
+  @Post('/')
+  async createBooking(@Body() args: CreateBookingArgs, @Req() ctx: Context) {
+    await this.service.createBooking(args, ctx)
+
+    return { statusCode: HttpStatus.CREATED }
   }
 }

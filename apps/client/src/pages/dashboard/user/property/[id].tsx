@@ -1,4 +1,5 @@
 import 'react-image-gallery/styles/css/image-gallery.css'
+import { GoogleMapsEmbed } from '@next/third-parties/google'
 import { useQuery } from '@tanstack/react-query'
 import { useAtom } from 'jotai'
 import Image from 'next/image'
@@ -86,12 +87,15 @@ const PropertyLocation = () => {
                 </div>
               </div>
             </div>
-            <div className="flex flex-col justify-between xl:flex-row">
-              <div className="mt-4 h-80 w-full max-w-2xl rounded-lg border border-stone-300 bg-[url('https://i.pinimg.com/736x/b9/7d/bc/b97dbcdeb574093286d02bfb33f55a6a.jpg')] bg-cover p-4">
-                <p className="rounded-xl border bg-white p-2">
-                  {property.address}
-                </p>
-              </div>
+            <div className="flex flex-col justify-between gap-4 xl:flex-row">
+              <GoogleMapsEmbed
+                apiKey="AIzaSyDtnLBip1ffDwaGa2REm7NQphZKvWqATdo"
+                mode="search"
+                height={400}
+                width="100%"
+                q="KMUTNB"
+                region="TH"
+              />
               <button
                 className="btn bg-primary/80 hover:bg-primary/90 mt-4 self-end px-8 text-white lg:mt-0"
                 onClick={() => {

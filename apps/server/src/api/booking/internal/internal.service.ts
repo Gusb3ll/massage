@@ -2,7 +2,7 @@ import { Context, getUserFromContext } from '@app/common'
 import { PrismaService } from '@app/db'
 import { Injectable, NotFoundException } from '@nestjs/common'
 
-import { CreateChatArgs } from './internal.dto'
+import { CreateBookingArgs, CreateChatArgs } from './internal.dto'
 
 @Injectable()
 export class BookingInternalService {
@@ -122,6 +122,38 @@ export class BookingInternalService {
     await this.db.booking.update({
       where: { id },
       data: { status: 'CANCELED' },
+    })
+  }
+
+  async createBooking(args: CreateBookingArgs, ctx: Context) {
+    const user = getUserFromContext(ctx)
+    const { massagerId, propertyId, bookingDate } = args
+
+    const massager = await this.db.massager.findUnique({
+      where: { id: massagerId },
+    })
+    if (!massager) {
+      throw new NotFoundException('Massager not found')
+    }
+
+    const property = await this.db.property.findUnique({
+      where: { id: propertyId },
+    })
+    if (!property) {
+      throw new NotFoundException('Property not found')
+    }
+    // if (massager.status === 'UNAVAILABLE' || massager.status === 'OCCUPIED') {
+    //   throw new NotFoundException('Massager is unavailable')
+    // }
+
+    await this.db.booking.create({
+      data: {
+        userId: user.id,
+        massagerId,
+        propertyId,
+        bookingDate,
+        status: 'PENDING_MASSAGER',
+      },
     })
   }
 }

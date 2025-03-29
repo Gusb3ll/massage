@@ -8,3 +8,11 @@ export class CreateChatArgs extends createZodDto(
     actor: z.enum(['USER', 'MASSAGER']),
   }),
 ) {}
+
+export class CreateBookingArgs extends createZodDto(
+  z.object({
+    massagerId: z.string(),
+    propertyId: z.string(),
+    bookingDate: z.string().datetime(),
+  }),
+) {}

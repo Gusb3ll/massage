@@ -1,20 +1,29 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { useAtom } from 'jotai'
 import Image from 'next/image'
 import Link from 'next/link'
-import { createRef, useEffect } from 'react'
+import { createRef, useEffect, useState } from 'react'
 import { FaStar } from 'react-icons/fa6'
+import { toast } from 'sonner'
 
 import { isBookingActiveAtom, massagerIdAtom, propertyIdAtom } from '@/atoms'
+import { CreateBookingArgs, createBooking } from '@/services/booking'
 import { getMassager } from '@/services/massager'
 import { getProperty } from '@/services/property'
 
 export const createBookingModalRef = createRef<HTMLDialogElement>()
 
-const CreateBookingModal = () => {
+type CreateBookingModalProps = {
+  onCreate: () => void
+}
+
+const CreateBookingModal: React.FC<CreateBookingModalProps> = ({
+  onCreate,
+}) => {
   const [isBookingActive, setIsBookingActive] = useAtom(isBookingActiveAtom)
   const [massagerId, setMassagerId] = useAtom(massagerIdAtom)
   const [propertyId, setPropertyId] = useAtom(propertyIdAtom)
+  const [bookingDate, setBookingDate] = useState<string | null>(null)
 
   const { data: massager } = useQuery({
     queryKey: ['booking', 'massager', massagerId],
@@ -25,6 +34,19 @@ const CreateBookingModal = () => {
     queryKey: ['booking', 'property', propertyId],
     queryFn: () => getProperty(propertyId!),
     enabled: !!propertyId && isBookingActive,
+  })
+
+  const createBookingMutation = useMutation({
+    mutationFn: (args: CreateBookingArgs) => createBooking(args),
+    onSuccess: () => {
+      toast.success('Booking created successfully')
+      setMassagerId(null)
+      setPropertyId(null)
+      setIsBookingActive(false)
+      createBookingModalRef.current?.close()
+      onCreate()
+    },
+    onError: e => toast.error(e.message),
   })
 
   useEffect(() => {
@@ -75,9 +97,22 @@ const CreateBookingModal = () => {
           </div>
           <hr />
           <div className="flex flex-col gap-4">
-            <p>Location</p>
+            <p className="font-semibold">Location</p>
             {property ? (
-              <></>
+              <>
+                <div className="flex flex-row gap-8">
+                  <Image
+                    src={property.images[0]}
+                    alt={property.id}
+                    height={256}
+                    width={256}
+                    className="h-24 w-24 rounded-full object-cover"
+                  />
+                  <div className="flex flex-col gap-2">
+                    <p className="text-lg font-semibold">{property.name}</p>
+                  </div>
+                </div>
+              </>
             ) : (
               <Link
                 href="/dashboard/user/property"
@@ -87,35 +122,52 @@ const CreateBookingModal = () => {
               </Link>
             )}
           </div>
+          <hr />
+          <div className="flex flex-col gap-4">
+            <p className="font-semibold">Date</p>
+            <input
+              type="datetime-local"
+              className="input input-bordered"
+              onChange={e => setBookingDate(e.target.value)}
+            />
+          </div>
         </div>
         <div className="modal-action">
-          <form method="dialog">
-            <div className="flex flex-row gap-2">
-              <button
-                type="button"
-                className="btn bg-error/80 hover:bg-error/90 text-white"
-                onClick={() => {
-                  const confirm = window.confirm(
-                    'Confirm cancel booking? All prgress will be lost.',
-                  )
-                  if (confirm) {
-                    setMassagerId(null)
-                    setPropertyId(null)
-                    setIsBookingActive(false)
-                    createBookingModalRef.current?.close()
-                  }
-                }}
-              >
-                Cancel
-              </button>
-              <button
-                disabled={!(!!massagerId && !!propertyId)}
-                className="btn bg-primary/80 hover:bg-primary/90 disabled:btn-disabled text-white"
-              >
-                Create
-              </button>
-            </div>
-          </form>
+          <div className="flex flex-row gap-2">
+            <button
+              disabled={createBookingMutation.isPending}
+              className="btn bg-error/80 hover:bg-error/90 disabled:btn-disabled text-white"
+              onClick={() => {
+                const confirm = window.confirm(
+                  'Confirm cancel booking? All progress will be lost.',
+                )
+                if (confirm) {
+                  setMassagerId(null)
+                  setPropertyId(null)
+                  setIsBookingActive(false)
+                  createBookingModalRef.current?.close()
+                }
+              }}
+            >
+              Cancel
+            </button>
+            <button
+              disabled={
+                !(!!massagerId && !!propertyId && !!bookingDate) ||
+                createBookingMutation.isPending
+              }
+              className="btn bg-primary/80 hover:bg-primary/90 disabled:btn-disabled text-white"
+              onClick={() =>
+                createBookingMutation.mutate({
+                  massagerId: massagerId!,
+                  propertyId: propertyId!,
+                  bookingDate: new Date(bookingDate!).toISOString(),
+                })
+              }
+            >
+              Create
+            </button>
+          </div>
         </div>
       </div>
     </dialog>

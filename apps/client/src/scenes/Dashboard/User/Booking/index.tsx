@@ -1,21 +1,20 @@
 import { useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import Image from 'next/image'
-import { IoMdCalendar, IoMdTime } from 'react-icons/io'
 
 import { getBookings } from '@/services/booking'
 
 import CreateBookingModal from './Modal/Create'
 
 const UserBookingScene = () => {
-  const { data: bookings } = useQuery({
+  const { data: bookings, refetch } = useQuery({
     queryKey: ['booking'],
     queryFn: () => getBookings(),
   })
 
   return (
     <>
-      <CreateBookingModal />
+      <CreateBookingModal onCreate={() => refetch()} />
       <div className="w-full rounded-lg border bg-white p-6 shadow-lg">
         <h1 className="mb-5 text-2xl font-bold">Bookings</h1>
         {bookings && bookings.length > 0 ? (
@@ -87,62 +86,6 @@ const UserBookingScene = () => {
                 )}
               </div>
             ))}
-            <div className="flex justify-center xl:p-5">
-              <div className="flex w-full flex-col justify-center gap-3 rounded-lg border bg-white p-5 shadow-md xl:max-w-sm">
-                <label className="form-control w-full">
-                  <span className="label label-text font-semibold">Name</span>
-                  <input
-                    type="text"
-                    placeholder="Enter your name"
-                    className="input input-[#C5C5C5] input-bordered cursor-default select-none bg-white opacity-80"
-                  />
-                </label>
-                <label className="form-control w-full">
-                  <span className="label label-text font-semibold">
-                    Telephone
-                  </span>
-                  <input
-                    type="text"
-                    placeholder="Phone number"
-                    className="input input-[#C5C5C5] input-bordered cursor-default select-none bg-white opacity-80"
-                  />
-                </label>
-                <label className="form-control relative w-full xl:max-w-sm">
-                  <span className="label label-text font-semibold">Time</span>
-                  <div className="relative">
-                    <input
-                      type="text"
-                      placeholder="select date"
-                      className="input input-[#C5C5C5] input-bordered w-full cursor-default select-none bg-white opacity-80"
-                    />
-                    <button className="absolute right-5 top-1/2 -translate-y-1/2 transform border-none bg-transparent">
-                      <IoMdCalendar className="h-6 w-6 text-[#8a4a27]" />
-                    </button>
-                  </div>
-                </label>
-                <label className="form-control relative w-full xl:max-w-sm">
-                  <span className="label label-text font-semibold">Time</span>
-                  <div className="relative">
-                    <input
-                      type="text"
-                      placeholder="select time"
-                      className="input input-[#C5C5C5] input-bordered w-full cursor-default select-none bg-white opacity-80"
-                    />
-                    <button className="absolute right-5 top-1/2 -translate-y-1/2 transform border-none bg-transparent">
-                      <IoMdTime className="h-6 w-6 text-[#874826]" />
-                    </button>
-                  </div>
-                </label>
-                <div className="mt-4 flex justify-end lg:mt-7 xl:mt-9 xl:items-end">
-                  <button
-                    type="submit"
-                    className="btn btn-primary h-10 w-28 border-0 bg-[#9d532c] text-white"
-                  >
-                    Confirm
-                  </button>
-                </div>
-              </div>
-            </div>
           </div>
         ) : (
           <p className="text-gray-500">No bookings available</p>
