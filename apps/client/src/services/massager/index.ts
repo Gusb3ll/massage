@@ -1,6 +1,6 @@
 import { ENDPOINT, HttpStatus, fetchers } from '@/utils'
 
-import { Massager } from './types'
+import { GetMassagerArgs, Massager } from './types'
 
 export const getMassager = async (id: string) => {
   const res = await fetchers.Get<Massager>(`${ENDPOINT}/massager/public/${id}`)
@@ -11,8 +11,11 @@ export const getMassager = async (id: string) => {
   return res.data as Massager
 }
 
-export const getMassagers = async () => {
-  const res = await fetchers.Get<Massager[]>(`${ENDPOINT}/massager/public/list`)
+export const getMassagers = async (args: GetMassagerArgs) => {
+  const { search } = args
+  const res = await fetchers.Get<Massager[]>(
+    `${ENDPOINT}/massager/public/list${search ? `?search=${search}` : ''}`,
+  )
   if (res.statusCode >= HttpStatus.BAD_REQUEST) {
     throw new Error(res.message)
   }

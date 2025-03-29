@@ -1,5 +1,6 @@
-import { Controller, Get, HttpStatus, Param } from '@nestjs/common'
+import { Controller, Get, HttpStatus, Param, Query } from '@nestjs/common'
 
+import { getMassagerQueryParams } from './public.dto'
 import { MassagerPublicService } from './public.service'
 
 @Controller('/massager/public')
@@ -7,8 +8,8 @@ export class MassagerPublicController {
   constructor(private readonly service: MassagerPublicService) {}
 
   @Get('/list')
-  async getMassagers() {
-    const res = await this.service.getMassagers()
+  async getMassagers(@Query() args: getMassagerQueryParams) {
+    const res = await this.service.getMassagers(args)
 
     return { statusCode: HttpStatus.OK, data: res }
   }

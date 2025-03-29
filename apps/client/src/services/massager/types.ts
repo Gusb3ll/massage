@@ -13,3 +13,7 @@ export type Massager = {
   address: string
   dateOfBirth: string
 }
+
+export type GetMassagerArgs = {
+  search?: string
+}

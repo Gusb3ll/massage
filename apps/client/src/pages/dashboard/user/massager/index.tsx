@@ -1,23 +1,41 @@
 import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useState } from 'react'
+import { FaMagnifyingGlass } from 'react-icons/fa6'
 import { TfiLocationPin } from 'react-icons/tfi'
+import { useDebounce } from 'use-debounce'
 
 import AppLayout from '@/components/Layouts/App'
 import DashboardLayout from '@/components/Layouts/Dashboard'
 import { getMassagers } from '@/services/massager'
 
 const UserMassager = () => {
+  const [search, setSearch] = useState('')
+  const [searchValue] = useDebounce(search, 250)
+
   const { data: massagers } = useQuery({
-    queryKey: ['massager'],
-    queryFn: () => getMassagers(),
+    queryKey: ['massager', searchValue],
+    queryFn: () => getMassagers({ search: searchValue }),
+    refetchOnWindowFocus: false,
   })
 
   return (
     <AppLayout>
       <DashboardLayout>
         <div className="flex w-full flex-col gap-4 rounded-lg border p-8 shadow-lg">
-          <h1 className="text-3xl font-semibold">Massagers</h1>
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <h1 className="text-3xl font-semibold">Massagers</h1>
+            <label className="input input-[#C5C5C5] input-bordered flex w-full items-center gap-2 bg-white md:w-fit">
+              <FaMagnifyingGlass />
+              <input
+                type="text"
+                placeholder="Search"
+                onChange={e => setSearch(e.target.value)}
+              />
+            </label>
+          </div>
+
           <hr />
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {massagers?.map(m => (

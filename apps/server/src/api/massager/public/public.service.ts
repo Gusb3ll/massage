@@ -1,12 +1,27 @@
 import { PrismaService } from '@app/db'
 import { Injectable, NotFoundException } from '@nestjs/common'
 
+import { getMassagerQueryParams } from './public.dto'
+
 @Injectable()
 export class MassagerPublicService {
   constructor(private readonly db: PrismaService) {}
 
-  async getMassagers() {
+  async getMassagers(args: getMassagerQueryParams) {
+    const { search } = args
+
     const massagers = await this.db.massager.findMany({
+      where: {
+        ...(search && {
+          user: {
+            OR: [
+              { firstName: { contains: search, mode: 'insensitive' } },
+              { lastName: { contains: search, mode: 'insensitive' } },
+              { email: { contains: search, mode: 'insensitive' } },
+            ],
+          },
+        }),
+      },
       include: { user: true },
       orderBy: { createdAt: 'desc' },
     })
