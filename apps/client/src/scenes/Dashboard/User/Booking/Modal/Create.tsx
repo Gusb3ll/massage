@@ -80,7 +80,7 @@ const CreateBookingModal = () => {
               <></>
             ) : (
               <Link
-                href="/dashboard/user/location"
+                href="/dashboard/user/property"
                 className="hover:border-primary hover:text-primary flex h-[100px] items-center justify-center rounded-lg border border-dashed text-black text-opacity-60 transition-all hover:opacity-100"
               >
                 <p className="select-none">Select location +</p>

@@ -21,7 +21,7 @@ export const USER_ROUTES = [
   },
   {
     title: 'Location',
-    route: '/dashboard/user/location',
+    route: '/dashboard/user/property',
     icon: <TfiLocationPin />,
   },
   {

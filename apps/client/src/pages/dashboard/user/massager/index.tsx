@@ -35,7 +35,6 @@ const UserMassager = () => {
               />
             </label>
           </div>
-
           <hr />
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {massagers?.map(m => (
@@ -45,14 +44,13 @@ const UserMassager = () => {
                 className="flex h-full w-full flex-col rounded-xl border bg-white shadow-md"
               >
                 <Image
-                  src={m.profileImage ?? '/default-avatar.png'}
-                  alt="Massager"
+                  src={m.profileImage}
+                  alt={m.id}
                   width={256}
                   height={256}
                   className="h-48 w-full rounded-t-lg object-cover"
-                  priority
                 />
-                <div className="4 flex flex-col gap-4 p-4">
+                <div className="flex flex-col gap-4 p-4">
                   <div className="flex flex-row justify-between">
                     <div className="flex flex-col gap-1">
                       <p className="text-md text-primary font-semibold">

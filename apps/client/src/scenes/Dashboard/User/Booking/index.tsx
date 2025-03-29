@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
+import dayjs from 'dayjs'
 import Image from 'next/image'
 import { IoMdCalendar, IoMdTime } from 'react-icons/io'
 
@@ -11,23 +12,6 @@ const UserBookingScene = () => {
     queryKey: ['booking'],
     queryFn: () => getBookings(),
   })
-
-  const calculateAge = (dateOfBirth: string) => {
-    const birthDate = new Date(dateOfBirth)
-    const today = new Date()
-
-    let age = today.getFullYear() - birthDate.getFullYear()
-    const monthDifference = today.getMonth() - birthDate.getMonth()
-
-    if (
-      monthDifference < 0 ||
-      (monthDifference === 0 && today.getDate() < birthDate.getDate())
-    ) {
-      age--
-    }
-
-    return age
-  }
 
   return (
     <>
@@ -58,7 +42,13 @@ const UserBookingScene = () => {
                         </p>
                         <div className="flex flex-row justify-between">
                           <p className="text-lg">
-                            {calculateAge(booking.massager.dateOfBirth)} years
+                            {Math.abs(
+                              dayjs(booking.massager.dateOfBirth).diff(
+                                dayjs(),
+                                'year',
+                              ),
+                            )}{' '}
+                            years
                           </p>
                           <p className="text-lg">{booking.massager.gender}</p>
                         </div>
