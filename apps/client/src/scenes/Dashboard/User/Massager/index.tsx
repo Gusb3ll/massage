@@ -1,6 +1,7 @@
 import 'react-image-gallery/styles/css/image-gallery.css'
 import { useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
+import { useAtom } from 'jotai'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
@@ -9,6 +10,7 @@ import { FaCalendarAlt } from 'react-icons/fa'
 import { FaStar } from 'react-icons/fa6'
 import ImageGallery from 'react-image-gallery'
 
+import { isBookingActiveAtom, massagerIdAtom } from '@/atoms'
 import { getMassager } from '@/services/massager'
 
 import LicenseModal, { licenseModalRef } from './Modal/License'
@@ -32,6 +34,8 @@ const images = [
 const MassagerProfileScene = () => {
   const router = useRouter()
   const massagerId = router.query.id as string | undefined
+  const [, setBookingMassagerId] = useAtom(massagerIdAtom)
+  const [, setIsBookingActive] = useAtom(isBookingActiveAtom)
 
   const [isLoading, setIsLoading] = useState(true)
 
@@ -144,7 +148,14 @@ const MassagerProfileScene = () => {
               </div>
             </div>
           </div>
-          <button className="btn bg-primary/80 hover:bg-primary/90 mt-4 self-end px-8 text-white lg:mt-0">
+          <button
+            className="btn bg-primary/80 hover:bg-primary/90 mt-4 self-end px-8 text-white lg:mt-0"
+            onClick={() => {
+              setBookingMassagerId(massager.id)
+              setIsBookingActive(true)
+              router.push('/dashboard/user/booking')
+            }}
+          >
             Select
           </button>
         </div>

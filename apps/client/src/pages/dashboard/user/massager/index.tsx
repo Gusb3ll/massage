@@ -24,28 +24,35 @@ const UserMassager = () => {
               <Link
                 key={m.id}
                 href={`/dashboard/user/massager/${m.id}`}
-                className="flex h-[310px] w-full flex-col rounded-xl border bg-white shadow-md"
+                className="flex h-full w-full flex-col rounded-xl border bg-white shadow-md"
               >
                 <Image
                   src={m.profileImage ?? '/default-avatar.png'}
                   alt="Massager"
-                  width={100}
-                  height={100}
+                  width={256}
+                  height={256}
                   className="h-48 w-full rounded-t-lg object-cover"
                   priority
                 />
-                <div className="flex flex-row justify-between gap-1 p-2 text-[#97471d]">
-                  <div className="flex flex-col gap-1">
-                    <p className="text-md font-semibold">
-                      {m.firstName} {m.lastName}
-                    </p>
-                    <div className="flex flex-row gap-1 text-sm font-semibold text-black">
-                      <TfiLocationPin className="h-5" />
-                      <p>Location</p>
+                <div className="4 flex flex-col gap-4 p-4">
+                  <div className="flex flex-row justify-between">
+                    <div className="flex flex-col gap-1">
+                      <p className="text-md text-primary font-semibold">
+                        {m.firstName} {m.lastName}
+                      </p>
+                      <div className="line-clamp-1 flex flex-row gap-1 truncate text-sm font-semibold text-black">
+                        <TfiLocationPin className="h-5" />
+                        <p>Location</p>
+                      </div>
+                      {m.address}
                     </div>
-                    {m.address}
+                    <p className="text-md font-semibold text-black">
+                      {m.gender === 'FEMALE' ? 'Female' : 'Male'}
+                    </p>
                   </div>
-                  <p className="text-md font-semibold text-black">{m.gender}</p>
+                  <button className="btn bg-primary/80 hover:bg-primary/90 text-white">
+                    View profile
+                  </button>
                 </div>
               </Link>
             ))}

@@ -88,7 +88,7 @@ const Login = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="btn btn-primary disabled:btn-disabled mt-6 text-white"
+                  className="btn bg-primary/80 hover:bg-primary/90 disabled:btn-disabled mt-6 text-white"
                 >
                   Confirm
                 </button>
