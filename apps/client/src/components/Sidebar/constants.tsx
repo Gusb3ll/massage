@@ -1,6 +1,4 @@
-import { CgWorkAlt } from 'react-icons/cg'
-import { FaHistory, FaUserCog } from 'react-icons/fa'
-import { IoChatbubbleEllipsesOutline } from 'react-icons/io5'
+import { FaUserCog } from 'react-icons/fa'
 import { MdBook, MdDashboard, MdOutlineAddLocationAlt } from 'react-icons/md'
 import { PiPersonArmsSpreadFill } from 'react-icons/pi'
 import { TfiLocationPin } from 'react-icons/tfi'
@@ -27,16 +25,6 @@ export const USER_ROUTES = [
     icon: <TfiLocationPin />,
   },
   {
-    title: 'History',
-    route: '/dashboard/user/history',
-    icon: <FaHistory />,
-  },
-  {
-    title: 'Chat',
-    route: '/dashboard/user/chat',
-    icon: <IoChatbubbleEllipsesOutline />,
-  },
-  {
     title: 'Booking',
     route: '/dashboard/user/booking',
     icon: <MdBook />,
@@ -55,14 +43,9 @@ export const MASSAGER_ROUTES = [
     icon: <FaUserCog />,
   },
   {
-    title: 'History',
-    route: '/dashboard/massager/history',
-    icon: <FaHistory />,
-  },
-  {
-    title: 'Job',
+    title: 'Booking',
     route: '/dashboard/massager/job',
-    icon: <CgWorkAlt />,
+    icon: <MdBook />,
   },
 ]
 
@@ -86,10 +69,5 @@ export const PROPERTY_OWNER_ROUTES = [
     title: 'Add location',
     route: '/dashboard/property-owner/location/create',
     icon: <MdOutlineAddLocationAlt />,
-  },
-  {
-    title: 'History',
-    route: '/dashboard/property-owner/history',
-    icon: <FaHistory />,
   },
 ]
