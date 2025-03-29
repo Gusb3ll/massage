@@ -2,7 +2,7 @@ import { getSession } from 'next-auth/react'
 
 import { ENDPOINT, HttpStatus, fetchers } from '@/utils'
 
-import { CreatePropertyArgs, Property } from './types'
+import { CreatePropertyArgs, GetPropertyArgs, Property } from './types'
 
 export const getProperty = async (id: string) => {
   const res = await fetchers.Get<Property>(`${ENDPOINT}/property/public/${id}`)
@@ -13,8 +13,8 @@ export const getProperty = async (id: string) => {
   return res.data as Property
 }
 
-export const getProperties = async () => {
-  const res = await fetchers.Get<Property[]>(`${ENDPOINT}/property/public/list`)
+export const getProperties = async (args: GetPropertyArgs) => {
+  const res = await fetchers.Get<Property[]>(`${ENDPOINT}/property/public/list${args.search ? `?search=${args.search}` : ''}`)
   if (res.statusCode >= HttpStatus.BAD_REQUEST) {
     throw new Error(res.message)
   }

@@ -1,10 +1,11 @@
-import { Controller, Get, HttpStatus, Param } from '@nestjs/common'
+import { Controller, Get, HttpStatus, Param, Query } from '@nestjs/common'
 
+import { getPropertyQueryParams } from './public.dto'
 import { PropertyPublicService } from './public.service'
 
 @Controller('/property/public')
 export class PropertyPublicController {
-  constructor(private readonly service: PropertyPublicService) {}
+  constructor(private readonly service: PropertyPublicService) { }
 
   @Get('/:id')
   async getProperty(@Param('id') id: string) {
@@ -14,8 +15,8 @@ export class PropertyPublicController {
   }
 
   @Get('/list')
-  async getProperties() {
-    const res = await this.service.getProperties()
+  async getProperties(@Query() args: getPropertyQueryParams) {
+    const res = await this.service.getProperties(args)
 
     return { statusCode: HttpStatus.OK, data: res }
   }

@@ -38,3 +38,7 @@ export type UpdatePropertyArgs = {
   roomWidth?: number
   roomHeight?: number
 }
+
+export type GetPropertyArgs = {
+  search?: string
+}

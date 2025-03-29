@@ -2,12 +2,13 @@ import { AuthService } from '@app/auth'
 import { PrismaService } from '@app/db'
 import { Injectable, NotFoundException } from '@nestjs/common'
 
+import { getPropertyQueryParams } from './public.dto'
 @Injectable()
 export class PropertyPublicService {
   constructor(
     private readonly db: PrismaService,
     private readonly authService: AuthService,
-  ) {}
+  ) { }
 
   async getProperty(id: string) {
     const property = await this.db.property.findUnique({
@@ -33,8 +34,18 @@ export class PropertyPublicService {
     }
   }
 
-  async getProperties() {
-    const properties = await this.db.property.findMany()
+  async getProperties(args: getPropertyQueryParams) {
+    const { search } = args
+    const properties = await this.db.property.findMany({
+      where: {
+        ...search && {
+          OR: [
+            { name: { contains: search, mode: 'insensitive' } },
+            { address: { contains: search, mode: 'insensitive' } },
+          ],
+        },
+      },
+    })
 
     return properties
   }

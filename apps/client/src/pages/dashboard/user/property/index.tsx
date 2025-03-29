@@ -1,17 +1,23 @@
 import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useState } from 'react'
 import { FaMagnifyingGlass } from 'react-icons/fa6'
 import { TfiLocationPin } from 'react-icons/tfi'
+import { useDebounce } from 'use-debounce'
 
 import AppLayout from '@/components/Layouts/App'
 import DashboardLayout from '@/components/Layouts/Dashboard'
 import { getProperties } from '@/services/property'
 
 const Location = () => {
+  const [search, setSearch] = useState('')
+  const [searchValue] = useDebounce(search, 250)
+
   const { data: properties } = useQuery({
-    queryKey: ['property'],
-    queryFn: () => getProperties(),
+    queryKey: ['property', searchValue],
+    queryFn: () => getProperties({ search: searchValue }),
+    refetchOnWindowFocus: false,
   })
 
   return (
@@ -25,7 +31,7 @@ const Location = () => {
               <input
                 type="text"
                 placeholder="Search"
-                // onChange={e => setSearch(e.target.value)}
+                onChange={e => setSearch(e.target.value)}
               />
             </label>
           </div>
