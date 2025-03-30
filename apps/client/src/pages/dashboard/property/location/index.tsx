@@ -18,7 +18,7 @@ const LocationIndex = () => {
     refetch,
   } = useQuery({
     queryKey: ['properties'],
-    queryFn: getProperties,
+    queryFn: () => getProperties({}),
   })
 
   const [currentPage, setCurrentPage] = useState(1)
