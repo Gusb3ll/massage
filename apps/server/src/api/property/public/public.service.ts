@@ -8,7 +8,7 @@ export class PropertyPublicService {
   constructor(
     private readonly db: PrismaService,
     private readonly authService: AuthService,
-  ) { }
+  ) {}
 
   async getProperty(id: string) {
     const property = await this.db.property.findUnique({
@@ -38,12 +38,12 @@ export class PropertyPublicService {
     const { search } = args
     const properties = await this.db.property.findMany({
       where: {
-        ...search && {
+        ...(search && {
           OR: [
             { name: { contains: search, mode: 'insensitive' } },
             { address: { contains: search, mode: 'insensitive' } },
           ],
-        },
+        }),
       },
     })
 

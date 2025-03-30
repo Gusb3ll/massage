@@ -5,7 +5,7 @@ import { PropertyPublicService } from './public.service'
 
 @Controller('/property/public')
 export class PropertyPublicController {
-  constructor(private readonly service: PropertyPublicService) { }
+  constructor(private readonly service: PropertyPublicService) {}
 
   @Get('/:id')
   async getProperty(@Param('id') id: string) {

@@ -14,7 +14,9 @@ export const getProperty = async (id: string) => {
 }
 
 export const getProperties = async (args: GetPropertyArgs) => {
-  const res = await fetchers.Get<Property[]>(`${ENDPOINT}/property/public/list${args.search ? `?search=${args.search}` : ''}`)
+  const res = await fetchers.Get<Property[]>(
+    `${ENDPOINT}/property/public/list${args.search ? `?search=${args.search}` : ''}`,
+  )
   if (res.statusCode >= HttpStatus.BAD_REQUEST) {
     throw new Error(res.message)
   }
