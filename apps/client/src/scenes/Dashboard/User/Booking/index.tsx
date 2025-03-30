@@ -87,6 +87,7 @@ const UserBookingScene = () => {
                   disabled={
                     cancelBookingMutation.isPending ||
                     b.status === 'CANCELED' ||
+                    b.status === 'CONFIRMED' ||
                     b.status === 'COMPLETED'
                   }
                   className="btn btn-error rounded-lg px-4 py-2 text-white"
@@ -101,7 +102,10 @@ const UserBookingScene = () => {
                 </button>
                 <button
                   disabled={
-                    cancelBookingMutation.isPending || b.status === 'CANCELED'
+                    cancelBookingMutation.isPending ||
+                    b.status === 'CANCELED' ||
+                    b.status === 'CONFIRMED' ||
+                    b.status === 'COMPLETED'
                   }
                   className="disabled:btn-disabled btn rounded-lg bg-[#9E6D54] px-4 py-2 text-white hover:bg-blue-600"
                   onClick={() =>
@@ -113,7 +117,13 @@ const UserBookingScene = () => {
                 <button
                   disabled={b.status !== 'PENDING_PAYMENT'}
                   className="disabled:btn-disabled btn btn-success rounded-lg px-4 py-2"
-                  onClick={() => createPaymentMutation.mutate(b.id)}
+                  onClick={() => {
+                    createPaymentMutation.mutate(b.id, {
+                      onSuccess: () => {
+                        router.push(`/success`)
+                      },
+                    })
+                  }}
                 >
                   Payment
                 </button>

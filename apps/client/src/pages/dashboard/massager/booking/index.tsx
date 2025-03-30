@@ -93,7 +93,7 @@ const MassagerBooking = () => {
                   <button
                     disabled={
                       cancelBookingMutation.isPending ||
-                      b.status === 'CANCELED' ||
+                      b.status === 'CONFIRMED' ||
                       b.status === 'COMPLETED'
                     }
                     className="disabled:btn-disabled btn bg-primary/80 hover:bg-primary/90 rounded-lg px-4 py-2 text-white"

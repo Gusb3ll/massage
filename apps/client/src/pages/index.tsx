@@ -1,18 +1,18 @@
 import Image from 'next/image'
 import React from 'react'
-import Marquee from 'react-fast-marquee'
+// import Marquee from 'react-fast-marquee'
 
 import AppLayout from '@/components/Layouts/App'
 import LandingLayout from '@/components/Layouts/Landing'
 
-import Reviewfast from '../components/Review/reviewfast'
+// import Reviewfast from '../components/Review/reviewfast'
 
 const Home = () => {
   return (
     <>
       <AppLayout>
         <LandingLayout>
-          <div className="bg-[#F9F8F7]">
+          <div className="bg-[#ffffff]">
             <div className="mt-0 flex justify-center sm:mt-8">
               <div className="relative h-[15rem] w-full bg-[url(/images/indeximg.png)] bg-cover p-[2rem] sm:h-[45rem] sm:w-[90%] sm:rounded-2xl">
                 <p className="hidden w-[70vh] text-5xl font-bold text-white drop-shadow-md sm:block">
@@ -27,13 +27,13 @@ const Home = () => {
               </div>
             </div>
             <div className="mt-5 hidden sm:block">
-              <div className="flex flex-row items-center gap-8 px-28 py-12">
+              <div className="flex flex-row items-center gap-8 px-14 py-12">
                 <Image
                   src="/images/indeximg2.png"
                   alt="bg1"
                   width={300}
                   height={200}
-                  className="h-[52px] w-[52px] rounded-xl md:h-[300px] md:w-[500px]"
+                  className="h-[52px] w-[52px] rounded-xl md:h-[300px] md:w-[600px]"
                 />
                 <p className="text-xl">
                   <span className="text-4xl font-bold">Website</span> that
@@ -46,19 +46,69 @@ const Home = () => {
               </div>
             </div>
 
-            <div className="mt-10 flex flex-col items-center justify-center sm:mt-5">
-              <p className="text-4xl font-medium">Review form user</p>
-              <div className="mt-12 flex h-[auto] w-[85%] flex-row">
-                <Marquee>
-                  <Reviewfast />
-                  <Reviewfast />
-                  <Reviewfast />
-                  <Reviewfast />
-                </Marquee>
+            <div className="mt-14 flex flex-row flex-wrap justify-center gap-8 py-4 sm:flex-col md:gap-16">
+              <h1 className="mx-4 text-center text-3xl font-semibold md:ml-20 md:text-left">
+                ทำไมถึงควรเลือกเรา
+              </h1>
+              <div className="flex flex-wrap justify-center gap-5 sm:flex-row sm:gap-8 md:flex-row lg:flex-row">
+                <div className="flex h-auto max-w-[350px] flex-grow flex-col rounded-xl border border-gray-300 bg-white p-4 shadow-lg transition-all hover:translate-y-[-10px]">
+                  <div className="flex flex-row gap-2">
+                    {/* <FaBoltLightning size="32" /> */}
+                    <p className="text-2xl font-semibold">รวดเร็ว</p>
+                  </div>
+                  <hr className="mt-2 text-gray-500" />
+                  <p className="text-md mt-2 text-[#666666]">
+                    คุณสามารถสร้าง หรือ รับเมลของคุณได้รวดเร็ว
+                    เพียงแค่ในไม่กี่นาที
+                  </p>
+                  <div className="mt-11 flex flex-row items-center justify-between gap-2">
+                    <p className="text-md text-[#666666]">
+                      *โดยจะเป็นตามข้อกำหนดการใช้งาน
+                    </p>
+                    {/* <RiVerifiedBadgeFill size="24" className="text-green-500" /> */}
+                  </div>
+                </div>
+
+                <div className="flex h-auto max-w-[350px] flex-grow flex-col rounded-xl border border-gray-300 bg-white p-4 shadow-lg transition-all hover:translate-y-[-10px]">
+                  <div className="flex flex-row gap-2">
+                    {/* <FaShieldAlt size="32" /> */}
+                    <p className="text-2xl font-semibold">ปลอดภัย</p>
+                  </div>
+                  <hr className="mt-2 text-gray-500" />
+                  <p className="text-md mt-2 text-[#666666]">
+                    ข้อมูลของคุณถูกรับและส่งอย่างปลอดภัยด้วย SSL และ Database
+                    ที่มีความน่าเชื่อถือโดยมี Web Application Firewall
+                    ป้องกันไว้แล้ว
+                  </p>
+                  <div className="mt-6 flex flex-row items-center justify-between gap-2">
+                    <p className="text-md text-[#666666]">
+                      *โดยจะเป็นตามข้อกำหนดการใช้งาน
+                    </p>
+                    {/* <RiVerifiedBadgeFill size="24" className="text-green-500" /> */}
+                  </div>
+                </div>
+
+                <div className="flex h-auto max-w-[350px] flex-grow flex-col rounded-xl border border-gray-300 bg-white p-4 shadow-lg transition-all hover:translate-y-[-10px]">
+                  <div className="flex flex-row gap-2">
+                    {/* <FaThumbsUp size="32" /> */}
+                    <p className="text-2xl font-semibold">คุณภาพ</p>
+                  </div>
+                  <hr className="mt-2 text-gray-500" />
+                  <p className="text-md mt-2 text-[#666666]">
+                    ให้บริการโดย RDCW
+                    ที่มีประสบการณ์ด้านเว็บไซต์และแพลทฟอร์มมามากกว่า 3 ปี
+                  </p>
+                  <div className="mt-11 flex flex-row items-center justify-between gap-2">
+                    <p className="text-md text-[#666666]">
+                      *โดยจะเป็นตามข้อกำหนดการใช้งาน
+                    </p>
+                    {/* <RiVerifiedBadgeFill size="24" className="text-green-500" /> */}
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div className="flex items-center justify-center p-16">
+            {/* <div className="flex items-center justify-center p-16">
               <Image
                 src="/images/image.png"
                 alt="mid"
@@ -67,23 +117,6 @@ const Home = () => {
                 quality={100}
                 className="h-[200px] w-[1000px] rounded-xl md:h-[500px] md:w-[1000px]"
               />
-            </div>
-
-            {/* <div className="flex flex-col">
-              <div className="flex flex-col items-center justify-center">
-                <div className="flex h-auto w-[90%] flex-col rounded-xl bg-[#ffffff] p-[4vh] shadow-xl">
-                  <p className="text-3xl font-medium">Recommend Massager</p>
-                  <div className="flex flex-row items-center justify-center gap-[2vh]">
-                    <button className="flex h-[50px] w-[50px] items-center justify-center rounded-full shadow-md">
-                      <IoIosArrowBack className="h-[70%] w-[70%]"></IoIosArrowBack>
-                    </button>
-                    <div>hello</div>
-                    <button className="flex h-[50px] w-[50px] items-center justify-center rounded-full shadow-md">
-                      <IoIosArrowForward className="h-[70%] w-[70%]"></IoIosArrowForward>
-                    </button>
-                  </div>
-                </div>
-              </div>
             </div> */}
           </div>
         </LandingLayout>

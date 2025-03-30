@@ -5,11 +5,6 @@ import { TfiLocationPin } from 'react-icons/tfi'
 
 export const USER_ROUTES = [
   {
-    title: 'Home',
-    route: '/',
-    icon: <MdDashboard />,
-  },
-  {
     title: 'Account',
     route: '/dashboard/user/account',
     icon: <FaUserCog />,
