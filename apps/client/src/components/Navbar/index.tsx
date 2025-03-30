@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { useSession } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 import React from 'react'
 
 const Navbar = () => {
@@ -36,14 +36,22 @@ const Navbar = () => {
           </div>
           <div className="mr-10 w-[27rem] justify-end gap-4 rounded-xl">
             {session?.user ? (
-              <Link href="/dashboard">
-                <button className="btn btn-sm w-[70px] rounded-2xl border-[#000000] bg-[#ffffff] placeholder:bg-[#854C2F]">
-                  Dashboard
+              <>
+                <Link href="/dashboard">
+                  <button className="btn btn-sm rounded-2xl border-[#000000] bg-[#ffffff] placeholder:bg-[#854C2F]">
+                    Dashboard
+                  </button>
+                </Link>
+                <button
+                  className="btn btn-sm rounded-2xl border-[#000000] bg-[#ffffff] placeholder:bg-[#854C2F]"
+                  onClick={() => signOut()}
+                >
+                  Logout
                 </button>
-              </Link>
+              </>
             ) : (
               <Link href="/login">
-                <button className="btn btn-sm w-[70px] rounded-2xl border-[#000000] bg-[#ffffff] placeholder:bg-[#854C2F]">
+                <button className="btn btn-sm rounded-2xl border-[#000000] bg-[#ffffff] placeholder:bg-[#854C2F]">
                   Login
                 </button>
               </Link>

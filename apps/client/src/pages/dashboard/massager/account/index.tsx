@@ -15,51 +15,50 @@ import {
   updateUser,
 } from '@/services/user'
 
-const Profile = () => {
+const MassagerAccount = () => {
   const { data: session, update } = useSession()
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>([])
   const [selectedSkills, setSelectedSkills] = useState<string[]>([])
   const [certificates, setCertificates] = useState<File[]>([])
   const [vaccineCertificates, setVaccineCertificates] = useState<File[]>([])
+  const [profileImage, setProfileImage] = useState<string>(
+    '/default-avatar.png',
+  )
 
   useEffect(() => {
+    if (session?.user?.profileImage) {
+      setProfileImage(session.user.profileImage)
+    }
     if (session?.user?.massager) {
       setSelectedLanguages(session.user.massager.languages || [])
       setSelectedSkills(session.user.massager.skills || [])
     }
   }, [session?.user])
 
-  const updateUserMutation = useMutation({
-    mutationFn: (args: UpdateUserArgs) => updateUser(args),
-  })
-
   const updateMassagerMutation = useMutation({
     mutationFn: (args: UpdatateMassagerArgs) => updateMassager(args),
   })
 
-  const { register, handleSubmit, setValue } = useForm<
-    UpdateUserArgs & UpdatateMassagerArgs
-  >()
+  const {
+    register: registerUser,
+    handleSubmit: submitUser,
+    setValue: setUser,
+  } = useForm<UpdateUserArgs>()
 
-  const onUpdateUserSubmit: SubmitHandler<UpdateUserArgs> = async args => {
-    try {
-      if (args.firstName === session?.user?.firstName) {
-        delete args.firstName
-      }
-      if (args.lastName === session?.user?.lastName) {
-        delete args.lastName
-      }
-      if (args.dateOfBirth === session?.user?.dateOfBirth) {
-        delete args.dateOfBirth
-      }
+  const {
+    register: registerMassager,
+    handleSubmit: submitMassager,
+    setValue: setMassager,
+  } = useForm<UpdatateMassagerArgs>()
 
-      await updateUserMutation.mutateAsync(args)
+  const updateUserMutation = useMutation({
+    mutationFn: (args: UpdateUserArgs) => updateUser(args),
+    onSuccess: () => {
       update()
       toast.success('User updated successfully')
-    } catch (e) {
-      toast.error((e as Error).message)
-    }
-  }
+    },
+    onError: e => toast.error(e.message),
+  })
 
   const onUpdateMassagerSubmit: SubmitHandler<
     UpdatateMassagerArgs
@@ -107,11 +106,11 @@ const Profile = () => {
 
   useEffect(() => {
     if (session?.user) {
-      setValue('firstName', session.user.firstName)
-      setValue('lastName', session.user.lastName)
-      setValue('dateOfBirth', session.user.dateOfBirth)
+      setUser('firstName', session.user.firstName)
+      setUser('lastName', session.user.lastName)
+      setUser('dateOfBirth', session.user.dateOfBirth)
     }
-  }, [session?.user, setValue])
+  }, [session?.user, setUser])
 
   const {
     getRootProps: getRootPropsForCertificates,
@@ -136,9 +135,9 @@ const Profile = () => {
   return (
     <AppLayout>
       <DashboardLayout>
-        <div className="w-full rounded-lg border p-10 shadow-lg">
+        <div className="w-full rounded-lg border p-8 shadow-lg">
           <form
-            onSubmit={handleSubmit(onUpdateUserSubmit)}
+            onSubmit={submitUser(args => updateUserMutation.mutate(args))}
             className="flex flex-col gap-4"
           >
             <h1 className="text-3xl font-semibold">Profile</h1>
@@ -155,7 +154,7 @@ const Profile = () => {
                         type="text"
                         defaultValue={session?.user.firstName}
                         className="input input-[#C5C5C5] input-bordered cursor-default select-none bg-white opacity-80"
-                        {...register('firstName')}
+                        {...registerUser('firstName')}
                       />
                     </label>
                     <label className="form-control w-full">
@@ -166,7 +165,7 @@ const Profile = () => {
                         type="text"
                         defaultValue={session?.user.lastName}
                         className="input input-[#C5C5C5] input-bordered cursor-default select-none bg-white opacity-80"
-                        {...register('lastName')}
+                        {...registerUser('lastName')}
                       />
                     </label>
                   </div>
@@ -200,7 +199,7 @@ const Profile = () => {
                       type="text"
                       defaultValue={session?.user.gender}
                       readOnly
-                      className="input input-bordered bg-white"
+                      className="input input-bordered bg-white capitalize"
                     />
                   </label>
                   <label className="form-control w-full max-w-3xl">
@@ -211,20 +210,18 @@ const Profile = () => {
                       type="date"
                       defaultValue={session?.user.dateOfBirth}
                       className="input input-[#C5C5C5] input-bordered bg-white"
-                      {...register('dateOfBirth')}
+                      {...registerUser('dateOfBirth')}
                     />
                   </label>
                 </div>
                 <div className="flex w-full items-center justify-center sm:mb-0">
-                  {session?.user?.profileImage && (
-                    <Image
-                      src={session.user.profileImage}
-                      alt="Profile Image"
-                      width={100}
-                      height={100}
-                      className="h-32 w-32 rounded-full border-2 border-gray-300 object-cover"
-                    />
-                  )}
+                  <Image
+                    src={profileImage}
+                    alt="Avatar"
+                    width={256}
+                    height={256}
+                    className="h-32 w-32 rounded-full border-2 border-gray-300 object-cover"
+                  />
                 </div>
               </div>
               <div className="mt-4 flex justify-end lg:mt-7 xl:mt-9 xl:items-end">
@@ -243,7 +240,7 @@ const Profile = () => {
           <div className="flex w-full flex-col p-5 sm:flex-row-reverse">
             <div className="flex w-full flex-col">
               <form
-                onSubmit={handleSubmit(onUpdateMassagerSubmit)}
+                onSubmit={submitMassager(onUpdateMassagerSubmit)}
                 className="flex flex-col gap-4"
               >
                 <h1 className="text-3xl font-semibold">Your skill Detail</h1>
@@ -387,4 +384,4 @@ const Profile = () => {
   )
 }
 
-export default Profile
+export default MassagerAccount

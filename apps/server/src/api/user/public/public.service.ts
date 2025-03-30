@@ -29,7 +29,9 @@ export class UserPublicService {
           email,
           password: hashedPassword,
           profileImage:
-            rest.role === 'USER' ? '' : 'https://placehold.co/256x256',
+            rest.role === 'USER' || rest.role === 'MASSAGER'
+              ? ''
+              : 'https://placehold.co/256x256',
           ...rest,
         },
       })
