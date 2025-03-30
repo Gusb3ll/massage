@@ -120,7 +120,9 @@ const UserBookingScene = () => {
                   onClick={() => {
                     createPaymentMutation.mutate(b.id, {
                       onSuccess: () => {
-                        router.push(`/success`)
+                        setTimeout(() => {
+                          router.push(`/success`)
+                        }, 500)
                       },
                     })
                   }}

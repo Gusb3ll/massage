@@ -16,10 +16,10 @@ const Success: NextPage = () => {
     <div className="flex h-[40dvh] flex-col items-center justify-center gap-2">
       <FaCheck className="mx-auto text-5xl text-green-500 md:text-9xl" />
       <h1 className="text-center text-2xl font-bold md:text-3xl">
-        ชำระเงินสำเร็จ !
+        Payment completed !
       </h1>
       <p className="text-center text-lg md:text-xl">
-        เราจะพาคุณกลับไปยังหน้าแอปพลิเคชั่นของคุณโดยเร็ว
+        We will take you back to your application page shortly.
       </p>
     </div>
   )
