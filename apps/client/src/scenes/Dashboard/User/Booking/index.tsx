@@ -110,7 +110,7 @@ const UserBookingScene = () => {
                 </button>
                 <button
                   disabled={b.status !== 'PENDING_PAYMENT'}
-                  className="disabled:btn-disabled btn rounded-lg bg-[#CEE5D0] px-4 py-2"
+                  className="disabled:btn-disabled btn btn-success rounded-lg px-4 py-2"
                   onClick={() => createPaymentMutation.mutate(b.id)}
                 >
                   Payment
