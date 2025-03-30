@@ -10,7 +10,7 @@ import {
   Req,
 } from '@nestjs/common'
 
-import { CreateBookingArgs, CreateChatArgs, GetBookingQueryParams } from './internal.dto'
+import { CreateBookingArgs, CreateChatArgs, GetBookingQueryParams, GetMassagerBookingQueryParams } from './internal.dto'
 import { BookingInternalService } from './internal.service'
 
 @Controller('/booking/internal')
@@ -47,8 +47,8 @@ export class BookingInternalController {
 
   // Massager
   @Get('/massager/list')
-  async getMassagerBookings(@Req() ctx: Context) {
-    const res = await this.service.getMassagerBookings(ctx)
+  async getMassagerBookings(@Query() args: GetMassagerBookingQueryParams, @Req() ctx: Context) {
+    const res = await this.service.getMassagerBookings(args, ctx)
 
     return { statusCode: HttpStatus.OK, data: res }
   }

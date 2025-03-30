@@ -52,10 +52,11 @@ export const cancelBooking = async (id: string) => {
   }
 }
 
-export const getMassagerBooking = async () => {
+export const getMassagerBooking = async (args: GetBookingsArgs) => {
   const session = await getSession()
+  const { search } = args
   const res = await fetchers.Get<Booking[]>(
-    `${ENDPOINT}/booking/internal/massager/list`,
+    `${ENDPOINT}/booking/internal/massager/list${search ? `?search=${search}` : ''}`,
     { token: session?.user.accessToken },
   )
   if (res.statusCode >= HttpStatus.BAD_REQUEST) {

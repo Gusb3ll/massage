@@ -1,9 +1,10 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import { useRouter } from 'next/router'
-import React from 'react'
+import { useState } from 'react'
 import { FaMagnifyingGlass } from 'react-icons/fa6'
 import { toast } from 'sonner'
+import { useDebounce } from 'use-debounce'
 
 import AppLayout from '@/components/Layouts/App'
 import DashboardLayout from '@/components/Layouts/Dashboard'
@@ -15,9 +16,12 @@ import {
 
 const MassagerBooking = () => {
   const router = useRouter()
+  const [search, setSearch] = useState('')
+  const [searchValue] = useDebounce(search, 250)
+
   const { data: bookings, refetch } = useQuery({
-    queryKey: ['booking'],
-    queryFn: () => getMassagerBooking(),
+    queryKey: ['booking', searchValue],
+    queryFn: () => getMassagerBooking({ search: searchValue }),
   })
 
   const cancelBookingMutation = useMutation({
@@ -48,7 +52,7 @@ const MassagerBooking = () => {
               <input
                 type="text"
                 placeholder="Search"
-                // onChange={e => setSearch(e.target.value)}
+                onChange={e => setSearch(e.target.value)}
               />
             </label>
           </div>
@@ -57,7 +61,7 @@ const MassagerBooking = () => {
             {bookings?.map(b => (
               <div
                 key={b.id}
-                className="flex items-center gap-4 rounded-lg border p-4 shadow-md"
+                className="flex flex-col items-center gap-4 rounded-lg border p-4 shadow-md lg:flex-row"
               >
                 <div className="flex flex-grow flex-col gap-1">
                   <h2 className="text-lg font-semibold">
@@ -90,7 +94,7 @@ const MassagerBooking = () => {
                     disabled={
                       cancelBookingMutation.isPending || b.status === 'CANCELED'
                     }
-                    className="disabled:btn-disabled btn rounded-lg bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+                    className="disabled:btn-disabled btn bg-primary/80 hover:bg-primary/90 rounded-lg px-4 py-2 text-white"
                     onClick={() =>
                       router.push(`/dashboard/user/booking/${b.id}/chat`)
                     }
