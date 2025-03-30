@@ -55,5 +55,5 @@ jobs:
           cache-from: type=registry,ref=ghcr.io/gusb3ll/massage/server
           cache-to: type=inline
 
-      # - name: Redeploy server
-      #   run: kubectl rollout restart deployment server --namespace=massage
+      - name: Redeploy server
+        run: kubectl rollout restart deployment server --namespace=massage
