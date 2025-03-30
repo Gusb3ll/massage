@@ -1,9 +1,11 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import dayjs from 'dayjs'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { FaMagnifyingGlass } from 'react-icons/fa6'
+import { toast } from 'sonner'
 
-import { getBookings } from '@/services/booking'
+import { cancelBooking, getBookings } from '@/services/booking'
 
 import CreateBookingModal from './Modal/Create'
 
@@ -13,6 +15,15 @@ const UserBookingScene = () => {
   const { data: bookings, refetch } = useQuery({
     queryKey: ['booking'],
     queryFn: () => getBookings(),
+  })
+
+  const cancelBookingMutation = useMutation({
+    mutationFn: (id: string) => cancelBooking(id),
+    onSuccess: () => {
+      refetch()
+      toast.success('Booking cancelled successfully')
+    },
+    onError: e => toast.error(e.message),
   })
 
   return (
@@ -49,21 +60,47 @@ const UserBookingScene = () => {
                   {b.massager.firstName} {b.massager.lastName}
                 </h2>
                 <p className="text-sm text-gray-600">{b.property.address}</p>
-                <span className="text-sm font-medium capitalize text-blue-600">
-                  {b.status.replace('_', ' ').toLowerCase()}
+                <span className="flex flex-row gap-1">
+                  <p>{dayjs(b.bookingDate).format('DD/MM/YYYY HH:mm')}</p>-
+                  <p className="text-primary capitalize">
+                    {b.status.replace('_', ' ').toLowerCase()}
+                  </p>
                 </span>
               </div>
               <div className="flex gap-2">
-                <button className="rounded-lg bg-red-500 px-4 py-2 text-white hover:bg-red-600">
+                <button
+                  disabled={
+                    cancelBookingMutation.isPending || b.status === 'CANCELED'
+                  }
+                  className="btn btn-error rounded-lg px-4 py-2 text-white"
+                  onClick={() => {
+                    const confirm = window.confirm('Cancel this booking?')
+                    if (confirm) {
+                      cancelBookingMutation.mutate(b.id)
+                    }
+                  }}
+                >
                   Cancel
                 </button>
                 <button
-                  className="rounded-lg bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+                  disabled={
+                    cancelBookingMutation.isPending || b.status === 'CANCELED'
+                  }
+                  className="disabled:btn-disabled btn rounded-lg bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
                   onClick={() =>
                     router.push(`/dashboard/user/booking/${b.id}/chat`)
                   }
                 >
                   Chat
+                </button>
+                <button
+                  disabled={b.status !== 'PENDING_PAYMENT'}
+                  className="disabled:btn-disabled btn btn-primary rounded-lg px-4 py-2"
+                  onClick={() =>
+                    router.push(`/dashboard/user/booking/${b.id}/payment`)
+                  }
+                >
+                  Payment
                 </button>
               </div>
             </div>

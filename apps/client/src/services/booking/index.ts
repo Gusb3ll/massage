@@ -41,4 +41,14 @@ export const createBooking = async (args: CreateBookingArgs) => {
   }
 }
 
+export const cancelBooking = async (id: string) => {
+  const session = await getSession()
+  const res = await fetchers.Post(`${ENDPOINT}/booking/internal/cancel/${id}`, {
+    token: session?.user.accessToken,
+  })
+  if (res.statusCode >= HttpStatus.BAD_REQUEST) {
+    throw new Error(res.message)
+  }
+}
+
 export * from './types'

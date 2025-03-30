@@ -60,6 +60,8 @@ export class BookingInternalController {
   @Post('/cancel/:id')
   async cancelBooking(@Param('id') id: string) {
     await this.service.cancelBooking(id)
+
+    return { statusCode: HttpStatus.OK }
   }
 
   @Post('/')
