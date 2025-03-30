@@ -7,7 +7,7 @@ export class CreateChatArgs extends createZodDto(
     message: z.string(),
     actor: z.enum(['USER', 'MASSAGER']),
   }),
-) { }
+) {}
 
 export class CreateBookingArgs extends createZodDto(
   z.object({
@@ -15,16 +15,16 @@ export class CreateBookingArgs extends createZodDto(
     propertyId: z.string(),
     bookingDate: z.string().datetime(),
   }),
-) { }
+) {}
 
 export class GetBookingQueryParams extends createZodDto(
   z.object({
     search: z.string().optional(),
   }),
-) { }
+) {}
 
 export class GetMassagerBookingQueryParams extends createZodDto(
   z.object({
     search: z.string().optional(),
   }),
-) { }
+) {}

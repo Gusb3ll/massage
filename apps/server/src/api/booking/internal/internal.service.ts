@@ -2,11 +2,16 @@ import { Context, getUserFromContext } from '@app/common'
 import { PrismaService } from '@app/db'
 import { Injectable, NotFoundException } from '@nestjs/common'
 
-import { CreateBookingArgs, CreateChatArgs, GetBookingQueryParams, GetMassagerBookingQueryParams } from './internal.dto'
+import {
+  CreateBookingArgs,
+  CreateChatArgs,
+  GetBookingQueryParams,
+  GetMassagerBookingQueryParams,
+} from './internal.dto'
 
 @Injectable()
 export class BookingInternalService {
-  constructor(private readonly db: PrismaService) { }
+  constructor(private readonly db: PrismaService) {}
 
   private async getMassager(ctx: Context) {
     const user = getUserFromContext(ctx)
@@ -30,12 +35,22 @@ export class BookingInternalService {
         ...(search && {
           OR: [
             { property: { name: { contains: search, mode: 'insensitive' } } },
-            { massager: { user: { firstName: { contains: search, mode: 'insensitive' } } } },
-            { massager: { user: { lastName: { contains: search, mode: 'insensitive' } } } },
-            { property: { address: { contains: search, mode: 'insensitive' } } },
+            {
+              massager: {
+                user: { firstName: { contains: search, mode: 'insensitive' } },
+              },
+            },
+            {
+              massager: {
+                user: { lastName: { contains: search, mode: 'insensitive' } },
+              },
+            },
+            {
+              property: { address: { contains: search, mode: 'insensitive' } },
+            },
           ],
         }),
-        userId: user.id
+        userId: user.id,
       },
       include: {
         massager: { include: { user: true } },
@@ -84,14 +99,16 @@ export class BookingInternalService {
 
     const bookings = await this.db.booking.findMany({
       where: {
-        ...search && {
+        ...(search && {
           OR: [
             { user: { firstName: { contains: search, mode: 'insensitive' } } },
             { user: { lastName: { contains: search, mode: 'insensitive' } } },
-            { property: { address: { contains: search, mode: 'insensitive' } } },
+            {
+              property: { address: { contains: search, mode: 'insensitive' } },
+            },
           ],
-        },
-        massagerId: massager.id
+        }),
+        massagerId: massager.id,
       },
       include: {
         user: true,
