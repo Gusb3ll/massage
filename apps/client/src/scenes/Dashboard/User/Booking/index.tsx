@@ -8,6 +8,7 @@ import { toast } from 'sonner'
 import { useDebounce } from 'use-debounce'
 
 import { cancelBooking, getBookings } from '@/services/booking'
+import { createPayment } from '@/services/payment'
 
 import CreateBookingModal from './Modal/Create'
 
@@ -27,6 +28,15 @@ const UserBookingScene = () => {
     onSuccess: () => {
       refetch()
       toast.success('Booking cancelled successfully')
+    },
+    onError: e => toast.error(e.message),
+  })
+
+  const createPaymentMutation = useMutation({
+    mutationFn: (id: string) => createPayment(id),
+    onSuccess: res => {
+      refetch()
+      router.replace(res.paymentLink)
     },
     onError: e => toast.error(e.message),
   })
@@ -99,11 +109,9 @@ const UserBookingScene = () => {
                   Chat
                 </button>
                 <button
-                  disabled={b.status === 'PENDING_PAYMENT'}
+                  disabled={b.status !== 'PENDING_PAYMENT'}
                   className="disabled:btn-disabled btn rounded-lg bg-[#CEE5D0] px-4 py-2"
-                  onClick={() =>
-                    router.push(`/dashboard/user/booking/${b.id}/payment`)
-                  }
+                  onClick={() => createPaymentMutation.mutate(b.id)}
                 >
                   Payment
                 </button>

@@ -45,7 +45,10 @@ export class PaymentInternalService {
 
     const referenceNo = `MAS-${init({ length: 6 })().toUpperCase()}`
     const session = await stripe.checkout.sessions.create({
-      line_items: [{ price: 'prod_S2X1zyhsmbJEHt', quantity: totalAmount }],
+      line_items: [
+        { price: 'price_1R8RxF4UZUhNYib3WDngqM2L', quantity: totalAmount },
+      ],
+      mode: 'payment',
       currency: 'THB',
       success_url: 'https://massage.lico.moe/success',
       cancel_url: 'https://massage.lico.moe/cancel',
