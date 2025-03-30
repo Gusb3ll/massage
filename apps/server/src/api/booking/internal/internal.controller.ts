@@ -55,6 +55,8 @@ export class BookingInternalController {
   @Post('/confirm/:id')
   async confirmBooking(@Param('id') id: string) {
     await this.service.confirmBooking(id)
+
+    return { statusCode: HttpStatus.OK }
   }
 
   @Post('/cancel/:id')
