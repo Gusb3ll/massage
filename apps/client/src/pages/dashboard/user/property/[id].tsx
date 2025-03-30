@@ -88,25 +88,27 @@ const PropertyLocation = () => {
               </div>
             </div>
             <div className="flex flex-col justify-between gap-4 xl:flex-row">
-              <GoogleMapsEmbed
-                apiKey="AIzaSyDtnLBip1ffDwaGa2REm7NQphZKvWqATdo"
-                mode="search"
-                height={400}
-                width="100%"
-                q="KMUTNB"
-                region="TH"
-              />
-              <button
-                className="btn bg-primary/80 hover:bg-primary/90 mt-4 self-end px-8 text-white lg:mt-0"
-                onClick={() => {
-                  setBookingPropertyId(property.id)
-                  setIsBookingActive(true)
-                  router.push('/dashboard/user/booking')
-                }}
-              >
-                Select
-              </button>
+              <div className="w-full">
+                <GoogleMapsEmbed
+                  apiKey="AIzaSyDtnLBip1ffDwaGa2REm7NQphZKvWqATdo"
+                  mode="search"
+                  height={400}
+                  width="100%"
+                  q="KMUTNB"
+                  region="TH"
+                />
+              </div>
             </div>
+            <button
+              className="btn bg-primary/80 hover:bg-primary/90 mt-4 self-end px-8 text-white lg:mt-0"
+              onClick={() => {
+                setBookingPropertyId(property.id)
+                setIsBookingActive(true)
+                router.push('/dashboard/user/booking')
+              }}
+            >
+              Select
+            </button>
           </div>
         </DashboardLayout>
       </AppLayout>

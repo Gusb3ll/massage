@@ -63,8 +63,8 @@ const MassagerProfileScene = () => {
                 className="h-full w-full items-center rounded-lg object-cover"
               />
             </div>
-            <div className="flex flex-col justify-between md:flex-row">
-              <div className="flex flex-row gap-3 p-3 pl-0 md:gap-10 md:p-6">
+            <div className="flex flex-col justify-between xl:flex-row">
+              <div className="flex flex-row gap-3 p-3 pl-0 md:gap-10 md:p-3">
                 <Image
                   src={massager.profileImage ?? '/default-avatar.png'}
                   alt="Massager"
@@ -86,7 +86,7 @@ const MassagerProfileScene = () => {
                   </div>
                 </div>
               </div>
-              <div className="flex flex-col items-center gap-4 p-6 md:flex-row md:items-start">
+              <div className="flex flex-col items-center gap-4 p-6 lg:flex-row lg:items-start">
                 <button
                   className="btn bg-gray/80 hover:bg-gray/90 w-fit rounded-full shadow-md"
                   onClick={() => vaccineModalRef.current?.showModal()}
