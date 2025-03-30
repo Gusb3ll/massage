@@ -58,9 +58,8 @@ const UserMassager = () => {
                       </p>
                       <div className="line-clamp-1 flex flex-row gap-1 truncate text-sm font-semibold text-black">
                         <TfiLocationPin className="h-5" />
-                        <p>Location</p>
+                        {m.address}
                       </div>
-                      {m.address}
                     </div>
                     <p className="text-md font-semibold text-black">
                       {m.gender === 'FEMALE' ? 'Female' : 'Male'}

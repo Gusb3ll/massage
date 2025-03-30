@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
+import Image from 'next/image'
 import { useSession } from 'next-auth/react'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
@@ -32,60 +33,100 @@ const UserAccount = () => {
   return (
     <AppLayout>
       <DashboardLayout>
-        <div className="w-full max-w-xl rounded-lg border p-8 shadow-lg">
+        <div className="w-full rounded-lg border p-8 shadow-lg">
           <form
             onSubmit={handleSubmit(args => updateUserMutation.mutate(args))}
             className="flex flex-col gap-4"
           >
             <h1 className="text-3xl font-semibold">Account</h1>
             <hr />
-            <div className="flex max-w-3xl flex-col gap-4 sm:flex-row xl:mt-6">
-              <label className="form-control w-full">
-                <span className="label label-text font-semibold">Name</span>
-                <input
-                  type="text"
-                  defaultValue={session?.user.firstName}
-                  className="input input-bordered"
-                  {...register('firstName')}
-                />
-              </label>
-              <label className="form-control w-full">
-                <span className="label label-text font-semibold">Surname</span>
-                <input
-                  type="text"
-                  defaultValue={session?.user.lastName}
-                  className="input input-bordered"
-                  {...register('lastName')}
-                />
-              </label>
+            <div className="flex flex-col-reverse lg:flex-row">
+              <div className="flex w-full flex-col gap-4">
+                <div className="mt-5 flex max-w-3xl flex-col gap-4 sm:flex-row">
+                  <label className="form-control w-full">
+                    <span className="label label-text font-semibold">
+                      FirstName
+                    </span>
+                    <input
+                      type="text"
+                      defaultValue={session?.user.firstName}
+                      className="input input-[#C5C5C5] input-bordered cursor-default select-none bg-white opacity-80"
+                      {...register('firstName')}
+                    />
+                  </label>
+                  <label className="form-control w-full">
+                    <span className="label label-text font-semibold">
+                      LastName
+                    </span>
+                    <input
+                      type="text"
+                      defaultValue={session?.user.lastName}
+                      className="input input-[#C5C5C5] input-bordered cursor-default select-none bg-white opacity-80"
+                      {...register('lastName')}
+                    />
+                  </label>
+                </div>
+                <label className="form-control w-full max-w-3xl">
+                  <span className="label label-text font-semibold">
+                    Phone number
+                  </span>
+                  <input
+                    type="text"
+                    defaultValue={session?.user.phoneNumber}
+                    readOnly
+                    className="input input-[#C5C5C5] input-bordered bg-white"
+                  />
+                </label>
+                <label className="form-control w-full max-w-3xl">
+                  <span className="label label-text font-semibold">Email</span>
+                  <input
+                    type="text"
+                    defaultValue={session?.user.email}
+                    readOnly
+                    className="input input-bordered bg-white"
+                  />
+                </label>
+                <label className="form-control w-full max-w-3xl">
+                  <span className="label label-text font-semibold">Gender</span>
+                  <input
+                    type="text"
+                    defaultValue={session?.user.gender}
+                    readOnly
+                    className="input input-bordered bg-white"
+                  />
+                </label>
+                <label className="form-control w-full max-w-3xl">
+                  <span className="label label-text font-semibold">
+                    Birthday
+                  </span>
+                  <input
+                    type="date"
+                    defaultValue={session?.user.dateOfBirth}
+                    className="input input-[#C5C5C5] input-bordered bg-white"
+                    {...register('dateOfBirth')}
+                  />
+                </label>
+              </div>
+              <div className="flex w-full items-center justify-center">
+                {session?.user?.profileImage && (
+                  <Image
+                    src={session.user.profileImage}
+                    alt="Profile Image"
+                    width={100}
+                    height={100}
+                    className="h-32 w-32 rounded-full border-2 border-gray-300 object-cover"
+                  />
+                )}
+              </div>
             </div>
-            <label className="form-control w-full max-w-3xl">
-              <span className="label label-text font-semibold">
-                Phone Number
-              </span>
-              <input
-                type="text"
-                defaultValue={session?.user.phoneNumber}
-                className="input input-bordered"
-              />
-            </label>
-            <div className="flex flex-row items-center gap-4">
-              <label className="form-control w-full max-w-3xl">
-                <span className="label label-text font-semibold">Birthday</span>
-                <input
-                  type="date"
-                  defaultValue={session?.user.dateOfBirth}
-                  className="input input-bordered"
-                  {...register('dateOfBirth')}
-                />
-              </label>
+            <div className="mt-4 flex justify-end lg:mt-7">
+              <button
+                type="submit"
+                className="btn btn-primary h-10 w-28 bg-[#8a4724] text-white"
+              >
+                Confirm
+              </button>
             </div>
-            <button
-              type="submit"
-              className="btn btn-primary bg-primary/80 hover:bg-primary/90 w-full text-white"
-            >
-              Update
-            </button>
           </form>
         </div>
       </DashboardLayout>

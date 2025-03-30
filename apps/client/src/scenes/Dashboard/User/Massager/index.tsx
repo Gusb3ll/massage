@@ -4,11 +4,11 @@ import dayjs from 'dayjs'
 import { useAtom } from 'jotai'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+// import { useState } from 'react'
 import { BsGenderAmbiguous } from 'react-icons/bs'
 import { FaCalendarAlt } from 'react-icons/fa'
 import { FaStar } from 'react-icons/fa6'
-import ImageGallery from 'react-image-gallery'
+// import ImageGallery from 'react-image-gallery'
 
 import { isBookingActiveAtom, massagerIdAtom } from '@/atoms'
 import { getMassager } from '@/services/massager'
@@ -16,20 +16,20 @@ import { getMassager } from '@/services/massager'
 import LicenseModal, { licenseModalRef } from './Modal/License'
 import VaccineModal, { vaccineModalRef } from './Modal/Vaccine'
 
-const images = [
-  {
-    original: 'https://picsum.photos/id/1018/1000/600/',
-    thumbnail: 'https://picsum.photos/id/1018/250/150/',
-  },
-  {
-    original: 'https://picsum.photos/id/1015/1000/600/',
-    thumbnail: 'https://picsum.photos/id/1015/250/150/',
-  },
-  {
-    original: 'https://picsum.photos/id/1019/1000/600/',
-    thumbnail: 'https://picsum.photos/id/1019/250/150/',
-  },
-]
+// const images = [
+//   {
+//     original: 'https://picsum.photos/id/1018/1000/600/',
+//     thumbnail: 'https://picsum.photos/id/1018/250/150/',
+//   },
+//   {
+//     original: 'https://picsum.photos/id/1015/1000/600/',
+//     thumbnail: 'https://picsum.photos/id/1015/250/150/',
+//   },
+//   {
+//     original: 'https://picsum.photos/id/1019/1000/600/',
+//     thumbnail: 'https://picsum.photos/id/1019/250/150/',
+//   },
+// ]
 
 const MassagerProfileScene = () => {
   const router = useRouter()
@@ -37,7 +37,7 @@ const MassagerProfileScene = () => {
   const [, setBookingMassagerId] = useAtom(massagerIdAtom)
   const [, setIsBookingActive] = useAtom(isBookingActiveAtom)
 
-  const [isLoading, setIsLoading] = useState(true)
+  // const [isLoading, setIsLoading] = useState(true)
 
   const { data: massager } = useQuery({
     queryKey: ['getMassager', massagerId],
@@ -104,15 +104,15 @@ const MassagerProfileScene = () => {
             <hr className="border-1 border-primary" />
             <div className="flex flex-col gap-4 p-2">
               <div className="flex flex-row gap-3">
-                <div className="border-primary flex flex-row items-center gap-2 rounded-lg border px-4 py-2">
-                  <BsGenderAmbiguous size="24" />
-                  <p className="text-lg font-bold">
+                <div className="flex flex-row items-center gap-2 rounded-lg border border-[#A9A9A9] px-4 py-2">
+                  <BsGenderAmbiguous size="20" />
+                  <p className="text-md font-bold">
                     {massager.gender === 'MALE' ? 'Male' : 'Female'}
                   </p>
                 </div>
-                <div className="border-primary flex flex-row items-center gap-2 rounded-lg border px-4 py-2">
-                  <FaCalendarAlt size="24" />
-                  <p className="text-lg font-bold">
+                <div className="flex flex-row items-center gap-2 rounded-lg border border-[#A9A9A9] px-4 py-2">
+                  <FaCalendarAlt size="18" />
+                  <p className="text-md font-bold">
                     Age{' '}
                     {Math.abs(
                       dayjs(massager.dateOfBirth).diff(dayjs(), 'year'),
@@ -120,7 +120,7 @@ const MassagerProfileScene = () => {
                   </p>
                 </div>
               </div>
-              {isLoading ? (
+              {/* {isLoading ? (
                 <div className="skeleton h-[500px] w-full"></div>
               ) : (
                 <></>
@@ -135,16 +135,43 @@ const MassagerProfileScene = () => {
                     setIsLoading(false)
                   }, 100)
                 }}
-              />
+              /> */}
               <div className="flex flex-col gap-2">
                 <p className="text-md font-semibold">Languages</p>
-                <p className="w-full max-w-lg rounded-lg border border-[#A9A9A9] py-2 text-center">
-                  {massager.languages.join(', ') || 'No languages specified'}
-                </p>
+                <div className="flex flex-wrap gap-2">
+                  {massager.languages.length > 0 ? (
+                    massager.languages.map((lang, index) => (
+                      <p
+                        key={index}
+                        className="w-fit rounded-lg border border-[#A9A9A9] px-4 py-2 text-center"
+                      >
+                        {lang}
+                      </p>
+                    ))
+                  ) : (
+                    <p className="w-full max-w-lg rounded-lg border border-[#A9A9A9] py-2 text-center">
+                      No languages specified
+                    </p>
+                  )}
+                </div>
+
                 <p className="text-md font-semibold">Skills</p>
-                <p className="w-full max-w-lg rounded-lg border border-[#A9A9A9] py-2 text-center">
-                  {massager.skills.join(', ') || 'No skills specified'}
-                </p>
+                <div className="flex flex-wrap gap-2">
+                  {massager.skills.length > 0 ? (
+                    massager.skills.map((skill, index) => (
+                      <p
+                        key={index}
+                        className="w-fit rounded-lg border border-[#A9A9A9] px-4 py-2 text-center"
+                      >
+                        {skill}
+                      </p>
+                    ))
+                  ) : (
+                    <p className="w-full max-w-lg rounded-lg border border-[#A9A9A9] py-2 text-center">
+                      No skills specified
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
           </div>
