@@ -64,4 +64,17 @@ export const getMassagerBooking = async () => {
   return res.data as Booking[]
 }
 
+export const confirmBooking = async (id: string) => {
+  const session = await getSession()
+  const res = await fetchers.Post(
+    `${ENDPOINT}/booking/internal/confirm/${id}`,
+    {
+      token: session?.user.accessToken,
+    },
+  )
+  if (res.statusCode >= HttpStatus.BAD_REQUEST) {
+    throw new Error(res.message)
+  }
+}
+
 export * from './types'

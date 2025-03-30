@@ -72,11 +72,52 @@ export class BookingInternalService {
 
     const bookings = await this.db.booking.findMany({
       where: { massagerId: massager.id },
-      include: { user: true, property: true },
+      include: {
+        user: true,
+        massager: { include: { user: true } },
+        property: { include: { owner: { include: { user: true } } } },
+      },
       orderBy: { createdAt: 'desc' },
     })
 
-    return bookings
+    return bookings.map(booking => {
+      const property = booking.property
+      const massager = booking.massager
+
+      return {
+        ...booking,
+        user: {
+          id: booking.user.id,
+          firstName: booking.user.firstName,
+          lastName: booking.user.lastName,
+          profileImage: booking.user.profileImage,
+        },
+        massager: {
+          id: massager.id,
+          firstName: massager.user.firstName,
+          lastName: massager.user.lastName,
+          profileImage: massager.user.profileImage,
+          gender: massager.user.gender,
+          dateOfBirth: massager.user.dateOfBirth,
+        },
+        property: {
+          id: property.id,
+          name: property.name,
+          images: property.images,
+          price: property.price,
+          address: property.address,
+          rooms: property.rooms,
+          roomWidth: property.roomWidth,
+          roomHeight: property.roomHeight,
+          owner: {
+            id: property.owner.id,
+            firstName: property.owner.user.firstName,
+            lastName: property.owner.user.lastName,
+            profileImage: property.owner.user.profileImage,
+          },
+        },
+      }
+    })
   }
 
   async getBooking(id: string) {

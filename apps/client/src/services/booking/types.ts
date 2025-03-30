@@ -34,6 +34,12 @@ export type Booking = {
       profileImage: string
     }
   }
+  user: {
+    id: string
+    firstName: string
+    lastName: string
+    profileImage: string
+  }
 }
 
 export type BookingChat = {

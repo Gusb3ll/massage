@@ -1,6 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
-import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { FaMagnifyingGlass } from 'react-icons/fa6'
@@ -8,7 +7,11 @@ import { toast } from 'sonner'
 
 import AppLayout from '@/components/Layouts/App'
 import DashboardLayout from '@/components/Layouts/Dashboard'
-import { cancelBooking, getMassagerBooking } from '@/services/booking'
+import {
+  cancelBooking,
+  confirmBooking,
+  getMassagerBooking,
+} from '@/services/booking'
 
 const MassagerBooking = () => {
   const router = useRouter()
@@ -21,7 +24,15 @@ const MassagerBooking = () => {
     mutationFn: (id: string) => cancelBooking(id),
     onSuccess: () => {
       refetch()
-      toast.success('Booking cancelled successfully')
+      toast.success('Booking canceled')
+    },
+    onError: e => toast.error(e.message),
+  })
+  const confirmBookingMutation = useMutation({
+    mutationFn: (id: string) => confirmBooking(id),
+    onSuccess: () => {
+      refetch()
+      toast.success('Booking confirmed')
     },
     onError: e => toast.error(e.message),
   })
@@ -48,16 +59,9 @@ const MassagerBooking = () => {
                 key={b.id}
                 className="flex items-center gap-4 rounded-lg border p-4 shadow-md"
               >
-                <Image
-                  src={b.massager.profileImage}
-                  alt={b.massager.firstName}
-                  width={64}
-                  height={64}
-                  className="h-16 w-16 rounded-full object-cover"
-                />
                 <div className="flex flex-grow flex-col gap-1">
                   <h2 className="text-lg font-semibold">
-                    {b.massager.firstName} {b.massager.lastName}
+                    {b.user.firstName} {b.user.lastName}
                   </h2>
                   <p className="text-sm text-gray-600">{b.property.address}</p>
                   <span className="flex flex-row gap-1">
@@ -92,6 +96,21 @@ const MassagerBooking = () => {
                     }
                   >
                     Chat
+                  </button>
+                  <button
+                    disabled={
+                      cancelBookingMutation.isPending ||
+                      b.status !== 'PENDING_MASSAGER'
+                    }
+                    className="disabled:btn-disabled btn btn-success rounded-lg px-4 py-2 text-white"
+                    onClick={() => {
+                      const confirm = window.confirm('Confirm this booking?')
+                      if (confirm) {
+                        confirmBookingMutation.mutate(b.id)
+                      }
+                    }}
+                  >
+                    Confirm
                   </button>
                 </div>
               </div>
