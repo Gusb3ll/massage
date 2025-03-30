@@ -51,4 +51,17 @@ export const cancelBooking = async (id: string) => {
   }
 }
 
+export const getMassagerBooking = async () => {
+  const session = await getSession()
+  const res = await fetchers.Get<Booking[]>(
+    `${ENDPOINT}/booking/internal/massager/list`,
+    { token: session?.user.accessToken },
+  )
+  if (res.statusCode >= HttpStatus.BAD_REQUEST) {
+    throw new Error(res.message)
+  }
+
+  return res.data as Booking[]
+}
+
 export * from './types'

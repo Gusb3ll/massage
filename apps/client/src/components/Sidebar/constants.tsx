@@ -44,7 +44,7 @@ export const MASSAGER_ROUTES = [
   },
   {
     title: 'Booking',
-    route: '/dashboard/massager/job',
+    route: '/dashboard/massager/booking',
     icon: <MdBook />,
   },
 ]
