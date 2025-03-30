@@ -1,4 +1,4 @@
-// import Footer from '../Footer'
+import Footer from '../Footer'
 import Navbar from '../Navbar'
 
 const LandingLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
@@ -9,7 +9,7 @@ const LandingLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
           <Navbar />
           {children}
         </div>
-        {/* <Footer /> */}
+        <Footer />
       </div>
     </>
   )

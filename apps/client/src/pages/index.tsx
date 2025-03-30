@@ -1,13 +1,16 @@
 import Image from 'next/image'
+import Link from 'next/link'
+import { useSession } from 'next-auth/react'
 import React from 'react'
-// import Marquee from 'react-fast-marquee'
+import { FaStar } from 'react-icons/fa'
+import { FaBoltLightning, FaThumbsUp } from 'react-icons/fa6'
 
 import AppLayout from '@/components/Layouts/App'
 import LandingLayout from '@/components/Layouts/Landing'
 
-// import Reviewfast from '../components/Review/reviewfast'
-
 const Home = () => {
+  const { data: session } = useSession()
+
   return (
     <>
       <AppLayout>
@@ -26,98 +29,88 @@ const Home = () => {
                 </p>
               </div>
             </div>
-            <div className="mt-5 hidden sm:block">
-              <div className="flex flex-row items-center gap-8 px-14 py-12">
-                <Image
-                  src="/images/indeximg2.png"
-                  alt="bg1"
-                  width={300}
-                  height={200}
-                  className="h-[52px] w-[52px] rounded-xl md:h-[300px] md:w-[600px]"
-                />
-                <p className="text-xl">
-                  <span className="text-4xl font-bold">Website</span> that
-                  redefines your massage experience, offering you complete
-                  control over every detail. With our platform, you can
-                  conveniently choose the perfect location to receive your
-                  massage and handpick your preferred therapist to suit your
-                  needs.
-                </p>
-              </div>
-            </div>
 
             <div className="mt-14 flex flex-row flex-wrap justify-center gap-8 py-4 sm:flex-col md:gap-16">
               <h1 className="mx-4 text-center text-3xl font-semibold md:ml-20 md:text-left">
-                ทำไมถึงควรเลือกเรา
+                Why should you use it?
               </h1>
               <div className="flex flex-wrap justify-center gap-5 sm:flex-row sm:gap-8 md:flex-row lg:flex-row">
-                <div className="flex h-auto max-w-[350px] flex-grow flex-col rounded-xl border border-gray-300 bg-white p-4 shadow-lg transition-all hover:translate-y-[-10px]">
+                <div className="flex h-auto max-w-[350px] flex-grow flex-col rounded-xl border border-gray-300 bg-white p-4 py-8 shadow-lg transition-all hover:translate-y-[-10px]">
                   <div className="flex flex-row gap-2">
-                    {/* <FaBoltLightning size="32" /> */}
-                    <p className="text-2xl font-semibold">รวดเร็ว</p>
+                    <FaBoltLightning size="32" />
+                    <p className="text-2xl font-semibold">Convenient </p>
                   </div>
                   <hr className="mt-2 text-gray-500" />
                   <p className="text-md mt-2 text-[#666666]">
-                    คุณสามารถสร้าง หรือ รับเมลของคุณได้รวดเร็ว
-                    เพียงแค่ในไม่กี่นาที
+                    You can select the date, time, and location at your
+                    convenience without having to search or call for an
+                    appointment.
                   </p>
-                  <div className="mt-11 flex flex-row items-center justify-between gap-2">
-                    <p className="text-md text-[#666666]">
-                      *โดยจะเป็นตามข้อกำหนดการใช้งาน
-                    </p>
-                    {/* <RiVerifiedBadgeFill size="24" className="text-green-500" /> */}
-                  </div>
                 </div>
 
-                <div className="flex h-auto max-w-[350px] flex-grow flex-col rounded-xl border border-gray-300 bg-white p-4 shadow-lg transition-all hover:translate-y-[-10px]">
+                <div className="flex h-auto max-w-[350px] flex-grow flex-col rounded-xl border border-gray-300 bg-white p-4 py-8 shadow-lg transition-all hover:translate-y-[-10px]">
                   <div className="flex flex-row gap-2">
-                    {/* <FaShieldAlt size="32" /> */}
-                    <p className="text-2xl font-semibold">ปลอดภัย</p>
+                    <FaStar size="32" />
+                    <p className="text-2xl font-semibold">
+                      More variety of choices
+                    </p>
                   </div>
                   <hr className="mt-2 text-gray-500" />
                   <p className="text-md mt-2 text-[#666666]">
-                    ข้อมูลของคุณถูกรับและส่งอย่างปลอดภัยด้วย SSL และ Database
-                    ที่มีความน่าเชื่อถือโดยมี Web Application Firewall
-                    ป้องกันไว้แล้ว
+                    You can choose a masseuse based on experience or the type of
+                    massage you prefer.
                   </p>
-                  <div className="mt-6 flex flex-row items-center justify-between gap-2">
-                    <p className="text-md text-[#666666]">
-                      *โดยจะเป็นตามข้อกำหนดการใช้งาน
-                    </p>
-                    {/* <RiVerifiedBadgeFill size="24" className="text-green-500" /> */}
-                  </div>
                 </div>
 
-                <div className="flex h-auto max-w-[350px] flex-grow flex-col rounded-xl border border-gray-300 bg-white p-4 shadow-lg transition-all hover:translate-y-[-10px]">
+                <div className="flex h-auto max-w-[350px] flex-grow flex-col rounded-xl border border-gray-300 bg-white p-4 py-8 shadow-lg transition-all hover:translate-y-[-10px]">
                   <div className="flex flex-row gap-2">
-                    {/* <FaThumbsUp size="32" /> */}
-                    <p className="text-2xl font-semibold">คุณภาพ</p>
+                    <FaThumbsUp size="32" />
+                    <p className="text-2xl font-semibold">
+                      Quality and safety{' '}
+                    </p>
                   </div>
                   <hr className="mt-2 text-gray-500" />
                   <p className="text-md mt-2 text-[#666666]">
-                    ให้บริการโดย RDCW
-                    ที่มีประสบการณ์ด้านเว็บไซต์และแพลทฟอร์มมามากกว่า 3 ปี
+                    Booking websites usually screen masseuses with
+                    certifications or standards, ensuring quality and safety in
+                    the service.
                   </p>
-                  <div className="mt-11 flex flex-row items-center justify-between gap-2">
-                    <p className="text-md text-[#666666]">
-                      *โดยจะเป็นตามข้อกำหนดการใช้งาน
-                    </p>
-                    {/* <RiVerifiedBadgeFill size="24" className="text-green-500" /> */}
-                  </div>
                 </div>
               </div>
             </div>
 
-            {/* <div className="flex items-center justify-center p-16">
-              <Image
-                src="/images/image.png"
-                alt="mid"
-                width={1000}
-                height={900}
-                quality={100}
-                className="h-[200px] w-[1000px] rounded-xl md:h-[500px] md:w-[1000px]"
-              />
-            </div> */}
+            <div className="bg-primary/85 mt-10 h-[400px] w-full p-10">
+              <div className="flex h-[330px] flex-col rounded-3xl border border-gray-300 bg-white p-4 shadow-lg">
+                <div className="mt-9 flex flex-row items-center justify-center gap-4">
+                  <Image
+                    src="/images/logo.png"
+                    alt="Logo"
+                    width={76}
+                    height={32}
+                    className="h-[46px] w-[46px] md:h-[70px] md:w-[70px]"
+                  />
+                  <h2 className="flex items-center justify-center gap-2 text-4xl font-bold">
+                    <span className="items-center text-3xl">Nami Massage</span>
+                  </h2>
+                </div>
+
+                <h1 className="mt-5 text-center text-xl font-semibold">
+                  If you wish to book a massage therapist for your wellness.
+                </h1>
+                <h1 className="mt-5 text-center text-xl font-semibold">
+                  Let&apos;s use Nami Massage!
+                </h1>
+
+                <div className="mt-7 flex items-center justify-center gap-4">
+                  <Link
+                    href={session?.user ? '/dashboard' : '/register'}
+                    className="btn rounded-2xl bg-[#000000] text-white hover:bg-black"
+                  >
+                    Let&apos;s get started
+                  </Link>
+                </div>
+              </div>
+            </div>
           </div>
         </LandingLayout>
       </AppLayout>
