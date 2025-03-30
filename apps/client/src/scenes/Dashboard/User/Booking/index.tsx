@@ -85,7 +85,9 @@ const UserBookingScene = () => {
               <div className="flex gap-2">
                 <button
                   disabled={
-                    cancelBookingMutation.isPending || b.status === 'CANCELED'
+                    cancelBookingMutation.isPending ||
+                    b.status === 'CANCELED' ||
+                    b.status === 'COMPLETED'
                   }
                   className="btn btn-error rounded-lg px-4 py-2 text-white"
                   onClick={() => {
