@@ -46,9 +46,9 @@ const MassagerAccount = () => {
   } = useForm<UpdateUserArgs>()
 
   const {
-    register: registerMassager,
+    // register: registerMassager,
     handleSubmit: submitMassager,
-    setValue: setMassager,
+    // setValue: setMassager,
   } = useForm<UpdatateMassagerArgs>()
 
   const updateUserMutation = useMutation({

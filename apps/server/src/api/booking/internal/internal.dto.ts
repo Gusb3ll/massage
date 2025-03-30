@@ -22,3 +22,9 @@ export class GetBookingQueryParams extends createZodDto(
     search: z.string().optional(),
   }),
 ) { }
+
+export class GetMassagerBookingQueryParams extends createZodDto(
+  z.object({
+    search: z.string().optional(),
+  }),
+) { }
