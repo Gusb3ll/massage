@@ -4,11 +4,11 @@ export type Booking = {
   massagerId: string
   propertyId: string
   status:
-    | 'PENDING_MASSAGER'
-    | 'PENDING_PAYMENT'
-    | 'CONFIRMED'
-    | 'CANCELED'
-    | 'COMPLETED'
+  | 'PENDING_MASSAGER'
+  | 'PENDING_PAYMENT'
+  | 'CONFIRMED'
+  | 'CANCELED'
+  | 'COMPLETED'
   bookingDate: string
   massager: {
     id: string
@@ -53,4 +53,8 @@ export type CreateBookingArgs = {
   massagerId: string
   propertyId: string
   bookingDate: string
+}
+
+export type GetBookingsArgs = {
+  search?: string
 }

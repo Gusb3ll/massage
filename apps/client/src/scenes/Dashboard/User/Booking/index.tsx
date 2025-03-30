@@ -2,8 +2,10 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
 import { FaMagnifyingGlass } from 'react-icons/fa6'
 import { toast } from 'sonner'
+import { useDebounce } from 'use-debounce'
 
 import { cancelBooking, getBookings } from '@/services/booking'
 
@@ -11,10 +13,13 @@ import CreateBookingModal from './Modal/Create'
 
 const UserBookingScene = () => {
   const router = useRouter()
+  const [search, setSearch] = useState('')
+  const [searchValue] = useDebounce(search, 250)
 
   const { data: bookings, refetch } = useQuery({
-    queryKey: ['booking'],
-    queryFn: () => getBookings(),
+    queryKey: ['booking', searchValue],
+    refetchOnWindowFocus: false,
+    queryFn: () => getBookings({ search: searchValue }),
   })
 
   const cancelBookingMutation = useMutation({
@@ -37,7 +42,7 @@ const UserBookingScene = () => {
             <input
               type="text"
               placeholder="Search"
-              // onChange={e => setSearch(e.target.value)}
+              onChange={e => setSearch(e.target.value)}
             />
           </label>
         </div>
@@ -46,7 +51,7 @@ const UserBookingScene = () => {
           {bookings?.map(b => (
             <div
               key={b.id}
-              className="flex items-center gap-4 rounded-lg border p-4 shadow-md"
+              className="flex flex-col items-center gap-4 rounded-lg border p-4 shadow-md lg:flex-row"
             >
               <Image
                 src={b.massager.profileImage}
@@ -86,7 +91,7 @@ const UserBookingScene = () => {
                   disabled={
                     cancelBookingMutation.isPending || b.status === 'CANCELED'
                   }
-                  className="disabled:btn-disabled btn rounded-lg bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+                  className="disabled:btn-disabled btn rounded-lg bg-[#9E6D54] px-4 py-2 text-white hover:bg-blue-600"
                   onClick={() =>
                     router.push(`/dashboard/user/booking/${b.id}/chat`)
                   }
@@ -94,8 +99,8 @@ const UserBookingScene = () => {
                   Chat
                 </button>
                 <button
-                  disabled={b.status !== 'PENDING_PAYMENT'}
-                  className="disabled:btn-disabled btn btn-primary rounded-lg px-4 py-2"
+                  disabled={b.status === 'PENDING_PAYMENT'}
+                  className="disabled:btn-disabled btn rounded-lg bg-[#CEE5D0] px-4 py-2"
                   onClick={() =>
                     router.push(`/dashboard/user/booking/${b.id}/payment`)
                   }
