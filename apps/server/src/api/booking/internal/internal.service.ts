@@ -2,11 +2,11 @@ import { Context, getUserFromContext } from '@app/common'
 import { PrismaService } from '@app/db'
 import { Injectable, NotFoundException } from '@nestjs/common'
 
-import { CreateBookingArgs, CreateChatArgs } from './internal.dto'
+import { CreateBookingArgs, CreateChatArgs, GetBookingQueryParams } from './internal.dto'
 
 @Injectable()
 export class BookingInternalService {
-  constructor(private readonly db: PrismaService) {}
+  constructor(private readonly db: PrismaService) { }
 
   private async getMassager(ctx: Context) {
     const user = getUserFromContext(ctx)
@@ -21,11 +21,22 @@ export class BookingInternalService {
     return massager
   }
 
-  async getBookings(ctx: Context) {
+  async getBookings(args: GetBookingQueryParams, ctx: Context) {
     const user = getUserFromContext(ctx)
+    const { search } = args
 
     const bookings = await this.db.booking.findMany({
-      where: { userId: user.id },
+      where: {
+        ...(search && {
+          OR: [
+            { property: { name: { contains: search, mode: 'insensitive' } } },
+            { massager: { user: { firstName: { contains: search, mode: 'insensitive' } } } },
+            { massager: { user: { lastName: { contains: search, mode: 'insensitive' } } } },
+            { property: { address: { contains: search, mode: 'insensitive' } } },
+          ],
+        }),
+        userId: user.id
+      },
       include: {
         massager: { include: { user: true } },
         property: { include: { owner: { include: { user: true } } } },

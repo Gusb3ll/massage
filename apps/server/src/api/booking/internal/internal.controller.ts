@@ -6,19 +6,20 @@ import {
   HttpStatus,
   Param,
   Post,
+  Query,
   Req,
 } from '@nestjs/common'
 
-import { CreateBookingArgs, CreateChatArgs } from './internal.dto'
+import { CreateBookingArgs, CreateChatArgs, GetBookingQueryParams } from './internal.dto'
 import { BookingInternalService } from './internal.service'
 
 @Controller('/booking/internal')
 export class BookingInternalController {
-  constructor(private readonly service: BookingInternalService) {}
+  constructor(private readonly service: BookingInternalService) { }
 
   @Get('/list')
-  async getBookings(@Req() ctx: Context) {
-    const res = await this.service.getBookings(ctx)
+  async getBookings(@Query() args: GetBookingQueryParams, @Req() ctx: Context) {
+    const res = await this.service.getBookings(args, ctx)
 
     return { statusCode: HttpStatus.OK, data: res }
   }
