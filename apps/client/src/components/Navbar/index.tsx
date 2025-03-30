@@ -1,8 +1,11 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { useSession } from 'next-auth/react'
 import React from 'react'
 
-function Index() {
+const Navbar = () => {
+  const { data: session } = useSession()
+
   return (
     <>
       <div className="navbar bg-base-100 h-[60px] border shadow-md sm:hidden">
@@ -15,7 +18,7 @@ function Index() {
             className="h-[46px] w-[46px] md:h-[56px] md:w-[56px]"
           />
           <p className="mt-1 border-l border-gray-300 pl-2 font-bold md:text-lg">
-            Nami massage
+            Nami Massage
           </p>
         </Link>
       </div>
@@ -32,11 +35,19 @@ function Index() {
             <p className="text-2xl font-semibold">Nami Massage</p>
           </div>
           <div className="mr-10 w-[27rem] justify-end gap-4 rounded-xl">
-            <Link href="/login">
-              <button className="btn btn-sm w-[70px] rounded-2xl border-[#000000] bg-[#ffffff] placeholder:bg-[#854C2F]">
-                Login
-              </button>
-            </Link>
+            {session?.user ? (
+              <Link href="/dashboard">
+                <button className="btn btn-sm w-[70px] rounded-2xl border-[#000000] bg-[#ffffff] placeholder:bg-[#854C2F]">
+                  Dashboard
+                </button>
+              </Link>
+            ) : (
+              <Link href="/login">
+                <button className="btn btn-sm w-[70px] rounded-2xl border-[#000000] bg-[#ffffff] placeholder:bg-[#854C2F]">
+                  Login
+                </button>
+              </Link>
+            )}
           </div>
         </div>
       </div>
@@ -44,4 +55,4 @@ function Index() {
   )
 }
 
-export default Index
+export default Navbar

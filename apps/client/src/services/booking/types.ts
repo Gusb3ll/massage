@@ -3,40 +3,37 @@ export type Booking = {
   userId: string
   massagerId: string
   propertyId: string
-  status: string
+  status:
+    | 'PENDING_MASSAGER'
+    | 'PENDING_PAYMENT'
+    | 'CONFIRMED'
+    | 'CANCELED'
+    | 'COMPLETED'
   bookingDate: string
-  owner: {
-    id: string
-    email: string
-    firstName: string
-    lastName: string
-    profileImage: string
-    gender: string
-  } | null
   massager: {
-    coverImage: string
-    massageImages: string[]
-    certificates: string[]
-    vaccineCertificates: string[]
-    status: 'AVAILABLE' | 'OCCUPIED' | 'UNAVAILABLE'
-    languages: string[]
-    skills: string[]
-    profileImage: string
+    id: string
     firstName: string
     lastName: string
-    gender: string
+    profileImage: string
+    gender: 'MALE' | 'FEMALE'
     dateOfBirth: string
-  } | null
+  }
   property: {
     id: string
     name: string
-    address: string
     images: string[]
     price: number
+    address: string
     rooms: number
     roomWidth: number
     roomHeight: number
-  } | null
+    owner: {
+      id: string
+      firstName: string
+      lastName: string
+      profileImage: string
+    }
+  }
 }
 
 export type BookingChat = {

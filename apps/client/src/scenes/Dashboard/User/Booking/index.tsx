@@ -1,12 +1,15 @@
 import { useQuery } from '@tanstack/react-query'
-import dayjs from 'dayjs'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
+import { FaMagnifyingGlass } from 'react-icons/fa6'
 
 import { getBookings } from '@/services/booking'
 
 import CreateBookingModal from './Modal/Create'
 
 const UserBookingScene = () => {
+  const router = useRouter()
+
   const { data: bookings, refetch } = useQuery({
     queryKey: ['booking'],
     queryFn: () => getBookings(),
@@ -15,81 +18,57 @@ const UserBookingScene = () => {
   return (
     <>
       <CreateBookingModal onCreate={() => refetch()} />
-      <div className="w-full rounded-lg border bg-white p-6 shadow-lg">
-        <h1 className="mb-5 text-2xl font-bold">Bookings</h1>
-        {bookings && bookings.length > 0 ? (
-          <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
-            {bookings?.map(booking => (
-              <div key={booking.id} className="flex flex-col gap-4">
-                {booking.massager && (
-                  <div className="h-auto rounded-lg border bg-white p-4 shadow-md xl:h-72">
-                    <h2 className="mb-2 text-2xl font-semibold">Massager</h2>
-                    <div className="flex flex-col gap-5 xl:flex-row">
-                      <Image
-                        src={
-                          booking.massager.profileImage ?? '/default-avatar.png'
-                        }
-                        alt="Image"
-                        width={50}
-                        height={50}
-                        className="h-52 w-full items-center rounded-md object-cover xl:w-72"
-                      />
-                      <div className="flex flex-col gap-3">
-                        <p className="text-xl font-semibold">
-                          {booking.massager.firstName}{' '}
-                          {booking.massager.lastName}
-                        </p>
-                        <div className="flex flex-row justify-between">
-                          <p className="text-lg">
-                            {Math.abs(
-                              dayjs(booking.massager.dateOfBirth).diff(
-                                dayjs(),
-                                'year',
-                              ),
-                            )}{' '}
-                            years
-                          </p>
-                          <p className="text-lg">{booking.massager.gender}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-                {booking.property && (
-                  <div className="h-auto rounded-lg border bg-white p-4 shadow-md xl:h-72">
-                    <h2 className="mb-2 text-2xl font-semibold">Property</h2>
-                    <div className="flex flex-col gap-5 xl:flex-row">
-                      <Image
-                        src={
-                          booking.property?.images[0] ?? '/default-avatar.png'
-                        }
-                        alt="Image"
-                        width={50}
-                        height={50}
-                        className="h-52 w-full items-center rounded-md object-cover xl:w-72"
-                      />
-                      <div className="flex flex-col gap-3">
-                        <p className="text-xl font-semibold">
-                          {booking.property?.name}
-                        </p>
-                        <p>{booking.property?.address}</p>
-                        <div className="flex flex-row gap-2">
-                          <p>{booking.property?.rooms} room</p>
-                          <p>
-                            <span className="font-medium">width:</span>{' '}
-                            {booking.property?.roomWidth}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
+      <div className="flex w-full flex-col gap-4 rounded-lg border p-8 shadow-lg">
+        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <h1 className="text-3xl font-semibold">Bookings</h1>
+          <label className="input input-[#C5C5C5] input-bordered flex w-full items-center gap-2 bg-white md:w-fit">
+            <FaMagnifyingGlass />
+            <input
+              type="text"
+              placeholder="Search"
+              // onChange={e => setSearch(e.target.value)}
+            />
+          </label>
+        </div>
+        <hr />
+        <div className="flex flex-col gap-4">
+          {bookings?.map(b => (
+            <div
+              key={b.id}
+              className="flex items-center gap-4 rounded-lg border p-4 shadow-md"
+            >
+              <Image
+                src={b.massager.profileImage}
+                alt={b.massager.firstName}
+                width={64}
+                height={64}
+                className="h-16 w-16 rounded-full object-cover"
+              />
+              <div className="flex flex-grow flex-col gap-1">
+                <h2 className="text-lg font-semibold">
+                  {b.massager.firstName} {b.massager.lastName}
+                </h2>
+                <p className="text-sm text-gray-600">{b.property.address}</p>
+                <span className="text-sm font-medium capitalize text-blue-600">
+                  {b.status.replace('_', ' ').toLowerCase()}
+                </span>
               </div>
-            ))}
-          </div>
-        ) : (
-          <p className="text-gray-500">No bookings available</p>
-        )}
+              <div className="flex gap-2">
+                <button className="rounded-lg bg-red-500 px-4 py-2 text-white hover:bg-red-600">
+                  Cancel
+                </button>
+                <button
+                  className="rounded-lg bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+                  onClick={() =>
+                    router.push(`/dashboard/user/booking/${b.id}/chat`)
+                  }
+                >
+                  Chat
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </>
   )

@@ -1,7 +1,6 @@
 import Image from 'next/image'
 import React from 'react'
 import Marquee from 'react-fast-marquee'
-import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
 
 import AppLayout from '@/components/Layouts/App'
 import LandingLayout from '@/components/Layouts/Landing'

@@ -33,34 +33,38 @@ export class BookingInternalService {
       orderBy: { createdAt: 'desc' },
     })
 
-    return bookings.map(booking => ({
-      ...booking,
-      massager: booking.massager
-        ? {
-            id: booking.massager.id,
-            firstName: booking.massager.user.firstName,
-            lastName: booking.massager.user.lastName,
-            profileImage: booking.massager.user.profileImage,
-            gender: booking.massager.user.gender,
-            dateOfBirth: booking.massager.user.dateOfBirth,
-          }
-        : null,
-      property: booking.property?.owner
-        ? {
-            id: booking.property.owner.id,
-            firstName: booking.property.owner.user.firstName,
-            lastName: booking.property.owner.user.lastName,
-            profileImage: booking.property.owner.user.profileImage,
-            name: booking.property.name,
-            price: booking.property.price,
-            address: booking.property.address,
-            images: booking.property.images,
-            rooms: booking.property.rooms,
-            roomWidth: booking.property.roomWidth,
-            roomHeight: booking.property.roomHeight,
-          }
-        : null,
-    }))
+    return bookings.map(booking => {
+      const property = booking.property
+      const massager = booking.massager
+
+      return {
+        ...booking,
+        massager: {
+          id: massager.id,
+          firstName: massager.user.firstName,
+          lastName: massager.user.lastName,
+          profileImage: massager.user.profileImage,
+          gender: massager.user.gender,
+          dateOfBirth: massager.user.dateOfBirth,
+        },
+        property: {
+          id: property.id,
+          name: property.name,
+          images: property.images,
+          price: property.price,
+          address: property.address,
+          rooms: property.rooms,
+          roomWidth: property.roomWidth,
+          roomHeight: property.roomHeight,
+          owner: {
+            id: property.owner.id,
+            firstName: property.owner.user.firstName,
+            lastName: property.owner.user.lastName,
+            profileImage: property.owner.user.profileImage,
+          },
+        },
+      }
+    })
   }
 
   async getMassagerBookings(ctx: Context) {
