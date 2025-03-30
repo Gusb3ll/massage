@@ -166,7 +166,7 @@ model BookingChat {
 
 enum PaymentTransactionStatus {
   PENDING
-  CANCELLED
+  CANCELED
   COMPLETED
   FAILED
 }
@@ -179,6 +179,7 @@ enum PaymentMethod {
 model BookingPaymentTransaction {
   id          String                   @id @default(cuid())
   extId       String
+  paymentLink String
   referenceNo String
   status      PaymentTransactionStatus @default(PENDING)
   method      PaymentMethod
