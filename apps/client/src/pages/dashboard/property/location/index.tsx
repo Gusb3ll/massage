@@ -1,3 +1,4 @@
+import { GoogleMapsEmbed } from '@next/third-parties/google'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -114,13 +115,16 @@ const LocationIndex = () => {
                         <p className="text-gray-800">{property.address}</p>
                       </div>
                     ))}
-                    <Image
-                      src="/images/map.png"
-                      alt="bg1"
-                      width={300}
-                      height={200}
-                      className="mt-5 h-[300px] w-[300px] rounded-xl md:h-[300px] md:w-[500px]"
-                    />
+                    <div className="mt-5 w-full">
+                      <GoogleMapsEmbed
+                        apiKey="AIzaSyDtnLBip1ffDwaGa2REm7NQphZKvWqATdo"
+                        mode="search"
+                        height={400}
+                        width="100%"
+                        q="KMUTNB"
+                        region="TH"
+                      />
+                    </div>
                   </div>
 
                   <div className="flex w-full flex-col rounded-lg border bg-[#faf7f7] p-5">
