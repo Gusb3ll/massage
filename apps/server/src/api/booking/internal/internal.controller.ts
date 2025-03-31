@@ -36,16 +36,16 @@ export class BookingInternalController {
     return { statusCode: HttpStatus.OK, data: res }
   }
 
-  @Get('/chat/:bookingId')
-  async getChat(@Param('bookingId') bookingId: string) {
-    const res = await this.service.getChat(bookingId)
+  @Get('/chat/:id')
+  async getChat(@Param('id') id: string) {
+    const res = await this.service.getChat(id)
 
     return { statusCode: HttpStatus.OK, data: res }
   }
 
-  @Post('/chat')
-  async createChat(@Body() args: CreateChatArgs) {
-    const res = await this.service.createChat(args)
+  @Post('/chat/:id')
+  async createChat(@Param('id') id: string, @Body() args: CreateChatArgs) {
+    const res = await this.service.createChat(id, args)
 
     return { statusCode: HttpStatus.OK, data: res }
   }

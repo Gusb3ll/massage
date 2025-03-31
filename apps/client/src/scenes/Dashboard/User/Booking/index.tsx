@@ -87,8 +87,7 @@ const UserBookingScene = () => {
                   disabled={
                     cancelBookingMutation.isPending ||
                     b.status === 'CANCELED' ||
-                    b.status === 'CONFIRMED' ||
-                    b.status === 'COMPLETED'
+                    b.status === 'CONFIRMED'
                   }
                   className="btn btn-error rounded-lg px-4 py-2 text-white"
                   onClick={() => {
@@ -104,7 +103,6 @@ const UserBookingScene = () => {
                   disabled={
                     cancelBookingMutation.isPending ||
                     b.status === 'CANCELED' ||
-                    b.status === 'CONFIRMED' ||
                     b.status === 'COMPLETED'
                   }
                   className="disabled:btn-disabled btn rounded-lg bg-[#9E6D54] px-4 py-2 text-white hover:bg-blue-600"
