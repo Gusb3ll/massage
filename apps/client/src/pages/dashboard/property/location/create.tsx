@@ -15,7 +15,11 @@ const CreateProperty = () => {
     mutationFn: (args: CreatePropertyArgs) => createProperty(args),
   })
 
-  const { register, handleSubmit } = useForm<CreatePropertyArgs>()
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<CreatePropertyArgs>()
 
   const onCreatePropertySubmit: SubmitHandler<
     CreatePropertyArgs
@@ -61,8 +65,15 @@ const CreateProperty = () => {
                       placeholder="Enter a name"
                       type="text"
                       className="input input-bordered bg-white"
-                      {...register('name')}
+                      {...register('name', {
+                        required: 'Location name is required',
+                      })}
                     />
+                    {errors.name && (
+                      <p className="mt-2 text-sm text-red-500">
+                        {errors.name.message}
+                      </p>
+                    )}
                   </label>
                   <div className="flex flex-col gap-5 md:flex-row">
                     <label className="form-control w-full max-w-28">
@@ -73,8 +84,19 @@ const CreateProperty = () => {
                         placeholder="Room"
                         type="number"
                         className="input input-bordered bg-white"
-                        {...register('rooms')}
+                        {...register('rooms', {
+                          required: 'rooms is required',
+                        })}
                       />
+                      {errors.rooms && (
+                        <p className="mt-2 text-sm text-red-500">
+                          {errors.rooms && (
+                            <p className="text-sm text-red-500">
+                              {errors.rooms.message}
+                            </p>
+                          )}
+                        </p>
+                      )}
                     </label>
                     <div className="flex flex-row gap-5">
                       <label className="form-control w-full max-w-28">
@@ -85,8 +107,15 @@ const CreateProperty = () => {
                           placeholder="width"
                           type="number"
                           className="input input-bordered bg-white"
-                          {...register('roomWidth')}
+                          {...register('roomWidth', {
+                            required: 'Room width is required',
+                          })}
                         />
+                        {errors.roomWidth && (
+                          <p className="mt-2 text-sm text-red-500">
+                            {errors.roomWidth.message}
+                          </p>
+                        )}
                       </label>
                       <label className="form-control w-full max-w-28">
                         <span className="label label-text font-semibold">
@@ -96,8 +125,15 @@ const CreateProperty = () => {
                           placeholder="height"
                           type="number"
                           className="input input-bordered bg-white"
-                          {...register('roomHeight')}
+                          {...register('roomHeight', {
+                            required: 'Room height is required',
+                          })}
                         />
+                        {errors.roomHeight && (
+                          <p className="mt-2 text-sm text-red-500">
+                            {errors.roomHeight.message}
+                          </p>
+                        )}
                       </label>
                     </div>
                   </div>
@@ -110,8 +146,15 @@ const CreateProperty = () => {
                     placeholder="Enter an address"
                     type="text"
                     className="input input-bordered bg-white"
-                    {...register('address')}
+                    {...register('address', {
+                      required: 'Address is required',
+                    })}
                   />
+                  {errors.address && (
+                    <p className="mt-2 text-sm text-red-500">
+                      {errors.address.message}
+                    </p>
+                  )}
                 </label>
                 <label className="form-control w-full max-w-md">
                   <span className="label label-text font-semibold">Images</span>
@@ -130,8 +173,15 @@ const CreateProperty = () => {
                     placeholder="Enter a message to customer"
                     type="text"
                     className="input input-bordered bg-white"
-                    {...register('description')}
+                    {...register('description', {
+                      required: 'description is required',
+                    })}
                   />
+                  {errors.description && (
+                    <p className="mt-2 text-sm text-red-500">
+                      {errors.description.message}
+                    </p>
+                  )}
                 </label>
                 <div className="flex flex-col md:flex-row md:justify-between">
                   <label className="form-control w-full max-w-28">
@@ -143,7 +193,15 @@ const CreateProperty = () => {
                       type="number"
                       className="input input-bordered bg-white"
                       {...register('price')}
+                      {...register('price', {
+                        required: 'price is required',
+                      })}
                     />
+                    {errors.price && (
+                      <p className="mt-2 text-sm text-red-500">
+                        {errors.price.message}
+                      </p>
+                    )}
                   </label>
                   <div className="flex items-end md:block">
                     <button
