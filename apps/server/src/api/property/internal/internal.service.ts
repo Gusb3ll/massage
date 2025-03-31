@@ -70,4 +70,64 @@ export class PropertyInternalService {
       where: { id },
     })
   }
+
+  async getPropertyStats(ctx: Context) {
+    const user = getUserFromContext(ctx)
+
+    const owner = await this.getPropertyOwner(user.id)
+    const properties = await this.db.property.findMany({
+      where: { ownerId: owner.id },
+      include: {
+        bookings: {
+          select: {
+            bookingDate: true,
+          },
+        },
+        _count: {
+          select: {
+            bookings: true,
+          },
+        },
+      },
+    })
+
+    const dailyStats: Record<
+      string,
+      { totalIncome: number; totalBookings: number }
+    > = {}
+
+    properties.forEach(property => {
+      property.bookings.forEach(booking => {
+        const startDate = new Date(booking.bookingDate)
+        const endDate = new Date(startDate)
+        endDate.setDate(endDate.getDate() + 1)
+
+        const totalIncome = property.price
+        const date = startDate.toISOString().split('T')[0]
+
+        if (!dailyStats[date]) {
+          dailyStats[date] = { totalIncome: 0, totalBookings: 0 }
+        }
+        dailyStats[date].totalIncome += totalIncome
+        dailyStats[date].totalBookings += 1
+      })
+    })
+
+    const totalIncomeAllDays = Object.values(dailyStats).reduce(
+      (sum, day) => sum + day.totalIncome,
+      0,
+    )
+    const totalBookingsAllDays = Object.values(dailyStats).reduce(
+      (sum, day) => sum + day.totalBookings,
+      0,
+    )
+
+    return Object.entries(dailyStats).map(([date, stats]) => ({
+      date,
+      totalIncome: stats.totalIncome,
+      totalBookings: stats.totalBookings,
+      totalIncomeAllDays,
+      totalBookingsAllDays,
+    }))
+  }
 }

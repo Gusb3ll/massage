@@ -3,6 +3,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   HttpStatus,
   Param,
   Patch,
@@ -42,5 +43,12 @@ export class PropertyInternalController {
     await this.service.deleteProperty(id, ctx)
 
     return { statusCode: HttpStatus.OK }
+  }
+
+  @Get('/dashboard/stats')
+  async getPropertyStats(@Req() ctx: Context) {
+    const res = await this.service.getPropertyStats(ctx)
+
+    return { statusCode: HttpStatus.OK, data: res }
   }
 }

@@ -2,7 +2,7 @@ import { getSession } from 'next-auth/react'
 
 import { ENDPOINT, HttpStatus, fetchers } from '@/utils'
 
-import { CreatePropertyArgs, GetPropertyArgs, Property } from './types'
+import { CreatePropertyArgs, GetPropertyArgs, Property, Stats } from './types'
 
 export const getProperty = async (id: string) => {
   const res = await fetchers.Get<Property>(`${ENDPOINT}/property/public/${id}`)
@@ -54,6 +54,22 @@ export const deleteProperty = async (id: string) => {
   if (res.statusCode >= HttpStatus.BAD_REQUEST) {
     throw new Error(res.message)
   }
+}
+
+export const getPropertyStats = async () => {
+  const session = await getSession()
+
+  const res = await fetchers.Get<Stats[]>(
+    `${ENDPOINT}/property/internal/dashboard/stats`,
+    {
+      token: session?.user.accessToken,
+    },
+  )
+  if (res.statusCode >= HttpStatus.BAD_REQUEST) {
+    throw new Error(res.message)
+  }
+
+  return res.data as Stats[]
 }
 
 export * from './types'

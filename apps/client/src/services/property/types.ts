@@ -42,3 +42,11 @@ export type UpdatePropertyArgs = {
 export type GetPropertyArgs = {
   search?: string
 }
+
+export type Stats = {
+  totalIncome: number
+  totalBookings: number
+  date: string
+  totalIncomeAllDays: number
+  totalBookingsAllDays: number
+}
