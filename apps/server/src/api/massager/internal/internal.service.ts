@@ -15,14 +15,10 @@ import { UpdateProfileArgs } from './internal.dto'
 
 @Injectable()
 export class MassagerInternalService {
-<<<<<<< HEAD
-  constructor(private readonly db: PrismaService) { }
-=======
   constructor(
     private readonly db: PrismaService,
     private readonly minioService: MinioService,
   ) {}
->>>>>>> 36bbe256bbf2f9b225cbe26e73c40eebcea02da5
 
   async getProfile(ctx: Context) {
     const user = getUserFromContext(ctx)
@@ -59,10 +55,10 @@ export class MassagerInternalService {
   }
 
   async getStats(ctx: Context) {
-    const massager = await this.getProfile(ctx);
+    const massager = await this.getProfile(ctx)
 
     if (!massager) {
-      throw new NotFoundException('Massager not found');
+      throw new NotFoundException('Massager not found')
     }
 
     const bookings = await this.db.booking.findMany({
@@ -74,58 +70,38 @@ export class MassagerInternalService {
         id: true,
         createdAt: true,
       },
-    });
+    })
 
-    const dailyBookingCount: Record<string, number> = {};
+    const dailyBookingCount: Record<string, number> = {}
 
     bookings.forEach(booking => {
-      const date = booking.createdAt.toISOString().split('T')[0];
-      dailyBookingCount[date] = (dailyBookingCount[date] || 0) + 1;
-    });
+      const date = booking.createdAt.toISOString().split('T')[0]
+      dailyBookingCount[date] = (dailyBookingCount[date] || 0) + 1
+    })
 
-    const dailyStats = Object.entries(dailyBookingCount).map(([date, count]) => ({
-      date,
-      totalIncome: count * 200,
-      totalBookings: count,
-    }));
+    const dailyStats = Object.entries(dailyBookingCount).map(
+      ([date, count]) => ({
+        date,
+        totalIncome: count * 200,
+        totalBookings: count,
+      }),
+    )
 
-    const totalIncomeAllDays = dailyStats.reduce((sum, day) => sum + day.totalIncome, 0);
-    const totalBookingsAllDays = dailyStats.reduce((sum, day) => sum + day.totalBookings, 0);
+    const totalIncomeAllDays = dailyStats.reduce(
+      (sum, day) => sum + day.totalIncome,
+      0,
+    )
+    const totalBookingsAllDays = dailyStats.reduce(
+      (sum, day) => sum + day.totalBookings,
+      0,
+    )
 
-    return dailyStats.map(day => ({ ...day, totalIncomeAllDays, totalBookingsAllDays }));
+    return dailyStats.map(day => ({
+      ...day,
+      totalIncomeAllDays,
+      totalBookingsAllDays,
+    }))
   }
-
-
-
-  // async getStats(ctx: Context) {
-  //   const massager = await this.getProfile(ctx)
-
-  //   const bookings = await this.db.booking.findMany({
-  //     where: { massagerId: massager.id, status: 'COMPLETED' },
-  //     select: {
-  //       rating: true,
-  //       paymentTransaction: { select: { amount: true } },
-  //     },
-  //   })
-
-  //   const income = bookings.reduce(
-  //     (acc, booking) => acc + (booking.paymentTransaction?.amount ?? 0),
-  //     0,
-  //   )
-  //   const count = bookings.length
-  //   const rating = (
-  //     bookings.reduce((acc, booking) => acc + (booking.rating ?? 0), 0) / count
-  //   ).toFixed(1)
-
-  //   return {
-  //     income,
-  //     count,
-  //     rating,
-  //   }
-  // }
-
-  // Charts
-  // async getChartStats(ctx: Context) { }
 
   async getDashboardBookings(ctx: Context) {
     const massager = await this.getProfile(ctx)
