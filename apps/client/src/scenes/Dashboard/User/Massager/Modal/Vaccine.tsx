@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import { createRef } from 'react'
 
 import { Massager } from '@/services/massager'
@@ -22,11 +21,10 @@ const VaccineModal: React.FC<VaccineModalProps> = ({ massager }) => {
           <h3 className="text-lg font-bold">Vaccine Certificates</h3>
           {massager.vaccineCertificates.length > 0 ? (
             <>
-              <Image
+              <img
                 src={massager.vaccineCertificates[0] ?? '/default-avatar.png'}
                 alt="Vaccine Certificates"
-                unoptimized
-                className="w-full items-center rounded-full object-cover"
+                className="h-[300px] w-full items-center rounded-lg object-cover"
               />
             </>
           ) : (

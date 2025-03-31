@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import { createRef } from 'react'
 
 import { Massager } from '@/services/massager'
@@ -21,11 +20,10 @@ const LicenseModal: React.FC<LicenseModalProps> = ({ massager }) => {
         <h3 className="text-lg font-bold">License Certificates</h3>
         {massager.certificates.length > 0 ? (
           <>
-            <Image
+            <img
               src={massager.certificates[0] ?? '/default-avatar.png'}
               alt="License Certificates"
-              unoptimized
-              className="w-full items-center rounded-full object-cover"
+              className="h-[300px] w-full items-center rounded-lg object-cover"
             />
           </>
         ) : (

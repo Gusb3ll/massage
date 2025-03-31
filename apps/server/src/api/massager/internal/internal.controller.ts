@@ -58,4 +58,12 @@ export class MassagerInternalController {
 
     return { statusCode: HttpStatus.OK }
   }
+
+  @Post('/file')
+  async uploadFile(@Req() ctx: Context) {
+    const file = await ctx.file()
+    const res = await this.service.uploadFile(ctx, file)
+
+    return { statusCode: HttpStatus.OK, data: res }
+  }
 }
