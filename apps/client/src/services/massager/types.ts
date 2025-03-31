@@ -22,4 +22,6 @@ export type Stats = {
   totalIncome: number
   count: number
   date: string
+  totalIncomeAllDays: number
+  totalBookingsAllDays: number
 }

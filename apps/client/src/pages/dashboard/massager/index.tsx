@@ -58,6 +58,31 @@ const Massager = () => {
         <div className="w-full rounded-lg border p-8 shadow-lg">
           <div className="flex flex-col gap-4">
             <p className="text-2xl font-semibold sm:text-3xl">Dashboard</p>
+            <div className="flex w-full flex-col gap-4 md:flex-row">
+              {usageStats.length > 0 && (
+                <div className="flex w-full flex-row items-center justify-center gap-4">
+                  <div className="flex w-full flex-col gap-4 md:flex-row">
+                    <div className="flex flex-1 flex-col items-center justify-center rounded-lg border border-gray-300 bg-white p-5 shadow-md">
+                      <p className="text-lg font-semibold">Total Income</p>
+                      <p className="text-primary text-2xl font-bold">
+                        {usageStats[
+                          usageStats.length - 1
+                        ].totalIncomeAllDays.toLocaleString()}{' '}
+                        ฿
+                      </p>
+                    </div>
+                    <div className="flex flex-1 flex-col items-center justify-center rounded-lg border border-gray-300 bg-white p-5 shadow-md">
+                      <p className="text-lg font-semibold">
+                        Number of bookings
+                      </p>
+                      <p className="text-primary text-2xl font-bold">
+                        {usageStats[usageStats.length - 1].totalBookingsAllDays}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
 
             <div className="flex flex-col gap-4 md:flex-row">
               {usageStats.length > 0 ? (
@@ -84,7 +109,7 @@ const Massager = () => {
                   />
                 </div>
               ) : (
-                <p>ไม่มีข้อมูลการใช้งาน</p>
+                <p>There is no usage information.</p>
               )}
             </div>
           </div>
