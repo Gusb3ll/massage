@@ -20,13 +20,15 @@ const VaccineModal: React.FC<VaccineModalProps> = ({ massager }) => {
           </form>
           <h3 className="text-lg font-bold">Vaccine Certificates</h3>
           {massager.vaccineCertificates.length > 0 ? (
-            <>
+            massager.vaccineCertificates.map((c, i) => (
+              // eslint-disable-next-line @next/next/no-img-element
               <img
-                src={massager.vaccineCertificates[0] ?? '/default-avatar.png'}
-                alt="Vaccine Certificates"
+                key={`vacc-${i}`}
+                src={c}
+                alt={`vacc-${i}`}
                 className="h-[300px] w-full items-center rounded-lg object-cover"
               />
-            </>
+            ))
           ) : (
             <div className="mt-2 flex h-[200px] items-center justify-center rounded-lg border border-dashed border-gray-300">
               Massager has no certificates
