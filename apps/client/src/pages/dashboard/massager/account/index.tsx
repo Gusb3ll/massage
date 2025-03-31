@@ -21,19 +21,19 @@ const MassagerAccount = () => {
   const [selectedSkills, setSelectedSkills] = useState<string[]>([])
   const [certificates, setCertificates] = useState<File[]>([])
   const [vaccineCertificates, setVaccineCertificates] = useState<File[]>([])
-  const [profileImage, setProfileImage] = useState<string>(
-    '/default-avatar.png',
-  )
+  // const [profileImage, setProfileImage] = useState<string>(
+  //   '/default-avatar.png',
+  // )
 
-  useEffect(() => {
-    if (session?.user?.profileImage) {
-      setProfileImage(session.user.profileImage)
-    }
-    if (session?.user?.massager) {
-      setSelectedLanguages(session.user.massager.languages || [])
-      setSelectedSkills(session.user.massager.skills || [])
-    }
-  }, [session?.user])
+  // useEffect(() => {
+  //   if (session?.user?.profileImage) {
+  //     setProfileImage(session.user.profileImage)
+  //   }
+  //   if (session?.user?.massager) {
+  //     setSelectedLanguages(session.user.massager.languages || [])
+  //     setSelectedSkills(session.user.massager.skills || [])
+  //   }
+  // }, [session?.user])
 
   const updateMassagerMutation = useMutation({
     mutationFn: (args: UpdatateMassagerArgs) => updateMassager(args),
