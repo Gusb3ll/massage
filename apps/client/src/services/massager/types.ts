@@ -17,3 +17,9 @@ export type Massager = {
 export type GetMassagerArgs = {
   search?: string
 }
+
+export type Stats = {
+  totalIncome: number
+  count: number
+  date: string
+}

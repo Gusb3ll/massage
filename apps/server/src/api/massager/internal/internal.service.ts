@@ -6,7 +6,7 @@ import { UpdateProfileArgs } from './internal.dto'
 
 @Injectable()
 export class MassagerInternalService {
-  constructor(private readonly db: PrismaService) {}
+  constructor(private readonly db: PrismaService) { }
 
   async getProfile(ctx: Context) {
     const user = getUserFromContext(ctx)
@@ -43,32 +43,77 @@ export class MassagerInternalService {
   }
 
   // CTA
+
   async getStats(ctx: Context) {
-    const massager = await this.getProfile(ctx)
+    const massager = await this.getProfile(ctx);
+    console.log('Massager ID:', massager?.id);
+
+    if (!massager) {
+      throw new NotFoundException('Massager not found');
+    }
 
     const bookings = await this.db.booking.findMany({
-      where: { massagerId: massager.id, status: 'COMPLETED' },
+      where: {
+        massagerId: massager.id,
+        status: { in: ['CONFIRMED', 'COMPLETED'] },
+      },
       select: {
+        id: true,
         rating: true,
+        createdAt: true,  // เพิ่มการดึงข้อมูลวันที่จาก booking
         paymentTransaction: { select: { amount: true } },
       },
-    })
+    });
 
-    const income = bookings.reduce(
-      (acc, booking) => acc + (booking.paymentTransaction?.amount ?? 0),
-      0,
-    )
-    const count = bookings.length
-    const rating = (
-      bookings.reduce((acc, booking) => acc + (booking.rating ?? 0), 0) / count
-    ).toFixed(1)
+    console.log('Bookings:', bookings);
 
-    return {
-      income,
-      count,
-      rating,
-    }
+    const userBookingCounts: Record<string, number> = {};
+    bookings.forEach(booking => {
+      const userId = booking.id;
+      userBookingCounts[userId] = (userBookingCounts[userId] || 0) + 1;
+    });
+
+    const count = bookings.length;
+
+    const totalIncome = count * 200;
+
+    // เพิ่มข้อมูลวันที่จองไปในผลลัพธ์
+    const result = bookings.map(booking => ({
+      date: booking.createdAt,  // ส่งวันที่ที่ถูกจองไปด้วย
+      count: userBookingCounts[booking.id],
+      totalIncome
+    }));
+
+    return result;
   }
+
+
+  // async getStats(ctx: Context) {
+  //   const massager = await this.getProfile(ctx)
+
+  //   const bookings = await this.db.booking.findMany({
+  //     where: { massagerId: massager.id, status: 'COMPLETED' },
+  //     select: {
+  //       rating: true,
+  //       paymentTransaction: { select: { amount: true } },
+  //     },
+  //   })
+
+  //   const income = bookings.reduce(
+  //     (acc, booking) => acc + (booking.paymentTransaction?.amount ?? 0),
+  //     0,
+  //   )
+  //   const count = bookings.length
+  //   const rating = (
+  //     bookings.reduce((acc, booking) => acc + (booking.rating ?? 0), 0) / count
+  //   ).toFixed(1)
+
+  //   return {
+  //     income,
+  //     count,
+  //     rating,
+  //   }
+  // }
 
   // Charts
   // async getChartStats(ctx: Context) { }
