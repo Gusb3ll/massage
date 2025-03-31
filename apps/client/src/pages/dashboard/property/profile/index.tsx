@@ -1,15 +1,18 @@
 import { useMutation } from '@tanstack/react-query'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
+import { BsPencil } from 'react-icons/bs'
 import { toast } from 'sonner'
 
 import AppLayout from '@/components/Layouts/App'
 import DashboardLayout from '@/components/Layouts/Dashboard'
+import { uploadAvatar } from '@/services/massager'
 import { UpdateUserArgs, updateUser } from '@/services/user'
 
 const Profile = () => {
+  const avatarInputRef = useRef<HTMLInputElement>(null)
   const { data: session, update } = useSession()
 
   const { register, handleSubmit, setValue } = useForm<UpdateUserArgs>()
@@ -30,6 +33,46 @@ const Profile = () => {
       setValue('dateOfBirth', session.user.dateOfBirth)
     }
   }, [session?.user, setValue])
+
+  const handleAvatarUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      if (avatarInputRef.current) {
+        avatarInputRef.current.value = ''
+      }
+
+      const uploadAvatarPromise = async () => {
+        if (!file) {
+          throw new Error('ไม่พบไฟล์ที่ต้องการอัพโหลด')
+        }
+        // 5MB
+        if (file.size > 5 * 1024 * 1024) {
+          throw new Error('ไฟล์ที่อัพโหลดต้องมีขนาดไม่เกิน 5MB')
+        }
+        if (!file.type.match(/^image/)) {
+          throw new Error('ชนิดของไฟล์ที่อัพโหลดไม่ถูกต้อง')
+        }
+
+        const reader = new FileReader()
+        reader.onload = e => {
+          const img = document.getElementById('avatar-img') as HTMLImageElement
+          if (img && e.target?.result) {
+            img.src = e.target.result as string
+          }
+        }
+        reader.readAsDataURL(file)
+
+        await uploadAvatar(file)
+        update()
+      }
+
+      toast.promise(uploadAvatarPromise(), {
+        loading: 'Uploading avatar...',
+        success: 'Avatar uploaded',
+        error: (e: Error) => e.message,
+      })
+    }
+  }
 
   return (
     <AppLayout>
@@ -108,16 +151,33 @@ const Profile = () => {
                   />
                 </label>
               </div>
-              <div className="flex w-full items-center justify-center">
-                {session?.user?.profileImage && (
-                  <Image
-                    src={session.user.profileImage}
-                    alt="Profile Image"
-                    width={100}
-                    height={100}
-                    className="h-32 w-32 rounded-full border-2 border-gray-300 object-cover"
+              <div className="flex w-full items-center justify-center gap-4">
+                <div className="relative mb-6 aspect-[1/1]">
+                  {session?.user?.profileImage && (
+                    <Image
+                      src={session.user.profileImage}
+                      alt="Profile Image"
+                      width={100}
+                      height={100}
+                      className="h-32 w-32 rounded-full border-2 border-gray-300 object-cover"
+                    />
+                  )}
+                  <input
+                    type="file"
+                    ref={avatarInputRef}
+                    accept="image/*"
+                    onChange={handleAvatarUpload}
+                    className="hidden"
                   />
-                )}
+                  <button
+                    type="button"
+                    onClick={() => avatarInputRef.current?.click()}
+                    className="absolute bottom-2 right-2 flex h-[40px] w-[40px] items-center justify-center rounded-full border border-white bg-gray-300 shadow-lg transition duration-300 hover:scale-105"
+                    aria-label="Upload avatar image"
+                  >
+                    <BsPencil size={18} />
+                  </button>
+                </div>
               </div>
             </div>
             <div className="mt-4 flex justify-end lg:mt-7">

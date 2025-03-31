@@ -18,7 +18,7 @@ import { PropertyInternalService } from './internal.service'
 @ApiTags('Property - Internal')
 @Controller('/property/internal')
 export class PropertyInternalController {
-  constructor(private readonly service: PropertyInternalService) {}
+  constructor(private readonly service: PropertyInternalService) { }
 
   @Post('/')
   async createProperty(@Body() args: CreatePropertyArgs, @Req() ctx: Context) {
@@ -48,6 +48,22 @@ export class PropertyInternalController {
   @Get('/dashboard/stats')
   async getPropertyStats(@Req() ctx: Context) {
     const res = await this.service.getPropertyStats(ctx)
+
+    return { statusCode: HttpStatus.OK, data: res }
+  }
+
+  @Post('/avatar')
+  async uploadAvatar(@Req() ctx: Context) {
+    const file = await ctx.file()
+    await this.service.uploadAvatar(ctx, file)
+
+    return { statusCode: HttpStatus.OK }
+  }
+
+  @Post('/file')
+  async uploadFile(@Req() ctx: Context) {
+    const file = await ctx.file()
+    const res = await this.service.uploadFile(ctx, file)
 
     return { statusCode: HttpStatus.OK, data: res }
   }

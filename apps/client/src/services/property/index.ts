@@ -72,4 +72,36 @@ export const getPropertyStats = async () => {
   return res.data as Stats[]
 }
 
+export const uploadAvatar = async (file: File) => {
+  const session = await getSession()
+
+  const formData = new FormData()
+  formData.append('file', file)
+
+  const res = await fetchers.Upload(`${ENDPOINT}/property/internal/avatar`, {
+    data: formData,
+    token: session?.user.accessToken,
+  })
+  if (res.statusCode >= HttpStatus.BAD_REQUEST) {
+    throw new Error(res.message)
+  }
+}
+
+export const uploadFile = async (file: File) => {
+  const session = await getSession()
+
+  const formData = new FormData()
+  formData.append('file', file)
+
+  const res = await fetchers.Upload<{ url: string }>(
+    `${ENDPOINT}/property/internal/file`,
+    { data: formData, token: session?.user.accessToken },
+  )
+  if (res.statusCode >= HttpStatus.BAD_REQUEST) {
+    throw new Error(res.message)
+  }
+
+  return res.data as { url: string }
+}
+
 export * from './types'

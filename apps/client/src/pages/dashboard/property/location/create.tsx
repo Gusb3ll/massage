@@ -1,16 +1,20 @@
 import { useMutation } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
-import React from 'react'
+import { useRef, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { FaPlus, FaUpload } from 'react-icons/fa6'
 import { toast } from 'sonner'
 
 import AppLayout from '@/components/Layouts/App'
 import DashboardLayout from '@/components/Layouts/Dashboard'
+import { uploadFile } from '@/services/massager'
 import { CreatePropertyArgs, createProperty } from '@/services/property'
 
 const CreateProperty = () => {
   const { data: session, update } = useSession()
 
+  const [imagesProperty, setImagesProperty] = useState<string[]>([])
+  const imagesInputRef = useRef<HTMLInputElement>(null)
   const createPropertyMutation = useMutation({
     mutationFn: (args: CreatePropertyArgs) => createProperty(args),
   })
@@ -28,7 +32,7 @@ const CreateProperty = () => {
       if (!session?.user?.id) {
         throw new Error('User not authenticated')
       }
-      args.images = args.images ? args.images : []
+      args.images = imagesProperty
       args.price = Number(args.price)
       args.rooms = Number(args.rooms)
       args.roomWidth = Number(args.roomWidth)
@@ -40,6 +44,38 @@ const CreateProperty = () => {
     } catch (e) {
       toast.error((e as Error).message)
     }
+  }
+  console.log(imagesInputRef.current)
+
+  const handleFileUpload = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    type: 'IMAGESPROPERTY',
+  ) => {
+    const file = e.target.files?.[0]
+
+    const uploadFilePromise = async () => {
+      if (!file) {
+        throw new Error('ไม่พบไฟล์ที่ต้องการอัพโหลด')
+      }
+      // 5MB
+      if (file.size > 5 * 1024 * 1024) {
+        throw new Error('ไฟล์ที่อัพโหลดต้องมีขนาดไม่เกิน 5MB')
+      }
+      if (!file.type.match(/^image/)) {
+        throw new Error('ชนิดของไฟล์ที่อัพโหลดไม่ถูกต้อง')
+      }
+
+      const res = await uploadFile(file)
+      if (type === 'IMAGESPROPERTY') {
+        setImagesProperty(prev => [...prev, res.url])
+      }
+    }
+
+    toast.promise(uploadFilePromise(), {
+      loading: 'Uploading file...',
+      success: 'File uploaded',
+      error: (e: Error) => e.message,
+    })
   }
 
   return (
@@ -156,15 +192,50 @@ const CreateProperty = () => {
                     </p>
                   )}
                 </label>
-                <label className="form-control w-full max-w-md">
-                  <span className="label label-text font-semibold">Images</span>
+                <div className="flex flex-col gap-4">
                   <input
-                    placeholder="img"
-                    type="text"
-                    className="input input-bordered bg-white"
-                    {...register('images')}
+                    type="file"
+                    ref={imagesInputRef}
+                    accept="image/*"
+                    onChange={e => handleFileUpload(e, 'IMAGESPROPERTY')}
+                    className="hidden"
                   />
-                </label>
+                  <div className="flex flex-row items-center gap-4">
+                    <p className="text-xl">Images</p>
+                    <button
+                      type="button"
+                      onClick={() => imagesInputRef.current?.click()}
+                      className="btn btn-sm bg-primary/80 hover:bg-primary/90 flex w-fit flex-row gap-4 text-white"
+                    >
+                      Upload
+                      <FaUpload size="16" />
+                    </button>
+                  </div>
+                  <div className="flex flex-row flex-wrap gap-4">
+                    {imagesProperty.length > 0 ? (
+                      imagesProperty.map((file, i) => (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          key={`certificate-${i}`}
+                          src={file}
+                          className="aspect-video w-[200px] rounded-lg object-cover"
+                          alt={`certificate-${i}`}
+                          onClick={() => {
+                            window.open(file, '_blank')
+                          }}
+                        />
+                      ))
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => imagesInputRef.current?.click()}
+                        className="flex aspect-video h-full w-[200px] items-center justify-center rounded-lg border border-dashed border-gray-600"
+                      >
+                        <FaPlus size="16" />
+                      </button>
+                    )}
+                  </div>
+                </div>
                 <label className="form-control w-full max-w-md">
                   <span className="label label-text font-semibold">
                     Description
