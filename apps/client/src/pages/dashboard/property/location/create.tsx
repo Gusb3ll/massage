@@ -41,15 +41,7 @@ const CreateProperty = () => {
   return (
     <AppLayout>
       <DashboardLayout>
-        <div className="">
-          <p className="w-full text-4xl font-semibold">
-            Match your accommodation with the right guests.
-          </p>
-          <p className="text-base font-normal text-stone-400">
-            All information must provided unless specified as optional.
-          </p>
-        </div>
-        <div className="responsive mt-8 flex w-full flex-col rounded-lg border p-10 shadow-lg">
+        <div className="w-full rounded-lg border p-8 shadow-lg">
           <div className="flex w-full flex-col p-5 sm:flex-row-reverse sm:justify-between">
             <div className="flex w-full flex-col">
               <form

@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
 import { useEffect } from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
 import AppLayout from '@/components/Layouts/App'
@@ -12,32 +12,16 @@ import { UpdateUserArgs, updateUser } from '@/services/user'
 const Profile = () => {
   const { data: session, update } = useSession()
 
-  const updateUserMutation = useMutation({
-    mutationFn: (args: UpdateUserArgs) => updateUser(args),
-  })
-
   const { register, handleSubmit, setValue } = useForm<UpdateUserArgs>()
 
-  const onUpdateUserSubmit: SubmitHandler<UpdateUserArgs> = async args => {
-    try {
-      if (args.firstName === session?.user?.firstName) {
-        delete args.firstName
-      }
-      if (args.lastName === session?.user?.lastName) {
-        delete args.lastName
-      }
-
-      if (args.dateOfBirth === session?.user?.dateOfBirth) {
-        delete args.dateOfBirth
-      }
-
-      await updateUserMutation.mutateAsync(args)
+  const updateUserMutation = useMutation({
+    mutationFn: (args: UpdateUserArgs) => updateUser(args),
+    onSuccess: () => {
       update()
       toast.success('User updated successfully')
-    } catch (e) {
-      toast.error((e as Error).message)
-    }
-  }
+    },
+    onError: e => toast.error(e.message),
+  })
 
   useEffect(() => {
     if (session?.user) {
@@ -50,117 +34,101 @@ const Profile = () => {
   return (
     <AppLayout>
       <DashboardLayout>
-        <div>
-          <p className="w-full text-4xl font-semibold">Welcome Back.</p>
-          <p className="text-base font-normal text-stone-400">
-            Let check your proflie
-          </p>
-        </div>
-
-        <div className="mt-4 flex w-full flex-col rounded-lg border p-10 shadow-lg md:mt-8">
-          <h1 className="text-3xl font-semibold">Profile</h1>
-          <hr />
-          <div className="flex flex-col xl:flex-row">
-            <div className="flex w-full flex-col p-5 sm:justify-between xl:flex-row-reverse">
-              <div className="mb-6 flex w-full items-center justify-center sm:mb-0">
+        <div className="w-full rounded-lg border p-8 shadow-lg">
+          <form
+            onSubmit={handleSubmit(args => updateUserMutation.mutate(args))}
+            className="flex flex-col gap-4"
+          >
+            <h1 className="text-3xl font-semibold">Account</h1>
+            <hr />
+            <div className="flex flex-col-reverse lg:flex-row">
+              <div className="flex w-full flex-col gap-4">
+                <div className="mt-5 flex max-w-3xl flex-col gap-4 sm:flex-row">
+                  <label className="form-control w-full">
+                    <span className="label label-text font-semibold">
+                      FirstName
+                    </span>
+                    <input
+                      type="text"
+                      defaultValue={session?.user.firstName}
+                      className="input input-[#C5C5C5] input-bordered cursor-default select-none bg-white opacity-80"
+                      {...register('firstName')}
+                    />
+                  </label>
+                  <label className="form-control w-full">
+                    <span className="label label-text font-semibold">
+                      LastName
+                    </span>
+                    <input
+                      type="text"
+                      defaultValue={session?.user.lastName}
+                      className="input input-[#C5C5C5] input-bordered cursor-default select-none bg-white opacity-80"
+                      {...register('lastName')}
+                    />
+                  </label>
+                </div>
+                <label className="form-control w-full max-w-3xl">
+                  <span className="label label-text font-semibold">
+                    Phone number
+                  </span>
+                  <input
+                    type="text"
+                    defaultValue={session?.user.phoneNumber}
+                    readOnly
+                    className="input input-[#C5C5C5] input-bordered bg-white"
+                  />
+                </label>
+                <label className="form-control w-full max-w-3xl">
+                  <span className="label label-text font-semibold">Email</span>
+                  <input
+                    type="text"
+                    defaultValue={session?.user.email}
+                    readOnly
+                    className="input input-bordered bg-white"
+                  />
+                </label>
+                <label className="form-control w-full max-w-3xl">
+                  <span className="label label-text font-semibold">Gender</span>
+                  <input
+                    type="text"
+                    defaultValue={session?.user.gender}
+                    readOnly
+                    className="input input-bordered bg-white"
+                  />
+                </label>
+                <label className="form-control w-full max-w-3xl">
+                  <span className="label label-text font-semibold">
+                    Birthday
+                  </span>
+                  <input
+                    type="date"
+                    defaultValue={session?.user.dateOfBirth}
+                    className="input input-[#C5C5C5] input-bordered bg-white"
+                    {...register('dateOfBirth')}
+                  />
+                </label>
+              </div>
+              <div className="flex w-full items-center justify-center">
                 {session?.user?.profileImage && (
                   <Image
                     src={session.user.profileImage}
                     alt="Profile Image"
                     width={100}
                     height={100}
-                    className="h-20 w-20 rounded-full border-2 border-gray-300 object-cover"
+                    className="h-32 w-32 rounded-full border-2 border-gray-300 object-cover"
                   />
                 )}
               </div>
-
-              <div className="flex w-full flex-col sm:w-2/3">
-                <form
-                  onSubmit={handleSubmit(onUpdateUserSubmit)}
-                  className="flex flex-col gap-4"
-                >
-                  <div className="mt-6 flex max-w-md flex-col gap-4 xl:flex-row">
-                    <label className="form-control w-full">
-                      <span className="label label-text font-semibold">
-                        FirstName
-                      </span>
-                      <input
-                        type="text"
-                        defaultValue={session?.user.firstName}
-                        className="input input-bordered cursor-default select-none bg-white opacity-80"
-                        {...register('firstName')}
-                      />
-                    </label>
-                    <label className="form-control w-full">
-                      <span className="label label-text font-semibold">
-                        LastName
-                      </span>
-                      <input
-                        type="text"
-                        defaultValue={session?.user.lastName}
-                        className="input input-bordered cursor-default select-none bg-white opacity-80"
-                        {...register('lastName')}
-                      />
-                    </label>
-                  </div>
-                  <label className="form-control w-full max-w-md">
-                    <span className="label label-text font-semibold">
-                      Phone number
-                    </span>
-                    <input
-                      type="text"
-                      readOnly
-                      defaultValue={session?.user.phoneNumber}
-                      className="input input-bordered bg-white"
-                    />
-                  </label>
-                  <label className="form-control w-full max-w-md">
-                    <span className="label label-text font-semibold">
-                      Email
-                    </span>
-                    <input
-                      type="text"
-                      defaultValue={session?.user.email}
-                      readOnly
-                      className="input input-bordered bg-white"
-                    />
-                  </label>
-                  <label className="form-control w-full max-w-md">
-                    <span className="label label-text font-semibold">
-                      Gender
-                    </span>
-                    <input
-                      type="text"
-                      defaultValue={session?.user.gender}
-                      readOnly
-                      className="input input-bordered bg-white"
-                    />
-                  </label>
-                  <div className="flex w-full max-w-md flex-row justify-between gap-4">
-                    <label className="form-control w-full">
-                      <span className="label label-text font-semibold">
-                        Birthday
-                      </span>
-                      <input
-                        type="date"
-                        defaultValue={session?.user.dateOfBirth}
-                        className="input input-bordered bg-white"
-                        {...register('dateOfBirth')}
-                      />
-                    </label>
-                  </div>
-                </form>
-              </div>
             </div>
-            <div className="flex items-end justify-end p-5 md:mb-3 md:p-0 xl:justify-normal">
+            <div className="mt-4 flex justify-end lg:mt-7">
               <button
                 type="submit"
-                className="btn btn-primary w-[120px] bg-[#854C2F] text-white"
+                className="btn btn-primary h-10 w-28 bg-[#8a4724] text-white"
               >
                 Confirm
               </button>
             </div>
-          </div>
+          </form>
         </div>
       </DashboardLayout>
     </AppLayout>

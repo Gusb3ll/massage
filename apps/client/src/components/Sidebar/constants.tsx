@@ -47,22 +47,22 @@ export const MASSAGER_ROUTES = [
 export const PROPERTY_OWNER_ROUTES = [
   {
     title: 'Dashbord',
-    route: '/dashboard/property-owner',
+    route: '/dashboard/property',
     icon: <MdDashboard />,
   },
   {
     title: 'Your Account',
-    route: '/dashboard/property-owner/profile',
+    route: '/dashboard/property/profile',
     icon: <FaUserCog />,
   },
   {
     title: 'Location',
-    route: '/dashboard/property-owner/location',
+    route: '/dashboard/property/location',
     icon: <TfiLocationPin />,
   },
   {
     title: 'Add location',
-    route: '/dashboard/property-owner/location/create',
+    route: '/dashboard/property/location/create',
     icon: <MdOutlineAddLocationAlt />,
   },
 ]

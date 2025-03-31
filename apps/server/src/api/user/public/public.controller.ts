@@ -7,7 +7,7 @@ import { UserPublicService } from './public.service'
 @ApiTags('User - Public')
 @Controller('/user/public')
 export class UserPublicController {
-  constructor(private readonly service: UserPublicService) {}
+  constructor(private readonly service: UserPublicService) { }
 
   @Post('/register')
   async register(@Body() args: RegisterArgs) {
@@ -33,8 +33,8 @@ export class UserPublicController {
   // TODO: Forgot password and reset password
 
   @Post('/forgot-password')
-  async forgotPassword() {}
+  async forgotPassword() { }
 
   @Post('/reset-password')
-  async resetPassword() {}
+  async resetPassword() { }
 }
