@@ -2,7 +2,13 @@ import { getSession } from 'next-auth/react'
 
 import { ENDPOINT, HttpStatus, fetchers } from '@/utils'
 
-import { Booking, CreateBookingArgs, GetBookingsArgs } from './types'
+import {
+  Booking,
+  BookingChat,
+  CreateBookingArgs,
+  CreateBookingChatArgs,
+  GetBookingsArgs,
+} from './types'
 
 export const getBookings = async (args: GetBookingsArgs) => {
   const session = await getSession()
@@ -74,6 +80,35 @@ export const confirmBooking = async (id: string) => {
       token: session?.user.accessToken,
     },
   )
+  if (res.statusCode >= HttpStatus.BAD_REQUEST) {
+    throw new Error(res.message)
+  }
+}
+
+export const getBookingChat = async (id: string) => {
+  const session = await getSession()
+
+  const res = await fetchers.Get<BookingChat[]>(
+    `${ENDPOINT}/booking/internal/chat/${id}`,
+    { token: session?.user.accessToken },
+  )
+  if (res.statusCode >= HttpStatus.BAD_REQUEST) {
+    throw new Error(res.message)
+  }
+
+  return res.data as BookingChat[]
+}
+
+export const createBookingChat = async (
+  id: string,
+  args: CreateBookingChatArgs,
+) => {
+  const session = await getSession()
+
+  const res = await fetchers.Post(`${ENDPOINT}/booking/internal/chat/${id}`, {
+    data: args,
+    token: session?.user.accessToken,
+  })
   if (res.statusCode >= HttpStatus.BAD_REQUEST) {
     throw new Error(res.message)
   }

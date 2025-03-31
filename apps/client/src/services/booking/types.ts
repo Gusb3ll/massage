@@ -44,9 +44,9 @@ export type Booking = {
 
 export type BookingChat = {
   id: string
-  bookingId: string
   message: string
-  actor: string
+  actor: 'USER' | 'MASSAGER'
+  createdAt: string
 }
 
 export type CreateBookingArgs = {
@@ -57,4 +57,9 @@ export type CreateBookingArgs = {
 
 export type GetBookingsArgs = {
   search?: string
+}
+
+export type CreateBookingChatArgs = {
+  message: string
+  actor: 'USER' | 'MASSAGER'
 }
