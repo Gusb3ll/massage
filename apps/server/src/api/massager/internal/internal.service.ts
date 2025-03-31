@@ -46,7 +46,6 @@ export class MassagerInternalService {
 
   async getStats(ctx: Context) {
     const massager = await this.getProfile(ctx);
-    console.log('Massager ID:', massager?.id);
 
     if (!massager) {
       throw new NotFoundException('Massager not found');
@@ -59,33 +58,26 @@ export class MassagerInternalService {
       },
       select: {
         id: true,
-        rating: true,
-        createdAt: true,  // เพิ่มการดึงข้อมูลวันที่จาก booking
-        paymentTransaction: { select: { amount: true } },
+        createdAt: true,
       },
     });
 
-    console.log('Bookings:', bookings);
+    const dailyBookingCount: Record<string, number> = {};
 
-    const userBookingCounts: Record<string, number> = {};
     bookings.forEach(booking => {
-      const userId = booking.id;
-      userBookingCounts[userId] = (userBookingCounts[userId] || 0) + 1;
+      const date = booking.createdAt.toISOString().split('T')[0];
+      dailyBookingCount[date] = (dailyBookingCount[date] || 0) + 1;
     });
 
-    const count = bookings.length;
-
-    const totalIncome = count * 200;
-
-    // เพิ่มข้อมูลวันที่จองไปในผลลัพธ์
-    const result = bookings.map(booking => ({
-      date: booking.createdAt,  // ส่งวันที่ที่ถูกจองไปด้วย
-      count: userBookingCounts[booking.id],
-      totalIncome
+    const result = Object.entries(dailyBookingCount).map(([date, count]) => ({
+      date,
+      totalIncome: count * 200,
+      totalBookings: count,
     }));
 
     return result;
   }
+
 
 
   // async getStats(ctx: Context) {

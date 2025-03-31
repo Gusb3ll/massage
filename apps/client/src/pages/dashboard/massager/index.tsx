@@ -24,6 +24,9 @@ const Massager = () => {
     select: data => data || [],
   })
 
+  const dateData = usageStats.map(s => s.date)
+  const totalIncomeData = usageStats.map(s => s.totalIncome)
+
   const [search, setSearch] = useState('')
   const [searchValue] = useDebounce(search, 250)
 
@@ -48,13 +51,6 @@ const Massager = () => {
     },
     onError: e => toast.error(e.message),
   })
-
-  const dateData = Array.isArray(usageStats)
-    ? usageStats.map(s => new Date(s.date).toLocaleDateString())
-    : []
-  const totalIncomeData = Array.isArray(usageStats)
-    ? usageStats.map(s => s.totalIncome)
-    : []
 
   return (
     <AppLayout>
@@ -132,7 +128,9 @@ const Massager = () => {
                     <button
                       disabled={
                         cancelBookingMutation.isPending ||
-                        b.status === 'CANCELED'
+                        b.status === 'CANCELED' ||
+                        b.status === 'CONFIRMED' ||
+                        b.status === 'COMPLETED'
                       }
                       className="btn btn-error rounded-lg px-4 py-2 text-white"
                       onClick={() => {
@@ -148,7 +146,8 @@ const Massager = () => {
                       disabled={
                         cancelBookingMutation.isPending ||
                         b.status === 'CONFIRMED' ||
-                        b.status === 'COMPLETED'
+                        b.status === 'COMPLETED' ||
+                        b.status === 'CANCELED'
                       }
                       className="disabled:btn-disabled btn bg-primary/80 hover:bg-primary/90 rounded-lg px-4 py-2 text-white"
                       onClick={() =>
