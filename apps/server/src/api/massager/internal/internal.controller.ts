@@ -1,5 +1,13 @@
 import { Context } from '@app/common'
-import { Body, Controller, Get, HttpStatus, Patch, Req } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Patch,
+  Post,
+  Req,
+} from '@nestjs/common'
 
 import { UpdateProfileArgs } from './internal.dto'
 import { MassagerInternalService } from './internal.service'
@@ -41,5 +49,13 @@ export class MassagerInternalController {
     const res = await this.service.getBookings(ctx)
 
     return { statusCode: HttpStatus.OK, data: res }
+  }
+
+  @Post('/avatar')
+  async uploadAvatar(@Req() ctx: Context) {
+    const file = await ctx.file()
+    await this.service.uploadAvatar(ctx, file)
+
+    return { statusCode: HttpStatus.OK }
   }
 }

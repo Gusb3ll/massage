@@ -1,12 +1,28 @@
 import { Context, getUserFromContext } from '@app/common'
+import { env } from '@app/config'
 import { PrismaService } from '@app/db'
-import { Injectable, NotFoundException } from '@nestjs/common'
+import { MultipartFile } from '@fastify/multipart'
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common'
+import { init } from '@paralleldrive/cuid2'
+import { MinioService } from 'nestjs-minio-client'
+import sharp from 'sharp'
 
 import { UpdateProfileArgs } from './internal.dto'
 
 @Injectable()
 export class MassagerInternalService {
+<<<<<<< HEAD
   constructor(private readonly db: PrismaService) { }
+=======
+  constructor(
+    private readonly db: PrismaService,
+    private readonly minioService: MinioService,
+  ) {}
+>>>>>>> 36bbe256bbf2f9b225cbe26e73c40eebcea02da5
 
   async getProfile(ctx: Context) {
     const user = getUserFromContext(ctx)
@@ -41,8 +57,6 @@ export class MassagerInternalService {
 
     return reviews
   }
-
-  // CTA
 
   async getStats(ctx: Context) {
     const massager = await this.getProfile(ctx);
@@ -136,5 +150,56 @@ export class MassagerInternalService {
     })
 
     return bookings
+  }
+
+  private async deleteOldImage(imageUrl: string) {
+    try {
+      const isOldImage = imageUrl.includes(env.MINIO_ENDPOINT)
+      if (isOldImage) {
+        const path = imageUrl.split(
+          `${env.MINIO_ENDPOINT}/${env.MINIO_BUCKET}/`,
+        )[1]
+
+        await this.minioService.client.removeObject(env.MINIO_BUCKET, path)
+      }
+    } catch {
+      //
+    }
+  }
+
+  async uploadAvatar(ctx: Context, file?: MultipartFile) {
+    const user = getUserFromContext(ctx)
+    if (!file || file.file.bytesRead === 0) {
+      throw new NotFoundException('ไม่พบไฟล์นี้')
+    }
+
+    try {
+      await this.deleteOldImage(user.profileImage)
+      const path = `avatar/${user.id}_${init({ length: 6 })()}.webp`
+
+      const buffer = await file.toBuffer()
+      const webpBuffer = await sharp(buffer, { pages: -1 })
+        .withMetadata()
+        .toFormat('webp')
+        .webp({ quality: 80 })
+        .toBuffer()
+
+      await this.minioService.client.putObject(
+        env.MINIO_BUCKET,
+        path,
+        webpBuffer,
+        { 'Content-Type': 'image/webp' },
+      )
+      await this.db.user.update({
+        where: { id: user.id },
+        data: {
+          profileImage: `https://${env.MINIO_ENDPOINT}/${env.MINIO_BUCKET}/${path}`,
+        },
+      })
+    } catch {
+      throw new InternalServerErrorException(
+        'ไม่สามารถอัพโหลดไฟล์นี้ได้ โปรดลองใหม่อีกครั้ง',
+      )
+    }
   }
 }
