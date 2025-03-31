@@ -9,6 +9,7 @@ import { toast } from 'sonner'
 
 import AppLayout from '@/components/Layouts/App'
 import DashboardLayout from '@/components/Layouts/Dashboard'
+import { uploadAvatar } from '@/services/massager'
 import {
   UpdatateMassagerArgs,
   UpdateUserArgs,
@@ -162,8 +163,8 @@ const MassagerAccount = () => {
         }
         reader.readAsDataURL(file)
 
-        // Upload to backend
-        // await uploadAvatar(file)
+        await uploadAvatar(file)
+        update()
       }
 
       toast.promise(uploadPromise(), {

@@ -41,4 +41,19 @@ export const getStats = async () => {
   return res.data as Stats[]
 }
 
+export const uploadAvatar = async (file: File) => {
+  const session = await getSession()
+
+  const formData = new FormData()
+  formData.append('file', file)
+
+  const res = await fetchers.Upload(`${ENDPOINT}/massager/internal/avatar`, {
+    data: formData,
+    token: session?.user.accessToken,
+  })
+  if (res.statusCode >= HttpStatus.BAD_REQUEST) {
+    throw new Error(res.message)
+  }
+}
+
 export * from './types'

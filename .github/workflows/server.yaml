@@ -44,6 +44,10 @@ jobs:
           echo "MAILER_HOST=smtp.resend.com" >> .env
           echo "MAILER_USERNAME=resend" >> .env
           echo "MAILER_PASSWORD=re_NoNjAiBD_Mb4tJmB6LVMBRMamHLpMFECB" >> .env
+          echo "MINIO_ENDPOINT=hikari.easydonate.app" >> .env
+          echo "MINIO_BUCKET=massage" >> .env
+          echo "MINIO_ACCESS_KEY=JWzouQvway4NWw91OijD" >> .env
+          echo "MINIO_SECRET_KEY=sqc3Jpaa6XplpTZiXi1afKFEXKVoDuDFQofgP14b" >> .env
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
