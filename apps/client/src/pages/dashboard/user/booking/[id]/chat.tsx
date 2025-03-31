@@ -48,7 +48,7 @@ const BookingChat = () => {
           <div className="flex-grow overflow-auto">
             {chats?.map(c =>
               c.actor === 'MASSAGER' ? (
-                <div key={c.id} className="chat chat-end">
+                <div key={c.id} className="chat chat-start">
                   <div className="chat-header">
                     {booking?.massager.firstName} {booking?.massager.lastName}
                     <time className="pl-1 text-xs opacity-50">
@@ -58,14 +58,16 @@ const BookingChat = () => {
                   <div className="chat-bubble">{c.message}</div>
                 </div>
               ) : (
-                <div key={c.id} className="chat chat-start">
+                <div key={c.id} className="chat chat-end">
                   <div className="chat-header">
                     {booking?.user.firstName} {booking?.user.lastName}
                     <time className="pl-1 text-xs opacity-50">
                       {dayjs(c.createdAt).format('DD/MM HH:mm')}
                     </time>
                   </div>
-                  <div className="chat-bubble">{c.message}</div>
+                  <div className="chat-bubble bg-green-300 text-black">
+                    {c.message}
+                  </div>
                 </div>
               ),
             )}
