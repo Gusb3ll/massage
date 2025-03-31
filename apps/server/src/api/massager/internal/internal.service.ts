@@ -151,7 +151,7 @@ export class MassagerInternalService {
 
     try {
       await this.deleteOldImage(user.profileImage)
-      const path = `avatar/${user.id}_${init({ length: 6 })()}.webp`
+      const path = `${user.id}/avatar_${init({ length: 6 })()}.webp`
 
       const buffer = await file.toBuffer()
       const webpBuffer = await sharp(buffer, { pages: -1 })
@@ -172,6 +172,39 @@ export class MassagerInternalService {
           profileImage: `https://${env.MINIO_ENDPOINT}/${env.MINIO_BUCKET}/${path}`,
         },
       })
+    } catch {
+      throw new InternalServerErrorException(
+        'ไม่สามารถอัพโหลดไฟล์นี้ได้ โปรดลองใหม่อีกครั้ง',
+      )
+    }
+  }
+
+  async uploadFile(ctx: Context, file?: MultipartFile) {
+    const user = getUserFromContext(ctx)
+    if (!file || file.file.bytesRead === 0) {
+      throw new NotFoundException('ไม่พบไฟล์นี้')
+    }
+
+    try {
+      const path = `${user.id}/file/${init({ length: 12 })()}.webp`
+
+      const buffer = await file.toBuffer()
+      const webpBuffer = await sharp(buffer, { pages: -1 })
+        .withMetadata()
+        .toFormat('webp')
+        .webp({ quality: 80 })
+        .toBuffer()
+
+      await this.minioService.client.putObject(
+        env.MINIO_BUCKET,
+        path,
+        webpBuffer,
+        { 'Content-Type': 'image/webp' },
+      )
+
+      return {
+        url: `https://${env.MINIO_ENDPOINT}/${env.MINIO_BUCKET}/${path}`,
+      }
     } catch {
       throw new InternalServerErrorException(
         'ไม่สามารถอัพโหลดไฟล์นี้ได้ โปรดลองใหม่อีกครั้ง',

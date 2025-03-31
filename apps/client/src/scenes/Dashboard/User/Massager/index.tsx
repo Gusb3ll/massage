@@ -16,28 +16,11 @@ import { getMassager } from '@/services/massager'
 import LicenseModal, { licenseModalRef } from './Modal/License'
 import VaccineModal, { vaccineModalRef } from './Modal/Vaccine'
 
-// const images = [
-//   {
-//     original: 'https://picsum.photos/id/1018/1000/600/',
-//     thumbnail: 'https://picsum.photos/id/1018/250/150/',
-//   },
-//   {
-//     original: 'https://picsum.photos/id/1015/1000/600/',
-//     thumbnail: 'https://picsum.photos/id/1015/250/150/',
-//   },
-//   {
-//     original: 'https://picsum.photos/id/1019/1000/600/',
-//     thumbnail: 'https://picsum.photos/id/1019/250/150/',
-//   },
-// ]
-
 const MassagerProfileScene = () => {
   const router = useRouter()
   const massagerId = router.query.id as string | undefined
   const [, setBookingMassagerId] = useAtom(massagerIdAtom)
   const [, setIsBookingActive] = useAtom(isBookingActiveAtom)
-
-  // const [isLoading, setIsLoading] = useState(true)
 
   const { data: massager } = useQuery({
     queryKey: ['getMassager', massagerId],

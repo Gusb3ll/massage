@@ -2,14 +2,14 @@ import { useMutation } from '@tanstack/react-query'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
 import { useEffect, useRef, useState } from 'react'
-import { useDropzone } from 'react-dropzone'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { BsPencil } from 'react-icons/bs'
+import { FaPlus, FaUpload } from 'react-icons/fa6'
 import { toast } from 'sonner'
 
 import AppLayout from '@/components/Layouts/App'
 import DashboardLayout from '@/components/Layouts/Dashboard'
-import { uploadAvatar } from '@/services/massager'
+import { uploadAvatar, uploadFile } from '@/services/massager'
 import {
   UpdatateMassagerArgs,
   UpdateUserArgs,
@@ -19,27 +19,33 @@ import {
 
 const MassagerAccount = () => {
   const { data: session, update } = useSession()
-  const [selectedLanguages, setSelectedLanguages] = useState<string[]>([])
-  const [selectedSkills, setSelectedSkills] = useState<string[]>([])
-  const [certificates, setCertificates] = useState<File[]>([])
-  const [vaccineCertificates, setVaccineCertificates] = useState<File[]>([])
-  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [languages, setLanguages] = useState<string[]>([])
+  const [skills, setSkills] = useState<string[]>([])
+
+  const [certificates, setCertificates] = useState<string[]>([])
+  const [vaccineCertificates, setVaccineCertificates] = useState<string[]>([])
+  const certificatesInputRef = useRef<HTMLInputElement>(null)
+  const vaccineCertificatesInputRef = useRef<HTMLInputElement>(null)
+
+  const avatarInputRef = useRef<HTMLInputElement>(null)
   const [profileImage, setProfileImage] = useState<string>(
     '/default-avatar.png',
   )
 
-  useEffect(() => {
-    if (session?.user?.profileImage) {
-      setProfileImage(session.user.profileImage)
-    }
-    if (session?.user?.massager) {
-      setSelectedLanguages(session.user.massager.languages || [])
-      setSelectedSkills(session.user.massager.skills || [])
-    }
-  }, [session?.user])
-
   const updateMassagerMutation = useMutation({
-    mutationFn: (args: UpdatateMassagerArgs) => updateMassager(args),
+    mutationFn: (args: UpdatateMassagerArgs) =>
+      updateMassager({
+        ...args,
+        skills,
+        languages,
+        certificates,
+        vaccineCertificates,
+      }),
+    onSuccess: () => {
+      update()
+      toast.success('Massager updated successfully')
+    },
+    onError: e => toast.error(e.message),
   })
 
   const {
@@ -63,86 +69,14 @@ const MassagerAccount = () => {
     onError: e => toast.error(e.message),
   })
 
-  const onUpdateMassagerSubmit: SubmitHandler<
-    UpdatateMassagerArgs
-  > = async () => {
-    try {
-      const certificatesUrls = certificates.map(file =>
-        URL.createObjectURL(file),
-      )
-      const vaccineCertificatesUrls = vaccineCertificates.map(file =>
-        URL.createObjectURL(file),
-      )
-
-      await updateMassagerMutation.mutateAsync({
-        languages: selectedLanguages,
-        skills: selectedSkills,
-        certificates: certificatesUrls,
-        vaccineCertificates: vaccineCertificatesUrls,
-      })
-
-      if (session?.user?.massager) {
-        session.user.massager.certificates = certificatesUrls
-        session.user.massager.vaccineCertificates = vaccineCertificatesUrls
-      }
-
-      update()
-      toast.success('User updated successfully')
-    } catch (e) {
-      toast.error((e as Error).message)
-    }
-  }
-
-  const handleLanguageChange = (language: string) => {
-    setSelectedLanguages(prev =>
-      prev.includes(language)
-        ? prev.filter(lang => lang !== language)
-        : [...prev, language],
-    )
-  }
-
-  const handleSkillChange = (skill: string) => {
-    setSelectedSkills(prev =>
-      prev.includes(skill) ? prev.filter(s => s !== skill) : [...prev, skill],
-    )
-  }
-
-  useEffect(() => {
-    if (session?.user) {
-      setUser('firstName', session.user.firstName)
-      setUser('lastName', session.user.lastName)
-      setUser('dateOfBirth', session.user.dateOfBirth)
-    }
-  }, [session?.user, setUser])
-
-  const {
-    getRootProps: getRootPropsForCertificates,
-    getInputProps: getInputPropsForCertificates,
-  } = useDropzone({
-    onDrop: (acceptedFiles: File[]) => {
-      setCertificates(prev => [...prev, ...acceptedFiles])
-    },
-    multiple: true,
-  })
-
-  const {
-    getRootProps: getRootPropsForVaccineCertificates,
-    getInputProps: getInputPropsForVaccineCertificates,
-  } = useDropzone({
-    onDrop: (acceptedFiles: File[]) => {
-      setVaccineCertificates(prev => [...prev, ...acceptedFiles])
-    },
-    multiple: true,
-  })
-
   const handleAvatarUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
-      if (fileInputRef.current) {
-        fileInputRef.current.value = ''
+      if (avatarInputRef.current) {
+        avatarInputRef.current.value = ''
       }
 
-      const uploadPromise = async () => {
+      const uploadAvatarPromise = async () => {
         if (!file) {
           throw new Error('ไม่พบไฟล์ที่ต้องการอัพโหลด')
         }
@@ -167,13 +101,61 @@ const MassagerAccount = () => {
         update()
       }
 
-      toast.promise(uploadPromise(), {
-        loading: 'กำลังอัพโหลดรูปภาพ...',
-        success: 'อัพโหลดรูปภาพสำเร็จ',
+      toast.promise(uploadAvatarPromise(), {
+        loading: 'Uploading avatar...',
+        success: 'Avatar uploaded',
         error: (e: Error) => e.message,
       })
     }
   }
+
+  const handleFileUpload = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    type: 'CERTIFICATE' | 'VACCINE',
+  ) => {
+    const file = e.target.files?.[0]
+
+    const uploadFilePromise = async () => {
+      if (!file) {
+        throw new Error('ไม่พบไฟล์ที่ต้องการอัพโหลด')
+      }
+      // 5MB
+      if (file.size > 5 * 1024 * 1024) {
+        throw new Error('ไฟล์ที่อัพโหลดต้องมีขนาดไม่เกิน 5MB')
+      }
+      if (!file.type.match(/^image/)) {
+        throw new Error('ชนิดของไฟล์ที่อัพโหลดไม่ถูกต้อง')
+      }
+
+      const res = await uploadFile(file)
+      if (type === 'CERTIFICATE') {
+        setCertificates(prev => [...prev, res.url])
+      } else if (type === 'VACCINE') {
+        setVaccineCertificates(prev => [...prev, res.url])
+      }
+    }
+
+    toast.promise(uploadFilePromise(), {
+      loading: 'Uploading file...',
+      success: 'File uploaded',
+      error: (e: Error) => e.message,
+    })
+  }
+
+  useEffect(() => {
+    if (session?.user?.profileImage) {
+      setProfileImage(session.user.profileImage)
+      setUser('firstName', session.user.firstName)
+      setUser('lastName', session.user.lastName)
+      setUser('dateOfBirth', session.user.dateOfBirth)
+    }
+    if (session?.user?.massager) {
+      setLanguages(session.user.massager.languages || [])
+      setSkills(session.user.massager.skills || [])
+      setCertificates(session.user.massager.certificates || [])
+      setVaccineCertificates(session.user.massager.vaccineCertificates || [])
+    }
+  }, [session?.user, setUser])
 
   return (
     <AppLayout>
@@ -264,14 +246,14 @@ const MassagerAccount = () => {
                   />
                   <input
                     type="file"
-                    ref={fileInputRef}
+                    ref={avatarInputRef}
                     accept="image/*"
                     onChange={handleAvatarUpload}
                     className="hidden"
                   />
                   <button
                     type="button"
-                    onClick={() => fileInputRef.current?.click()}
+                    onClick={() => avatarInputRef.current?.click()}
                     className="absolute bottom-2 right-2 flex aspect-[1/1] w-[45px] items-center justify-center rounded-full border border-white/20 bg-gray-300 transition duration-300 hover:scale-95"
                     aria-label="Upload avatar image"
                   >
@@ -291,148 +273,174 @@ const MassagerAccount = () => {
           </form>
         </div>
 
-        <div className="mt-10 flex w-full flex-col rounded-lg border p-10 shadow-lg">
-          <div className="flex w-full flex-col p-5 sm:flex-row-reverse">
-            <div className="flex w-full flex-col">
-              <form
-                onSubmit={submitMassager(onUpdateMassagerSubmit)}
-                className="flex flex-col gap-4"
-              >
-                <h1 className="text-3xl font-semibold">Your skill Detail</h1>
-                <hr />
-
-                <h1 className="mt-5 text-xl font-semibold">Languages</h1>
-                <div className="flex flex-wrap gap-4">
-                  {['Thai', 'English', 'Chinese'].map(language => (
-                    <label
-                      key={language}
-                      className={`flex items-center gap-2 ${selectedLanguages.includes(language) ? 'text-brown-700' : ''}`}
-                    >
-                      <input
-                        type="checkbox"
-                        value={language}
-                        checked={selectedLanguages.includes(language)}
-                        onChange={() => handleLanguageChange(language)}
-                        className="checkbox checkbox-bordered"
-                      />
-                      <span>{language}</span>
-                    </label>
-                  ))}
-                </div>
-
-                <h1 className="mt-5 text-xl font-semibold">Skills</h1>
-                <div className="w-full">
-                  <div className="flex flex-wrap gap-4">
-                    {[
-                      'Thai massage',
-                      'Deep Tissue Massage',
-                      'Neck and Shoulder Massage',
-                      'Oil Massage',
-                      'Office Syndrome Relief Massage',
-                      'Foot Massage',
-                    ].map(skill => (
-                      <label
-                        key={skill}
-                        className={`flex items-center gap-2 ${selectedSkills.includes(skill) ? 'text-brown-700' : ''} peer`}
-                      >
-                        <input
-                          type="checkbox"
-                          value={skill}
-                          checked={selectedSkills.includes(skill)}
-                          onChange={() => handleSkillChange(skill)}
-                          className="checkbox checkbox-bordered"
-                        />
-                        <span>{skill}</span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="mt-5">
-                  <h2 className="text-lg font-semibold">Upload Certificates</h2>
-                  <div
-                    {...getRootPropsForCertificates()}
-                    className="cursor-pointer rounded-md border-2 border-dashed p-5 text-center"
+        <div className="mt-8 w-full rounded-lg border p-8 shadow-lg">
+          <form
+            onSubmit={submitMassager(args =>
+              updateMassagerMutation.mutate(args),
+            )}
+            className="flex flex-col gap-8"
+          >
+            <h1 className="text-3xl font-semibold">Account</h1>
+            <hr />
+            <div className="flex flex-col gap-4">
+              <p className="text-lg">Languages</p>
+              <div className="flex gap-4">
+                {['Thai', 'English', 'Chinese', 'Japanese'].map(language => (
+                  <label
+                    key={language}
+                    className={`flex items-center gap-2 ${languages.includes(language) ? 'text-primary' : ''}`}
                   >
-                    <input {...getInputPropsForCertificates()} />
-                    <p>
-                      Drag and drop some files here, or click to select files
-                      for certificates
-                    </p>
-
-                    {certificates.length > 0 &&
-                      certificates[0].type.startsWith('image/') && (
-                        <Image
-                          src={URL.createObjectURL(certificates[0])}
-                          alt={certificates[0].name}
-                          width={100}
-                          height={100}
-                          className="mt-2 rounded-md"
-                        />
-                      )}
-                  </div>
-                  <div className="mt-3">
-                    <h3 className="font-semibold">
-                      Uploaded Files (Certificates):
-                    </h3>
-                    <ul>
-                      {certificates.map((file, index) => (
-                        <li key={index}>{file.name}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-
-                <div className="mt-5">
-                  <h2 className="text-lg font-semibold">
-                    Upload Vaccine Certificates
-                  </h2>
-                  <div
-                    {...getRootPropsForVaccineCertificates()}
-                    className="cursor-pointer rounded-md border-2 border-dashed p-5 text-center"
-                  >
-                    <input {...getInputPropsForVaccineCertificates()} />
-
-                    <p>
-                      Drag and drop some files here, or click to select files
-                      for vaccine certificates
-                    </p>
-
-                    {vaccineCertificates.length > 0 &&
-                      vaccineCertificates[0].type.startsWith('image/') && (
-                        <Image
-                          src={URL.createObjectURL(vaccineCertificates[0])}
-                          alt={vaccineCertificates[0].name}
-                          width={100}
-                          height={100}
-                          className="mt-2 rounded-md"
-                        />
-                      )}
-                  </div>
-
-                  <div className="mt-3">
-                    <h3 className="font-semibold">
-                      Uploaded Vaccine Certificates:
-                    </h3>
-                    <ul>
-                      {vaccineCertificates.map((file, index) => (
-                        <li key={index}>{file.name}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-
-                <div className="mt-4 flex justify-end lg:mt-7 xl:mt-9 xl:items-end">
-                  <button
-                    type="submit"
-                    className="btn btn-primary h-10 w-28 bg-[#8a4724] text-white"
-                  >
-                    Confirm
-                  </button>
-                </div>
-              </form>
+                    <input
+                      type="checkbox"
+                      value={language}
+                      checked={languages.includes(language)}
+                      onChange={() =>
+                        setLanguages(prev =>
+                          prev.includes(language)
+                            ? prev.filter(lang => lang !== language)
+                            : [...prev, language],
+                        )
+                      }
+                      className="checkbox checkbox-bordered"
+                    />
+                    <span>{language}</span>
+                  </label>
+                ))}
+              </div>
             </div>
-          </div>
+            <div className="flex flex-col gap-4">
+              <p className="text-lg">Skills</p>
+              <div className="flex flex-wrap gap-4">
+                {[
+                  'Thai Massage',
+                  'Deep Tissue Massage',
+                  'Neck and Shoulder Massage',
+                  'Oil Massage',
+                  'Office Syndrome Relief Massage',
+                  'Foot Massage',
+                ].map(skill => (
+                  <label
+                    key={skill}
+                    className={`flex items-center gap-2 ${skills.includes(skill) ? 'text-primary' : ''}`}
+                  >
+                    <input
+                      type="checkbox"
+                      value={skill}
+                      checked={skills.includes(skill)}
+                      onChange={() =>
+                        setSkills(prev =>
+                          prev.includes(skill)
+                            ? prev.filter(s => s !== skill)
+                            : [...prev, skill],
+                        )
+                      }
+                      className="checkbox checkbox-bordered"
+                    />
+                    <span>{skill}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+            <hr />
+
+            <div className="flex flex-col gap-4">
+              <input
+                type="file"
+                ref={certificatesInputRef}
+                accept="image/*"
+                onChange={e => handleFileUpload(e, 'CERTIFICATE')}
+                className="hidden"
+              />
+              <div className="flex flex-row items-center gap-4">
+                <p className="text-xl">Certificates</p>
+                <button
+                  type="button"
+                  onClick={() => certificatesInputRef.current?.click()}
+                  className="btn btn-sm bg-primary/80 hover:bg-primary/90 flex w-fit flex-row gap-4 text-white"
+                >
+                  Upload
+                  <FaUpload size="16" />
+                </button>
+              </div>
+              <div className="flex flex-row flex-wrap gap-4">
+                {certificates.length > 0 ? (
+                  certificates.map((file, i) => (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      key={`certificate-${i}`}
+                      src={file}
+                      className="aspect-video w-[200px] rounded-lg object-cover"
+                      alt={`certificate-${i}`}
+                      onClick={() => {
+                        window.open(file, '_blank')
+                      }}
+                    />
+                  ))
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => certificatesInputRef.current?.click()}
+                    className="flex aspect-video h-full w-[200px] items-center justify-center rounded-lg border border-dashed border-gray-600"
+                  >
+                    <FaPlus size="16" />
+                  </button>
+                )}
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-4">
+              <input
+                type="file"
+                ref={vaccineCertificatesInputRef}
+                accept="image/*"
+                onChange={e => handleFileUpload(e, 'VACCINE')}
+                className="hidden"
+              />
+              <div className="flex flex-row items-center gap-4">
+                <p className="text-xl">Vaccine Certificates</p>
+                <button
+                  onClick={() => vaccineCertificatesInputRef.current?.click()}
+                  className="btn btn-sm bg-primary/80 hover:bg-primary/90 flex w-fit flex-row gap-4 text-white"
+                >
+                  Upload
+                  <FaUpload size="16" />
+                </button>
+              </div>
+              <div className="flex flex-row flex-wrap gap-4">
+                {vaccineCertificates.length > 0 ? (
+                  vaccineCertificates.map((file, i) => (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      key={`vaccine-${i}`}
+                      src={file}
+                      className="aspect-video w-[200px] rounded-lg object-cover"
+                      alt={`vaccine-${i}`}
+                      onClick={() => {
+                        window.open(file, '_blank')
+                      }}
+                    />
+                  ))
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => vaccineCertificatesInputRef.current?.click()}
+                    className="flex aspect-video h-full w-[200px] items-center justify-center rounded-lg border border-dashed border-gray-600"
+                  >
+                    <FaPlus size="16" />
+                  </button>
+                )}
+              </div>
+            </div>
+
+            <div className="mt-4 flex justify-end lg:mt-7 xl:mt-9 xl:items-end">
+              <button
+                type="submit"
+                className="btn btn-primary h-10 w-28 bg-[#8a4724] text-white"
+              >
+                Confirm
+              </button>
+            </div>
+          </form>
         </div>
       </DashboardLayout>
     </AppLayout>
