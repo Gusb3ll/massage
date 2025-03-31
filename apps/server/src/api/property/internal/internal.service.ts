@@ -6,7 +6,7 @@ import { CreatePropertyArgs, UpdatePropertyArgs } from './internal.dto'
 
 @Injectable()
 export class PropertyInternalService {
-  constructor(private readonly db: PrismaService) { }
+  constructor(private readonly db: PrismaService) {}
 
   private async getPropertyOwner(userId: string) {
     const owner = await this.db.propertyOwner.findUnique({

@@ -6,7 +6,7 @@ import { UpdateProfileArgs } from './internal.dto'
 
 @Injectable()
 export class MassagerInternalService {
-  constructor(private readonly db: PrismaService) { }
+  constructor(private readonly db: PrismaService) {}
 
   async getProfile(ctx: Context) {
     const user = getUserFromContext(ctx)
@@ -45,10 +45,10 @@ export class MassagerInternalService {
   // CTA
 
   async getStats(ctx: Context) {
-    const massager = await this.getProfile(ctx);
+    const massager = await this.getProfile(ctx)
 
     if (!massager) {
-      throw new NotFoundException('Massager not found');
+      throw new NotFoundException('Massager not found')
     }
 
     const bookings = await this.db.booking.findMany({
@@ -60,25 +60,23 @@ export class MassagerInternalService {
         id: true,
         createdAt: true,
       },
-    });
+    })
 
-    const dailyBookingCount: Record<string, number> = {};
+    const dailyBookingCount: Record<string, number> = {}
 
     bookings.forEach(booking => {
-      const date = booking.createdAt.toISOString().split('T')[0];
-      dailyBookingCount[date] = (dailyBookingCount[date] || 0) + 1;
-    });
+      const date = booking.createdAt.toISOString().split('T')[0]
+      dailyBookingCount[date] = (dailyBookingCount[date] || 0) + 1
+    })
 
     const result = Object.entries(dailyBookingCount).map(([date, count]) => ({
       date,
       totalIncome: count * 200,
       totalBookings: count,
-    }));
+    }))
 
-    return result;
+    return result
   }
-
-
 
   // async getStats(ctx: Context) {
   //   const massager = await this.getProfile(ctx)

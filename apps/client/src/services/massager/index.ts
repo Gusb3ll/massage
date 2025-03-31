@@ -28,9 +28,12 @@ export const getMassagers = async (args: GetMassagerArgs) => {
 export const getStats = async () => {
   const session = await getSession()
 
-  const res = await fetchers.Get<Stats[]>(`${ENDPOINT}/massager/internal/dashboard/stats`, {
-    token: session?.user.accessToken,
-  })
+  const res = await fetchers.Get<Stats[]>(
+    `${ENDPOINT}/massager/internal/dashboard/stats`,
+    {
+      token: session?.user.accessToken,
+    },
+  )
   if (res.statusCode >= HttpStatus.BAD_REQUEST) {
     throw new Error(res.message)
   }
