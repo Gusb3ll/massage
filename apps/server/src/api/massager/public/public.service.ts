@@ -5,7 +5,7 @@ import { getMassagerQueryParams } from './public.dto'
 
 @Injectable()
 export class MassagerPublicService {
-  constructor(private readonly db: PrismaService) {}
+  constructor(private readonly db: PrismaService) { }
 
   async getMassagers(args: getMassagerQueryParams) {
     const { search } = args

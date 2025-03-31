@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
 import { FaMagnifyingGlass } from 'react-icons/fa6'
-import { TfiLocationPin } from 'react-icons/tfi'
+// import { TfiLocationPin } from 'react-icons/tfi'
 import { useDebounce } from 'use-debounce'
 
 import AppLayout from '@/components/Layouts/App'
@@ -56,10 +56,10 @@ const UserMassager = () => {
                       <p className="text-md text-primary font-semibold">
                         {m.firstName} {m.lastName}
                       </p>
-                      <div className="line-clamp-1 flex flex-row gap-1 truncate text-sm font-semibold text-black">
+                      {/* <div className="line-clamp-1 flex flex-row gap-1 truncate text-sm font-semibold text-black">
                         <TfiLocationPin className="h-5" />
                         {m.address}
-                      </div>
+                      </div> */}
                     </div>
                     <p className="text-md font-semibold text-black">
                       {m.gender === 'FEMALE' ? 'Female' : 'Male'}

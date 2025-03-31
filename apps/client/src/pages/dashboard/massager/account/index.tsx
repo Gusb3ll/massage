@@ -28,9 +28,12 @@ const MassagerAccount = () => {
   const vaccineCertificatesInputRef = useRef<HTMLInputElement>(null)
 
   const avatarInputRef = useRef<HTMLInputElement>(null)
+  const avatarMassagerInputRef = useRef<HTMLInputElement>(null)
+
   const [profileImage, setProfileImage] = useState<string>(
     '/default-avatar.png',
   )
+  const [coverImage, setCoverImage] = useState<string>('/default-avatar.png')
 
   const updateMassagerMutation = useMutation({
     mutationFn: (args: UpdatateMassagerArgs) =>
@@ -74,6 +77,8 @@ const MassagerAccount = () => {
     if (file) {
       if (avatarInputRef.current) {
         avatarInputRef.current.value = ''
+      } else if (avatarMassagerInputRef.current) {
+        avatarMassagerInputRef.current.value = ''
       }
 
       const uploadAvatarPromise = async () => {
@@ -154,6 +159,7 @@ const MassagerAccount = () => {
       setSkills(session.user.massager.skills || [])
       setCertificates(session.user.massager.certificates || [])
       setVaccineCertificates(session.user.massager.vaccineCertificates || [])
+      setCoverImage(session.user.massager.coverImage || '/default-avatar.png')
     }
   }, [session?.user, setUser])
 
@@ -429,6 +435,37 @@ const MassagerAccount = () => {
                     <FaPlus size="16" />
                   </button>
                 )}
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-4">
+              <div className="relative mb-6 aspect-[1/1]">
+                <Image
+                  id="avatar-img"
+                  src={coverImage}
+                  alt="avatar"
+                  className="h-[200px] w-[200px] rounded-full object-cover object-center"
+                  width={256}
+                  height={256}
+                />
+                <input
+                  type="file"
+                  ref={avatarInputRef}
+                  accept="image/*"
+                  onChange={handleAvatarUpload}
+                  className="hidden"
+                />
+                <button
+                  type="button"
+                  onClick={() => avatarMassagerInputRef.current?.click()}
+                  className="absolute bottom-2 right-2 flex aspect-[1/1] w-[45px] items-center justify-center rounded-full border border-white/20 bg-gray-300 transition duration-300 hover:scale-95"
+                  aria-label="Upload avatar image"
+                >
+                  <BsPencil size={20} />
+                </button>
+              </div>
+              <div className="flex flex-row items-center gap-4">
+                <p className="text-xl">Cover Images</p>
               </div>
             </div>
 
