@@ -81,18 +81,18 @@ const LocationIndex = () => {
                   {currentItems.map(property => (
                     <li key={property.id} className="border-b py-4">
                       {property.images?.length > 0 && (
-                        <div className="mt-2 flex gap-2">
+                        <div className="mt-4 grid grid-cols-3 gap-4 sm:grid-cols-4 lg:grid-cols-5">
                           {property.images.map((image, index) => (
                             <div
                               key={index}
-                              className="relative h-24 w-24 overflow-hidden rounded"
+                              className="relative h-32 w-full overflow-hidden rounded-lg shadow-md"
                             >
                               <Image
                                 src={image}
                                 alt={`Property Image ${index + 1}`}
                                 layout="fill"
                                 objectFit="cover"
-                                className="rounded"
+                                className="rounded-lg"
                               />
                             </div>
                           ))}
