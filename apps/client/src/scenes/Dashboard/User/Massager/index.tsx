@@ -7,7 +7,7 @@ import { useRouter } from 'next/router'
 // import { useState } from 'react'
 import { BsGenderAmbiguous } from 'react-icons/bs'
 import { FaCalendarAlt } from 'react-icons/fa'
-import { FaStar } from 'react-icons/fa6'
+// import { FaStar } from 'react-icons/fa6'
 // import ImageGallery from 'react-image-gallery'
 
 import { isBookingActiveAtom, massagerIdAtom } from '@/atoms'
@@ -55,18 +55,18 @@ const MassagerProfileScene = () => {
                   height={60}
                   className="h-16 w-16 items-center rounded-full object-cover"
                 />
-                <div className="flex flex-col text-lg font-semibold">
+                <div className="flex flex-col justify-center text-lg font-semibold">
                   {massager.firstName}{' '}
                   {massager.lastName.slice(0, 1).toUpperCase()}.
-                  <p className="text-sm font-normal">
+                  {/* <p className="text-sm font-normal">
                     Country <br /> 150 Reviews
-                  </p>
+                  </p> */}
                 </div>
                 <div>
-                  <div className="flex flex-row items-center gap-1">
+                  {/* <div className="flex flex-row items-center gap-1">
                     <p className="text-lg font-semibold">Rating 4/5</p>
                     <FaStar />
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div className="flex flex-col items-center gap-4 p-6 lg:flex-row lg:items-start">
