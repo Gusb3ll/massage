@@ -11,4 +11,4 @@ export class UpdateProfileArgs extends createZodDto(
     languages: z.array(z.string()).optional(),
     skills: z.array(z.string()).optional(),
   }),
-) { }
+) {}

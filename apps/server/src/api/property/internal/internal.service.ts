@@ -2,7 +2,11 @@ import { Context, getUserFromContext } from '@app/common'
 import { env } from '@app/config'
 import { PrismaService } from '@app/db'
 import { MultipartFile } from '@fastify/multipart'
-import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common'
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common'
 import { init } from '@paralleldrive/cuid2'
 import { MinioService } from 'nestjs-minio-client'
 import sharp from 'sharp'
@@ -11,9 +15,10 @@ import { CreatePropertyArgs, UpdatePropertyArgs } from './internal.dto'
 
 @Injectable()
 export class PropertyInternalService {
-  constructor(private readonly db: PrismaService,
-    private readonly minioService: MinioService
-  ) { }
+  constructor(
+    private readonly db: PrismaService,
+    private readonly minioService: MinioService,
+  ) {}
 
   private async getPropertyOwner(userId: string) {
     const owner = await this.db.propertyOwner.findUnique({

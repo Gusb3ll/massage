@@ -5,4 +5,4 @@ export class CreatePaymentArgs extends createZodDto(
   z.object({
     bookingId: z.string(),
   }),
-) { }
+) {}

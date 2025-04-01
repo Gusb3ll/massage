@@ -8,7 +8,7 @@ import { CreatePaymentArgs } from './internal.dto'
 
 @Injectable()
 export class PaymentInternalService {
-  constructor(private readonly db: PrismaService) { }
+  constructor(private readonly db: PrismaService) {}
 
   async createPayment(args: CreatePaymentArgs, ctx: Context) {
     const user = getUserFromContext(ctx)

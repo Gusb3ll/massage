@@ -6,7 +6,7 @@ import { PaymentInternalService } from './internal.service'
 
 @Controller('/payment/internal')
 export class PaymentInternalController {
-  constructor(private readonly service: PaymentInternalService) { }
+  constructor(private readonly service: PaymentInternalService) {}
 
   @Post('/')
   async createPayment(@Body() args: CreatePaymentArgs, @Req() ctx: Context) {
