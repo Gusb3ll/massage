@@ -67,7 +67,7 @@ const LocationIndex = () => {
                 </p>
                 <p className="text-lg text-gray-500">Please add location</p>
                 <button className="mt-5">
-                  <Link href="/dashboard/property-owner/location/create">
+                  <Link href="/dashboard/property/location/create">
                     <p className="btn btn-primary">Add Location</p>
                   </Link>
                 </button>

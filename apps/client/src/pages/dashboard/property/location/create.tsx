@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
+import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import { useRef, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -11,6 +12,7 @@ import { uploadFile } from '@/services/massager'
 import { CreatePropertyArgs, createProperty } from '@/services/property'
 
 const CreateProperty = () => {
+  const router = useRouter()
   const { data: session, update } = useSession()
 
   const [imagesProperty, setImagesProperty] = useState<string[]>([])
@@ -40,17 +42,14 @@ const CreateProperty = () => {
 
       await createPropertyMutation.mutateAsync(args)
       await update()
-      toast.success('User updated successfully')
+      toast.success('Property created')
+      router.push('/dashboard/property/location')
     } catch (e) {
       toast.error((e as Error).message)
     }
   }
-  console.log(imagesInputRef.current)
 
-  const handleFileUpload = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    type: 'IMAGESPROPERTY',
-  ) => {
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
 
     const uploadFilePromise = async () => {
@@ -66,9 +65,7 @@ const CreateProperty = () => {
       }
 
       const res = await uploadFile(file)
-      if (type === 'IMAGESPROPERTY') {
-        setImagesProperty(prev => [...prev, res.url])
-      }
+      setImagesProperty(prev => [...prev, res.url])
     }
 
     toast.promise(uploadFilePromise(), {
@@ -197,7 +194,7 @@ const CreateProperty = () => {
                     type="file"
                     ref={imagesInputRef}
                     accept="image/*"
-                    onChange={e => handleFileUpload(e, 'IMAGESPROPERTY')}
+                    onChange={e => handleFileUpload(e)}
                     className="hidden"
                   />
                   <div className="flex flex-row items-center gap-4">
@@ -263,9 +260,8 @@ const CreateProperty = () => {
                       placeholder="Price"
                       type="number"
                       className="input input-bordered bg-white"
-                      {...register('price')}
                       {...register('price', {
-                        required: 'price is required',
+                        required: 'Price is required',
                       })}
                     />
                     {errors.price && (
