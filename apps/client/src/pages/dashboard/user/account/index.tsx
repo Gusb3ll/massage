@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
-import Image from 'next/image'
+// import Image from 'next/image'
 import { useSession } from 'next-auth/react'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
@@ -107,7 +107,7 @@ const UserAccount = () => {
                   />
                 </label>
               </div>
-              <div className="flex w-full items-center justify-center">
+              {/* <div className="flex w-full items-center justify-center">
                 {session?.user?.profileImage && (
                   <Image
                     src={session.user.profileImage}
@@ -117,7 +117,7 @@ const UserAccount = () => {
                     className="h-32 w-32 rounded-full border-2 border-gray-300 object-cover"
                   />
                 )}
-              </div>
+              </div> */}
             </div>
             <div className="mt-4 flex justify-end lg:mt-7">
               <button
