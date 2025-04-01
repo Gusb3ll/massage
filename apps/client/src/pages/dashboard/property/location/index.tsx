@@ -7,7 +7,7 @@ import { toast } from 'sonner'
 
 import AppLayout from '@/components/Layouts/App'
 import DashboardLayout from '@/components/Layouts/Dashboard'
-import { deleteProperty, getProperties } from '@/services/property'
+import { deleteProperty, getSelfProperties } from '@/services/property'
 
 const ITEMS_PER_PAGE = 1
 
@@ -19,7 +19,7 @@ const LocationIndex = () => {
     refetch,
   } = useQuery({
     queryKey: ['properties'],
-    queryFn: () => getProperties({}),
+    queryFn: () => getSelfProperties({}),
   })
 
   const [currentPage, setCurrentPage] = useState(1)

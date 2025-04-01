@@ -227,4 +227,15 @@ export class PropertyInternalService {
       )
     }
   }
+
+  async getProperties(ctx: Context) {
+    const user = getUserFromContext(ctx)
+
+    const properties = await this.db.property.findMany({
+      where: { owner: { userId: user.id } },
+      orderBy: { createdAt: 'asc' },
+    })
+
+    return properties
+  }
 }

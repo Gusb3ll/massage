@@ -24,6 +24,19 @@ export const getProperties = async (args: GetPropertyArgs) => {
   return res.data as Property[]
 }
 
+export const getSelfProperties = async (args: GetPropertyArgs) => {
+  const session = await getSession()
+  const res = await fetchers.Get<Property[]>(
+    `${ENDPOINT}/property/internal/list${args.search ? `?search=${args.search}` : ''}`,
+    { token: session?.user.accessToken },
+  )
+  if (res.statusCode >= HttpStatus.BAD_REQUEST) {
+    throw new Error(res.message)
+  }
+
+  return res.data as Property[]
+}
+
 export const createProperty = async (args: CreatePropertyArgs) => {
   const session = await getSession()
   const res = await fetchers.Post(`${ENDPOINT}/property/internal`, {

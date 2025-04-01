@@ -20,6 +20,13 @@ import { PropertyInternalService } from './internal.service'
 export class PropertyInternalController {
   constructor(private readonly service: PropertyInternalService) {}
 
+  @Get('/list')
+  async getProperties(@Req() ctx: Context) {
+    const res = await this.service.getProperties(ctx)
+
+    return { statusCode: HttpStatus.OK, data: res }
+  }
+
   @Post('/')
   async createProperty(@Body() args: CreatePropertyArgs, @Req() ctx: Context) {
     await this.service.createProperty(args, ctx)
