@@ -19,7 +19,7 @@ const Success: NextPage = () => {
         Payment completed !
       </h1>
       <p className="text-center text-lg md:text-xl">
-        We will take you back to your application page shortly.
+        We will take you back to your dashboard shortly.
       </p>
     </div>
   )
