@@ -98,4 +98,13 @@ export const updateMassager = async (args: UpdatateMassagerArgs) => {
   }
 }
 
+export const verifyToken = async (token: string) => {
+  const res = await fetchers.Post(`${ENDPOINT}/user/public/verify`, {
+    data: { token },
+  })
+  if (res.statusCode >= HttpStatus.BAD_REQUEST) {
+    throw new Error(res.message)
+  }
+}
+
 export * from './types'
