@@ -321,7 +321,7 @@ const MassagerAccount = () => {
             <div className="flex flex-col gap-4">
               <p className="text-lg">Languages</p>
               <div className="flex gap-4">
-                {['Thai', 'English', 'Chinese', 'Japanese'].map(language => (
+                {['Thai', 'English', 'Chinese'].map(language => (
                   <label
                     key={language}
                     className={`flex items-center gap-2 ${languages.includes(language) ? 'text-primary' : ''}`}
