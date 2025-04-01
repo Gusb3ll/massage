@@ -28,12 +28,14 @@ const MassagerAccount = () => {
   const vaccineCertificatesInputRef = useRef<HTMLInputElement>(null)
 
   const avatarInputRef = useRef<HTMLInputElement>(null)
-  const avatarMassagerInputRef = useRef<HTMLInputElement>(null)
+  const coverInputRef = useRef<HTMLInputElement>(null)
 
   const [profileImage, setProfileImage] = useState<string>(
     '/default-avatar.png',
   )
-  const [coverImage, setCoverImage] = useState<string>('/default-avatar.png')
+  const [coverImage, setCoverImage] = useState<string>(
+    'https://placehold.co/1500x500',
+  )
 
   const updateMassagerMutation = useMutation({
     mutationFn: (args: UpdatateMassagerArgs) =>
@@ -43,6 +45,7 @@ const MassagerAccount = () => {
         languages,
         certificates,
         vaccineCertificates,
+        coverImage,
       }),
     onSuccess: () => {
       update()
@@ -77,8 +80,6 @@ const MassagerAccount = () => {
     if (file) {
       if (avatarInputRef.current) {
         avatarInputRef.current.value = ''
-      } else if (avatarMassagerInputRef.current) {
-        avatarMassagerInputRef.current.value = ''
       }
 
       const uploadAvatarPromise = async () => {
@@ -143,6 +144,35 @@ const MassagerAccount = () => {
     toast.promise(uploadFilePromise(), {
       loading: 'Uploading file...',
       success: 'File uploaded',
+      error: (e: Error) => e.message,
+    })
+  }
+
+  const handleCoverUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (coverInputRef.current) {
+      coverInputRef.current.value = ''
+    }
+
+    const uploadFilePromise = async () => {
+      if (!file) {
+        throw new Error('ไม่พบไฟล์ที่ต้องการอัพโหลด')
+      }
+      // 5MB
+      if (file.size > 5 * 1024 * 1024) {
+        throw new Error('ไฟล์ที่อัพโหลดต้องมีขนาดไม่เกิน 5MB')
+      }
+      if (!file.type.match(/^image/)) {
+        throw new Error('ชนิดของไฟล์ที่อัพโหลดไม่ถูกต้อง')
+      }
+
+      const res = await uploadFile(file)
+      setCoverImage(res.url)
+    }
+
+    toast.promise(uploadFilePromise(), {
+      loading: 'Uploading cover...',
+      success: 'Cover uploaded',
       error: (e: Error) => e.message,
     })
   }
@@ -405,6 +435,7 @@ const MassagerAccount = () => {
               <div className="flex flex-row items-center gap-4">
                 <p className="text-xl">Vaccine Certificates</p>
                 <button
+                  type="button"
                   onClick={() => vaccineCertificatesInputRef.current?.click()}
                   className="btn btn-sm bg-primary/80 hover:bg-primary/90 flex w-fit flex-row gap-4 text-white"
                 >
@@ -439,34 +470,35 @@ const MassagerAccount = () => {
             </div>
 
             <div className="flex flex-col gap-4">
-              <div className="relative mb-6 aspect-[1/1]">
-                <Image
-                  id="avatar-img"
-                  src={coverImage}
-                  alt="avatar"
-                  className="h-[200px] w-[200px] rounded-full object-cover object-center"
-                  width={256}
-                  height={256}
-                />
-                <input
-                  type="file"
-                  ref={avatarInputRef}
-                  accept="image/*"
-                  onChange={handleAvatarUpload}
-                  className="hidden"
-                />
+              <input
+                type="file"
+                ref={coverInputRef}
+                accept="image/*"
+                onChange={e => handleCoverUpload(e)}
+                className="hidden"
+              />
+              <div className="flex flex-row items-center gap-4">
+                <p className="text-xl">Cover</p>
                 <button
                   type="button"
-                  onClick={() => avatarMassagerInputRef.current?.click()}
-                  className="absolute bottom-2 right-2 flex aspect-[1/1] w-[45px] items-center justify-center rounded-full border border-white/20 bg-gray-300 transition duration-300 hover:scale-95"
-                  aria-label="Upload avatar image"
+                  onClick={() => coverInputRef.current?.click()}
+                  className="btn btn-sm bg-primary/80 hover:bg-primary/90 flex w-fit flex-row gap-4 text-white"
                 >
-                  <BsPencil size={20} />
+                  Upload
+                  <FaUpload size="16" />
                 </button>
               </div>
-              <div className="flex flex-row items-center gap-4">
-                <p className="text-xl">Cover Images</p>
-              </div>
+              {coverImage && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={coverImage}
+                  className="aspect-[3/1] w-[500px] rounded-lg object-cover"
+                  alt="cover"
+                  onClick={() => {
+                    window.open(coverImage, '_blank')
+                  }}
+                />
+              )}
             </div>
 
             <div className="mt-4 flex justify-end lg:mt-7 xl:mt-9 xl:items-end">
