@@ -176,7 +176,7 @@ const Massager = () => {
                       }
                       className="disabled:btn-disabled btn bg-primary/80 hover:bg-primary/90 rounded-lg px-4 py-2 text-white"
                       onClick={() =>
-                        router.push(`/dashboard/user/booking/${b.id}/chat`)
+                        router.push(`/dashboard/massager/booking/${b.id}/chat`)
                       }
                     >
                       Chat
