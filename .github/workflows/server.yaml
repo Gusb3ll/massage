@@ -47,7 +47,7 @@ jobs:
           echo "MINIO_ENDPOINT=hikari.easydonate.app" >> .env
           echo "MINIO_BUCKET=massage" >> .env
           echo "MINIO_ACCESS_KEY=${{ secrets.MINIO_ACCESS_KEY }}" >> .env
-          echo "MINIO_SECRET_KEY=${{ secrets.MAINIO_SECRET_KEY }}" >> .env
+          echo "MINIO_SECRET_KEY=${{ secrets.MINIO_SECRET_KEY }}" >> .env
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
