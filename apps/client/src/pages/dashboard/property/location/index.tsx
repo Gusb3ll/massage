@@ -58,30 +58,31 @@ const LocationIndex = () => {
   return (
     <AppLayout>
       <DashboardLayout>
-        <div className="flex w-full items-center justify-center">
+        <div className="flex flex-col gap-8">
+          <Link href="/dashboard/property/location/create">
+            <button className="btn bg-primary/80 hover:bg-primary/90 text-white">
+              Add Location +
+            </button>
+          </Link>
           {properties.length === 0 ? (
-            <div className="flex h-screen w-full items-center justify-center">
-              <div className="flex h-[500px] w-full flex-col items-center justify-center rounded-lg border bg-gray-100 p-8">
+            <div className="w-full rounded-lg border p-8 shadow-lg">
+              <div className="flex h-[500px] w-full flex-col items-center justify-center rounded-lg border bg-gray-100">
                 <p className="text-lg text-gray-500">
                   You don’t have a location
                 </p>
                 <p className="text-lg text-gray-500">Please add location</p>
-                <button className="mt-5">
-                  <Link href="/dashboard/property/location/create">
-                    <p className="btn btn-primary">Add Location</p>
-                  </Link>
-                </button>
               </div>
             </div>
           ) : (
             <div className="w-full">
-              <div className="mt-7 w-full rounded-lg border p-10 shadow-lg">
-                <h1 className="text-2xl font-bold">Property Locations</h1>
+              <div className="flex w-full flex-col gap-4 rounded-lg border p-8 shadow-lg">
+                <h1 className="text-2xl font-bold">Property Images</h1>
+                <hr />
                 <ul>
                   {currentItems.map(property => (
-                    <li key={property.id} className="border-b py-4">
+                    <li key={property.id} className="py-4">
                       {property.images?.length > 0 && (
-                        <div className="mt-4 grid grid-cols-3 gap-4 sm:grid-cols-4 lg:grid-cols-5">
+                        <div className="grid grid-cols-3 gap-4 sm:grid-cols-4 lg:grid-cols-5">
                           {property.images.map((image, index) => (
                             <div
                               key={index}
@@ -89,7 +90,7 @@ const LocationIndex = () => {
                             >
                               <Image
                                 src={image}
-                                alt={`Property Image ${index + 1}`}
+                                alt={`property-${index}`}
                                 layout="fill"
                                 objectFit="cover"
                                 className="rounded-lg"
