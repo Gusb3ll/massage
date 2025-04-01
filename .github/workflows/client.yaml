@@ -40,7 +40,7 @@ jobs:
           echo "NODE_ENV=production" >> .env
           echo "NEXT_PUBLIC_ENDPOINT=https://massage-api.lico.moe" >> .env
           echo "NEXTAUTH_URL=https://massage.lico.moe" >> .env
-          echo "NEXTAUTH_SECRET=K0HcoefXBsb8+AMDc12sxMx/gAjlxHvHLV0xevJIf0s=" >> .env
+          echo "NEXTAUTH_SECRET={{ secrets.NEXTAUTH_SECRET }}" >> .env
           echo "NEXT_PUBLIC_APP_ENV=production" >> .env
 
       - name: Build and push Docker image

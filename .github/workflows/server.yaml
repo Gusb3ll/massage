@@ -39,15 +39,15 @@ jobs:
       - name: Create .env file
         run: |
           echo "NODE_ENV=production" >> .env
-          echo "ENTROPY=XnE3iXA23aVI+JB6NDNfuXCQw052e4VCEETdGaSCXVo=" >> .env
-          echo "DATABASE_URL=postgresql://local:local@103.216.158.158:5432/massage?schema=public" >> .env
+          echo "ENTROPY={{ secrets.ENTROPY }}" >> .env
+          echo "DATABASE_URL={{ secrets.DATABASE_URL }}" >> .env
           echo "MAILER_HOST=smtp.resend.com" >> .env
           echo "MAILER_USERNAME=resend" >> .env
-          echo "MAILER_PASSWORD=re_NoNjAiBD_Mb4tJmB6LVMBRMamHLpMFECB" >> .env
+          echo "MAILER_PASSWORD={{ secrets.MAILER_PASSWORD }}" >> .env
           echo "MINIO_ENDPOINT=hikari.easydonate.app" >> .env
           echo "MINIO_BUCKET=massage" >> .env
-          echo "MINIO_ACCESS_KEY=JWzouQvway4NWw91OijD" >> .env
-          echo "MINIO_SECRET_KEY=sqc3Jpaa6XplpTZiXi1afKFEXKVoDuDFQofgP14b" >> .env
+          echo "MINIO_ACCESS_KEY={{ secrets.MINIO_ACCESS_KEY }}" >> .env
+          echo "MINIO_SECRET_KEY={{ secrets.MAINIO_SECRET_KEY }}" >> .env
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
